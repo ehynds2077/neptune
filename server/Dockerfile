@@ -4,10 +4,8 @@ WORKDIR /usr/src/app
 
 
 COPY ./package.json ./
-COPY ./prisma ./
 COPY ./yarn.lock ./
 COPY ./tsconfig.json ./
-RUN npx prisma generate
 RUN yarn install
 
 COPY ./wait-for.sh ./

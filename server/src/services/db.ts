@@ -1,5 +1,7 @@
 import knex from "knex";
+
 import { configuration } from "../config";
+import { createTokenSchema, testToken } from "../models/RefreshToken";
 import {
   createUserSchema,
   getAllUsers,
@@ -38,18 +40,21 @@ testConn();
 export default db;
 
 const initSchema = async function () {
-  const schema = db.schema.withSchema(schemaName);
-  await createUserSchema(schema);
+  // const schema = db.schema.withSchema(schemaName);
+  await createUserSchema(db.schema);
+  await createTokenSchema(db.schema);
 };
 
 const initDb = async function () {
   await initSchema();
   await testInsertUser();
+  await testToken();
 };
 
 export const testDb = async function () {
-  const exists = await db.schema.hasTable(USER_TABLE);
-  if (!exists) {
+  const token_exists = await db.schema.hasTable("refresh_token");
+  const user_exists = await db.schema.hasTable("user");
+  if (!token_exists && !user_exists) {
     await initDb();
   }
 

@@ -1,6 +1,6 @@
 import { NextFunction, Response } from "express";
 import { getUserByID } from "../models/User";
-import { checkToken } from "../utils/tokenUtils";
+import { checkAccessToken } from "../utils/tokenUtils";
 
 export const protectRoute = (req: any, res: Response, next: NextFunction) => {
   let token;
@@ -13,7 +13,7 @@ export const protectRoute = (req: any, res: Response, next: NextFunction) => {
         throw new Error("Not authorized, no token provided");
       }
 
-      const id = checkToken(token);
+      const id = checkAccessToken(token);
       if (!id) {
         throw new Error("Unable to verify token");
       }

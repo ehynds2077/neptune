@@ -10,6 +10,15 @@ services:
     env_file:
       - .env
 
+  # redis:
+  #   image: redis
+  #   restart: always
+  #   expose:
+  #     - "6379"
+  #   command: redis-server --save 60 1 --logLevel warning
+  #   volumes:
+  #     - ./redis:/data
+
   server:
     build: .
     volumes:

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { addUser, getUserByEmail } from "../models/User";
 import bcrypt from "bcrypt";
-import { createToken } from "../utils/tokenUtils";
+import { createAccessToken } from "../utils/tokenUtils";
 import { hashPass } from "../utils/crypto";
 import db from "../services/db";
 
@@ -24,13 +24,13 @@ export const login = async function (
       throw new Error(errMsg);
     }
 
-    const valid = await bcrypt.compare(password, user.hashedPass);
+    const valid = await bcrypt.compare(password, user.passwordHash);
     if (!valid) {
       throw new Error(errMsg);
     }
 
-    const token = createToken(user.id);
-    res.status(200).json({ token: token });
+    const accessToken = createAccessToken(user.id);
+    res.status(200).json({ token: accessToken });
   } catch (e) {
     res.status(401);
     next(e);
@@ -69,3 +69,15 @@ export const register = async function (
     next(e);
   }
 };
+
+// export const refresh = async function (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) {
+//   const { refreshToken } = req.body;
+
+//   try {
+//     if ()
+//   }
+// }
