@@ -1,6 +1,7 @@
 import knex from "knex";
 
 import { configuration } from "../config";
+import { createInboxItemSchema } from "../models/InboxItem";
 import { createTokenSchema, testToken } from "../models/RefreshToken";
 import {
   createUserSchema,
@@ -43,6 +44,7 @@ const initSchema = async function () {
   // const schema = db.schema.withSchema(schemaName);
   await createUserSchema(db.schema);
   await createTokenSchema(db.schema);
+  await createInboxItemSchema(db.schema);
 };
 
 const initDb = async function () {

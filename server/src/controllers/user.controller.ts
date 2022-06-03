@@ -1,9 +1,47 @@
 import { NextFunction, Request, Response } from "express";
 import { addUser, getUserByEmail } from "../models/User";
 import bcrypt from "bcrypt";
-import { createAccessToken, createRefreshToken } from "../utils/tokenUtils";
+import {
+  checkRefreshToken,
+  createAccessToken,
+  createRefreshToken,
+} from "../utils/tokenUtils";
 import { hashPass } from "../utils/crypto";
 import { configuration } from "../config";
+import { checkValidToken, deleteToken } from "../models/RefreshToken";
+
+const cookieOptions = {
+  httpOnly: true,
+  secure: configuration.PROD ? true : false,
+};
+
+export const logout = async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const refreshToken = req.cookies.refreshToken;
+  try {
+    if (!refreshToken) {
+      throw new Error("Already logged out");
+    }
+
+    const id = await checkRefreshToken(refreshToken);
+    if (!id) {
+      throw new Error("Problem processing token");
+    }
+
+    await deleteToken(refreshToken);
+
+    res.clearCookie("accessToken");
+    (req as any).user = null;
+    res.send();
+  } catch (e) {
+    res.status(401);
+    console.log(res);
+    next(e);
+  }
+};
 
 export const login = async function (
   req: Request,
@@ -38,10 +76,6 @@ export const login = async function (
     const refreshToken = await createRefreshToken(user.id);
 
     // Set cookie to secure for production
-    const cookieOptions = {
-      httpOnly: true,
-      secure: configuration.PROD ? true : false,
-    };
 
     res.cookie("accessToken", accessToken, cookieOptions);
     res.cookie("refreshToken", refreshToken, cookieOptions);
@@ -84,6 +118,15 @@ export const register = async function (
   } catch (e) {
     res.status(400);
     next(e);
+  }
+};
+
+export const getUser = function (req: any, res: Response, next: NextFunction) {
+  const { user } = req;
+  if (user) {
+    res.json({ uid: user.id, name: user.name, email: user.email });
+  } else {
+    res.status(400).send();
   }
 };
 

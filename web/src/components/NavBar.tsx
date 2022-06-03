@@ -1,7 +1,6 @@
 import { Flex, Heading, Link } from "@chakra-ui/layout";
-import * as React from "react";
-import { Link as RouterLink } from "react-router-dom";
-
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { AccountMenu } from "./AccountMenu";
 import { ColorModeSwitcher } from "../ColorModeSwitcher";
 
 export const NavBar = () => {
@@ -19,7 +18,10 @@ export const NavBar = () => {
           Neptune
         </Link>
       </Heading>
-      <ColorModeSwitcher justifySelf="flex-end" />
+      <Flex gap={5} direction="row">
+        <ColorModeSwitcher />
+        <AccountMenu />
+      </Flex>
     </Flex>
   );
 };

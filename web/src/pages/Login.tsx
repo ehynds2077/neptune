@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/button";
 import { Input } from "@chakra-ui/input";
 import { Flex, Heading, Link, Stack, Text } from "@chakra-ui/layout";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 import { useAuth } from "../providers/AuthProvider";
@@ -15,10 +15,14 @@ export const Login = () => {
   const auth = useAuth();
   const navigate = useNavigate();
 
-  const sendLogin = async () => {
-    const res = await auth.login(email, password);
+  useEffect(() => {
+    if (auth.user) {
+      navigate("/app", { replace: true });
+    }
+  });
 
-    console.log(res);
+  const login = async () => {
+    const res = await auth.login(email, password);
 
     if (res) {
       navigate("/app", { replace: true });
@@ -26,7 +30,7 @@ export const Login = () => {
   };
 
   const handleLogin = () => {
-    sendLogin();
+    login();
   };
 
   return (

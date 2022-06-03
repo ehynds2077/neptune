@@ -8,6 +8,10 @@ export interface RefreshToken {
   user_id: string;
 }
 
+const hashToken = (token: string) => {
+  return crypto.createHash("sha256").update(token).digest("base64");
+};
+
 export const createTokenSchema = async function (schema: Knex.SchemaBuilder) {
   await schema.createTable("refresh_token", (table) => {
     table.string("token_hash").notNullable().primary().unique();
@@ -31,7 +35,7 @@ export const checkValidToken = async function (token: string, uid: string) {
     return false;
   }
 
-  const tokenHash = crypto.createHash("sha256").update(token).digest("base64");
+  const tokenHash = hashToken(token);
   const tokens = await db
     .select("token_hash")
     .table("refresh_token")
@@ -44,6 +48,11 @@ export const checkValidToken = async function (token: string, uid: string) {
     return true;
   }
   return false;
+};
+
+export const deleteToken = async function (token: string) {
+  const tokenHash = hashToken(token);
+  return await db("refresh_token").where("token_hash", tokenHash).del();
 };
 
 export const deleteExpiredTokens = async function () {

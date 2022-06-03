@@ -1,7 +1,13 @@
 import express from "express";
-import { login, register } from "../controllers/auth.controller";
-import { protectRoute, protectRouteCookies } from "../middleware/protectRoute";
-import { checkAccessToken, createAccessToken } from "../utils/tokenUtils";
+
+import {
+  getUser,
+  login,
+  logout,
+  register,
+} from "../controllers/user.controller";
+import { protectRoute } from "../middleware/protectRoute";
+import { apiRouter } from "./api";
 
 export const router = express.Router();
 
@@ -11,21 +17,7 @@ router.get("", (req, res) => {
 
 router.post("/register", register);
 router.post("/login", login);
+router.post("/logout", logout);
+router.get("/user", protectRoute, getUser);
 
-router.get("/auth", (req: any, res) => {
-  const { token } = req;
-  const result = checkAccessToken(token);
-});
-
-router.get("/getToken", (req: any, res) => {
-  const token = createAccessToken("9f749ff5-7ebe-4de3-87fc-367be1466c97");
-  res.send(token);
-});
-
-router.get("/protected", protectRoute, (req: any, res) => {
-  res.send("this is private!");
-});
-
-router.get("/protectedCookies", protectRouteCookies, (req: any, res) => {
-  res.send("private stuff");
-});
+router.use("/api", protectRoute, apiRouter);
