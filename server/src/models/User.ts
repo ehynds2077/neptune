@@ -43,7 +43,10 @@ export const getAllUsers = async function () {
 };
 
 export const getUserByID = async function (id: string) {
-  const users = await db.select().table("user").where("id", id);
+  const users = await db
+    .select("name", "email", "id")
+    .table("user")
+    .where("id", id);
   return users[0];
 };
 

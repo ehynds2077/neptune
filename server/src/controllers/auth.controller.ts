@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { addUser, getUserByEmail } from "../models/User";
 import bcrypt from "bcrypt";
-import { createAccessToken } from "../utils/tokenUtils";
+import { createAccessToken, createRefreshToken } from "../utils/tokenUtils";
 import { hashPass } from "../utils/crypto";
-import db from "../services/db";
+import { configuration } from "../config";
 
 export const login = async function (
   req: Request,
@@ -11,26 +11,42 @@ export const login = async function (
   next: NextFunction
 ) {
   const { email, password } = req.body;
+  console.log(email, password);
 
   try {
+    // Check for credentials
     if (!email || !password) {
       throw new Error("Credentials not provided");
     }
 
     const errMsg = "Email or password is incorrect or user does not exist";
-    const user = await getUserByEmail(email);
 
+    // Check user exists
+    const user = await getUserByEmail(email);
     if (!user) {
       throw new Error(errMsg);
     }
 
-    const valid = await bcrypt.compare(password, user.passwordHash);
+    // Check pass
+    const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) {
       throw new Error(errMsg);
     }
 
+    // Gen tokens
     const accessToken = createAccessToken(user.id);
-    res.status(200).json({ token: accessToken });
+    const refreshToken = await createRefreshToken(user.id);
+
+    // Set cookie to secure for production
+    const cookieOptions = {
+      httpOnly: true,
+      secure: configuration.PROD ? true : false,
+    };
+
+    res.cookie("accessToken", accessToken, cookieOptions);
+    res.cookie("refreshToken", refreshToken, cookieOptions);
+
+    res.status(200).send({ name: user.name, email: user.email, uid: user.id });
   } catch (e) {
     res.status(401);
     next(e);
@@ -43,6 +59,7 @@ export const register = async function (
   next: NextFunction
 ) {
   const { email, password, name } = req.body;
+  console.log(email, password);
 
   try {
     if (!(name && email && password)) {

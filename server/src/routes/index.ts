@@ -1,6 +1,6 @@
 import express from "express";
 import { login, register } from "../controllers/auth.controller";
-import { protectRoute } from "../middleware/protectRoute";
+import { protectRoute, protectRouteCookies } from "../middleware/protectRoute";
 import { checkAccessToken, createAccessToken } from "../utils/tokenUtils";
 
 export const router = express.Router();
@@ -24,4 +24,8 @@ router.get("/getToken", (req: any, res) => {
 
 router.get("/protected", protectRoute, (req: any, res) => {
   res.send("this is private!");
+});
+
+router.get("/protectedCookies", protectRouteCookies, (req: any, res) => {
+  res.send("private stuff");
 });
