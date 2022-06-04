@@ -9,6 +9,7 @@ interface InboxContextType {
   setSelectedItem: any;
   addItem: (title: string) => Promise<void>;
   getItems: any;
+  deleteItem: () => Promise<void>;
   // user: any;
   // login: (email: string, password: string) => Promise<boolean>;
   // register: (name: string, email: string, password: string) => Promise<boolean>;
@@ -48,7 +49,28 @@ export const InboxProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const value = { items, selectedItem, getItems, setSelectedItem, addItem };
+  const deleteItem = async () => {
+    if (!selectedItem) {
+      return;
+    }
+
+    const res = await axiosAPI.delete(`/api/inbox/${selectedItem.id}`);
+
+    console.log(res);
+
+    if (res.status === 200) {
+      setItems((items) => items.filter((item) => item.id !== selectedItem.id));
+    }
+  };
+
+  const value = {
+    items,
+    selectedItem,
+    deleteItem,
+    getItems,
+    setSelectedItem,
+    addItem,
+  };
   return (
     <InboxContext.Provider value={value}>{children}</InboxContext.Provider>
   );

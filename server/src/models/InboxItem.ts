@@ -68,14 +68,13 @@ export const updateInboxItem = async function (
   if (notes !== undefined) {
     updateObj.notes = notes;
   }
-  console.log(id);
-  console.log(uid);
-  console.log(title);
-  console.log(isDone);
-  console.log(notes);
 
   return await db("inbox_item")
-    .where("inbox_item.user_id", uid)
+    .where("user_id", uid)
     .andWhere("id", id)
     .update(updateObj);
+};
+
+export const deleteInboxItem = async function (id: string, uid: string) {
+  return await db("inbox_item").where("user_id", uid).andWhere("id", id).del();
 };

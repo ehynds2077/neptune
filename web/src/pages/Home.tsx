@@ -1,26 +1,16 @@
 import { Divider, Flex, Heading, List, ListItem } from "@chakra-ui/layout";
-import {
-  Button,
-  Checkbox,
-  FormControl,
-  FormLabel,
-  Modal,
-  Input,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-} from "@chakra-ui/react";
+import { Button, Checkbox, IconButton, Input } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import React from "react";
+import { IoMdTrash } from "react-icons/io";
 import { useNavigate } from "react-router";
 
-import { useAuth } from "../providers/AuthProvider";
-import { axiosAPI } from "../utils/apiUtils";
+import { TaskDeleteModal } from "../components/TaskDeleteModal";
+import { TaskEditModal } from "../components/TaskEditModal";
 import { InboxItem } from "../interfaces/InboxItem";
+import { useAuth } from "../providers/AuthProvider";
 import { InboxProvider, useInbox } from "../providers/InboxProvider";
+import { axiosAPI } from "../utils/apiUtils";
 
 export const Home = () => {
   const auth = useAuth();
@@ -40,9 +30,10 @@ export const Home = () => {
 };
 
 const TaskList = () => {
-  const { items, getItems, addItem, setSelectedItem } = useInbox();
+  const { items, getItems, addItem, deleteItem, setSelectedItem } = useInbox();
 
   const [showEdit, setShowEdit] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
   const [newItemTitle, setNewItemTitle] = useState("");
 
   const handleCheckItem = async (item: InboxItem) => {
@@ -56,13 +47,23 @@ const TaskList = () => {
   };
 
   const handleAddInboxItem = async () => {
-    const res = await addItem(newItemTitle);
+    await addItem(newItemTitle);
     setNewItemTitle("");
   };
 
   const handleClickItem = async (item: InboxItem) => {
     setShowEdit(true);
     setSelectedItem(item);
+  };
+
+  const handleConfirmDelete = async (item: InboxItem) => {
+    setShowDelete(true);
+    setSelectedItem(item);
+  };
+
+  const handleDeleteItem = async () => {
+    await deleteItem();
+    setShowDelete(false);
   };
 
   return (
@@ -86,15 +87,24 @@ const TaskList = () => {
                 key={idx}
                 onClick={handleClickItem}
                 onCheck={handleCheckItem}
+                onDelete={handleConfirmDelete}
                 item={item}
               />
             );
           })}
         </List>
       </Flex>
+      <TaskDeleteModal
+        isOpen={showDelete}
+        onDelete={handleDeleteItem}
+        onClose={() => {
+          setShowDelete(false);
+        }}
+      />
       <TaskEditModal
         isOpen={showEdit}
         onClose={() => {
+          setSelectedItem(null);
           setShowEdit(false);
         }}
       />
@@ -106,10 +116,12 @@ const InboxRow = ({
   item,
   onClick,
   onCheck,
+  onDelete,
 }: {
   item: InboxItem;
   onClick: (item: InboxItem) => Promise<void>;
   onCheck: (item: InboxItem) => Promise<void>;
+  onDelete: (item: InboxItem) => Promise<void>;
 }) => {
   const [checked, setChecked] = useState(item.is_done);
 
@@ -146,55 +158,16 @@ const InboxRow = ({
         >
           {item.title}
         </Button>
+        <IconButton
+          variant="ghost"
+          onClick={() => {
+            onDelete(item);
+          }}
+          aria-label="Delete Item"
+          icon={<IoMdTrash />}
+        />
       </Flex>
       <Divider color="white" />
     </ListItem>
-  );
-};
-
-const TaskEditModal = ({
-  isOpen,
-  onClose,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-}) => {
-  const [title, setTitle] = useState("");
-  const { selectedItem } = useInbox();
-
-  useEffect(() => {
-    if (selectedItem) {
-      setTitle(selectedItem.title);
-    }
-  }, [selectedItem]);
-  return (
-    <>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Edit Item</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl>
-              <FormLabel>Title</FormLabel>
-              <Input
-                value={title}
-                onChange={(event: any) => {
-                  setTitle(event.target.value);
-                }}
-                placeholder="Item title"
-              />
-            </FormControl>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3}>
-              Save
-            </Button>
-            <Button onClick={onClose}>Cancel</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
   );
 };

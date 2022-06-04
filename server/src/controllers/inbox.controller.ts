@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import {
   createInboxItem,
+  deleteInboxItem,
   getUserInbox,
   updateInboxItem,
 } from "../models/InboxItem";
@@ -63,7 +64,30 @@ export const updateItem = async function (
     const uid = (req as any).user.id;
 
     const result = await updateInboxItem(id, uid, title, isDone, notes);
-    console.log(res);
+    console.log(result);
+
+    res.send();
+  } catch (e) {
+    res.status(400);
+    next(e);
+  }
+};
+
+export const deleteItem = async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { id } = req.params;
+  try {
+    if (!id) {
+      throw new Error("Must provide id");
+    }
+
+    const uid = (req as any).user.id;
+
+    const result = await deleteInboxItem(id, uid);
+    console.log(result);
 
     res.send();
   } catch (e) {
