@@ -33,10 +33,15 @@ declare module "knex/types/tables" {
       // Insert
       Pick<InboxItem, "title"> &
         Pick<InboxItem, "user_id"> &
+        Pick<InboxItem, "created_at"> &
         Pick<InboxItem, "id"> &
         Partial<Pick<InboxItem, "notes">>,
       // Update
-      Partial<Omit<InboxItem, "user_id", "id">>
+      Partial<
+        Omit<InboxItem, "user_id"> &
+          Omit<InboxItem, "id"> &
+          Omit<InboxItem, "created_at">
+      >
     >;
   }
 }

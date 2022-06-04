@@ -19,13 +19,8 @@ import { useNavigate } from "react-router";
 
 import { useAuth } from "../providers/AuthProvider";
 import { axiosAPI } from "../utils/apiUtils";
-
-export interface InboxItem {
-  id: string;
-  title: string;
-  isDone: boolean;
-  notes?: string;
-}
+import { InboxItem } from "../interfaces/InboxItem";
+import { InboxProvider, useInbox } from "../providers/InboxProvider";
 
 export const Home = () => {
   const auth = useAuth();
@@ -37,89 +32,37 @@ export const Home = () => {
     }
   }, [auth.user, navigate]);
 
-  return <TaskList />;
+  return (
+    <InboxProvider>
+      <TaskList />
+    </InboxProvider>
+  );
 };
 
 const TaskList = () => {
-  const auth = useAuth();
-  const [items, setItems] = useState<InboxItem[]>([]);
+  const { items, getItems, addItem, setSelectedItem } = useInbox();
 
-  const [selectedItem, setSelectedItem] = useState<InboxItem | null>(null);
   const [showEdit, setShowEdit] = useState(false);
-
   const [newItemTitle, setNewItemTitle] = useState("");
 
-  const getItems = async () => {
-    const res = await axiosAPI.get("/api/inbox");
-    if (res.status === 200) {
-      const items = res.data.inbox;
-      setItems(items);
-      console.log(items);
-    }
-  };
+  const handleCheckItem = async (item: InboxItem) => {
+    const res = await axiosAPI.put(`api/inbox/${item.id}`, {
+      isDone: !item.is_done,
+    });
 
-  useEffect(() => {
     getItems();
-  }, []);
+
+    console.log(res);
+  };
 
   const handleAddInboxItem = async () => {
-    const res = await axiosAPI.post("/api/inbox", { title: newItemTitle });
-    console.log(res);
-    if (res.status === 200) {
-      const newItem = res.data;
-      setItems((items) => [...items, newItem]);
-    }
-
+    const res = await addItem(newItemTitle);
     setNewItemTitle("");
-  };
-
-  const handleCheckItem = async (item: InboxItem) => {
-    const res = await axiosAPI.put(`api/inbox/${item.id}`);
   };
 
   const handleClickItem = async (item: InboxItem) => {
     setShowEdit(true);
     setSelectedItem(item);
-  };
-
-  const TaskEditModal = ({
-    isOpen,
-    onClose,
-  }: {
-    isOpen: boolean;
-    onClose: () => void;
-  }) => {
-    const [title, setTitle] = useState("");
-
-    useEffect(() => {
-      if (selectedItem) {
-        setTitle(selectedItem.title);
-      }
-    });
-    return (
-      <>
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Edit Item</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody pb={6}>
-              <FormControl>
-                <FormLabel>Title</FormLabel>
-                <Input value={title} placeholder="Item title" />
-              </FormControl>
-            </ModalBody>
-
-            <ModalFooter>
-              <Button colorScheme="blue" mr={3}>
-                Save
-              </Button>
-              <Button onClick={onClose}>Cancel</Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </>
-    );
   };
 
   return (
@@ -168,6 +111,11 @@ const InboxRow = ({
   onClick: (item: InboxItem) => Promise<void>;
   onCheck: (item: InboxItem) => Promise<void>;
 }) => {
+  const [checked, setChecked] = useState(item.is_done);
+
+  useEffect(() => {
+    setChecked(item.is_done);
+  }, [item.is_done]);
   return (
     <ListItem>
       <Flex
@@ -178,7 +126,14 @@ const InboxRow = ({
         w="full"
         p={0}
       >
-        <Checkbox m={3} onClick={() => onCheck(item)} />
+        <Checkbox
+          m={3}
+          isChecked={checked}
+          onChange={() => {
+            setChecked((checked) => !checked);
+            onCheck(item);
+          }}
+        />
         <Button
           bg="transparent"
           justifyContent="flex-start"
@@ -194,5 +149,52 @@ const InboxRow = ({
       </Flex>
       <Divider color="white" />
     </ListItem>
+  );
+};
+
+const TaskEditModal = ({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) => {
+  const [title, setTitle] = useState("");
+  const { selectedItem } = useInbox();
+
+  useEffect(() => {
+    if (selectedItem) {
+      setTitle(selectedItem.title);
+    }
+  }, [selectedItem]);
+  return (
+    <>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Edit Item</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <FormControl>
+              <FormLabel>Title</FormLabel>
+              <Input
+                value={title}
+                onChange={(event: any) => {
+                  setTitle(event.target.value);
+                }}
+                placeholder="Item title"
+              />
+            </FormControl>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3}>
+              Save
+            </Button>
+            <Button onClick={onClose}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   );
 };

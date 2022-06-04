@@ -1,5 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { createInboxItem, getUserInbox } from "../models/InboxItem";
+import {
+  createInboxItem,
+  getUserInbox,
+  updateInboxItem,
+} from "../models/InboxItem";
 
 export const addItem = async function (
   req: Request,
@@ -45,11 +49,23 @@ export const updateItem = async function (
   res: Response,
   next: NextFunction
 ) {
-  const { id } = req.body;
+  const { id } = req.params;
+  const { title, isDone, notes } = req.body;
   try {
     if (!id) {
-      
+      throw new Error("Must provide id");
     }
+
+    if (title === undefined && isDone === undefined && notes === undefined) {
+      throw new Error("Must provide paramater to update");
+    }
+
+    const uid = (req as any).user.id;
+
+    const result = await updateInboxItem(id, uid, title, isDone, notes);
+    console.log(res);
+
+    res.send();
   } catch (e) {
     res.status(400);
     next(e);
