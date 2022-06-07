@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react";
-import { InboxItem } from "../interfaces/InboxItem";
+import { InboxItem } from "../features/inbox/InboxItem";
 import { axiosAPI } from "../utils/apiUtils";
 import { useAuth } from "./AuthProvider";
 
@@ -8,6 +8,7 @@ interface InboxContextType {
   selectedItem: InboxItem | null;
   setSelectedItem: any;
   addItem: (title: string) => Promise<void>;
+  completeItem: (id: string, done: boolean) => Promise<void>;
   getItems: any;
   deleteItem: () => Promise<void>;
   // user: any;
@@ -26,7 +27,7 @@ export const InboxProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     console.log("nice");
-    getItems();
+    // getItems();
   }, []);
 
   const getItems = async () => {
@@ -36,6 +37,12 @@ export const InboxProvider = ({ children }: { children: ReactNode }) => {
       setItems(items);
       console.log(items);
     }
+  };
+
+  const completeItem = async (id: string, done: boolean) => {
+    const res = await axiosAPI.put(`api/inbox/${id}`, {
+      isDone: done,
+    });
   };
 
   const addItem = async (title: string) => {
@@ -66,6 +73,7 @@ export const InboxProvider = ({ children }: { children: ReactNode }) => {
   const value = {
     items,
     selectedItem,
+    completeItem,
     deleteItem,
     getItems,
     setSelectedItem,

@@ -72,6 +72,7 @@ export const updateInboxItem = async function (
   return await db("inbox_item")
     .where("user_id", uid)
     .andWhere("id", id)
+    // .returning("*")
     .update(updateObj);
 };
 

@@ -10,34 +10,38 @@ import { Login } from "./pages/Login";
 import { SignUp } from "./pages/SignUp";
 import { Welcome } from "./pages/Welcome";
 import { AuthProvider } from "./providers/AuthProvider";
+import { Provider } from "react-redux";
+import { store } from "./store";
 
 export const App = () => (
   <ChakraProvider theme={theme}>
-    <Router>
-      <AuthProvider>
-        <NavBar />
+    <Provider store={store}>
+      <Router>
+        <AuthProvider>
+          <NavBar />
 
-        <Flex
-          minH="100vh"
-          justifyContent="center"
-          alignItems="flex-start"
-          p={5}
-        >
-          <Routes>
-            <Route path="/" element={<Welcome />} />
-            <Route
-              path="/app"
-              element={
-                <RequireAuth>
-                  <Home />
-                </RequireAuth>
-              }
-            />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
-          </Routes>
-        </Flex>
-      </AuthProvider>
-    </Router>
+          <Flex
+            minH="100vh"
+            justifyContent="center"
+            alignItems="flex-start"
+            p={5}
+          >
+            <Routes>
+              <Route path="/" element={<Welcome />} />
+              <Route
+                path="/app"
+                element={
+                  <RequireAuth>
+                    <Home />
+                  </RequireAuth>
+                }
+              />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+            </Routes>
+          </Flex>
+        </AuthProvider>
+      </Router>
+    </Provider>
   </ChakraProvider>
 );

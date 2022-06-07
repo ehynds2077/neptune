@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { useEffect, useState } from "react";
+import { useUpdateInboxItemMutation } from "../features/inbox/inboxApi";
 
 import { useInbox } from "../providers/InboxProvider";
 
@@ -25,6 +26,18 @@ export const TaskEditModal = ({
 }) => {
   const [title, setTitle] = useState("");
   const { selectedItem } = useInbox();
+  const [updateInboxItem] = useUpdateInboxItemMutation();
+
+  const handleEditItem = async () => {
+    try {
+      if (selectedItem) {
+        await updateInboxItem({ id: selectedItem.id, title });
+      }
+      onClose();
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   useEffect(() => {
     if (selectedItem) {
@@ -52,7 +65,7 @@ export const TaskEditModal = ({
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3}>
+            <Button colorScheme="blue" mr={3} onClick={handleEditItem}>
               Save
             </Button>
             <Button onClick={onClose}>Cancel</Button>

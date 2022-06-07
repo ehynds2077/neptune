@@ -12,6 +12,7 @@ export const addItem = async function (
   next: NextFunction
 ) {
   const { title, isDone, notes } = req.body;
+  console.log(req.body);
   try {
     if (!title) {
       throw new Error("Must include title");
@@ -51,20 +52,22 @@ export const updateItem = async function (
   next: NextFunction
 ) {
   const { id } = req.params;
-  const { title, isDone, notes } = req.body;
+  const { title, is_done, notes } = req.body;
   try {
     if (!id) {
       throw new Error("Must provide id");
     }
 
-    if (title === undefined && isDone === undefined && notes === undefined) {
+    if (title === undefined && is_done === undefined && notes === undefined) {
       throw new Error("Must provide paramater to update");
     }
 
     const uid = (req as any).user.id;
 
-    const result = await updateInboxItem(id, uid, title, isDone, notes);
-    console.log(result);
+    const result = await updateInboxItem(id, uid, title, is_done, notes);
+    if (!result) {
+      throw new Error("Could not update item");
+    }
 
     res.send();
   } catch (e) {

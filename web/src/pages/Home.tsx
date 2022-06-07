@@ -1,5 +1,12 @@
 import { Divider, Flex, Heading, List, ListItem } from "@chakra-ui/layout";
-import { Button, Checkbox, IconButton, Input } from "@chakra-ui/react";
+import {
+  Button,
+  Checkbox,
+  IconButton,
+  Input,
+  Spinner,
+  Text,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import React from "react";
 import { IoMdTrash } from "react-icons/io";
@@ -7,10 +14,15 @@ import { useNavigate } from "react-router";
 
 import { TaskDeleteModal } from "../components/TaskDeleteModal";
 import { TaskEditModal } from "../components/TaskEditModal";
-import { InboxItem } from "../interfaces/InboxItem";
+import { InboxItem } from "../features/inbox/InboxItem";
 import { useAuth } from "../providers/AuthProvider";
 import { InboxProvider, useInbox } from "../providers/InboxProvider";
 import { axiosAPI } from "../utils/apiUtils";
+import {
+  useAddInboxItemMutation,
+  useGetInboxItemsQuery,
+  useUpdateInboxItemMutation,
+} from "../features/inbox/inboxApi";
 
 export const Home = () => {
   const auth = useAuth();
@@ -30,25 +42,48 @@ export const Home = () => {
 };
 
 const TaskList = () => {
-  const { items, getItems, addItem, deleteItem, setSelectedItem } = useInbox();
+  const {
+    data: items = [],
+    isLoading,
+    isFetching,
+    isError,
+    error,
+    isSuccess,
+  } = useGetInboxItemsQuery();
+
+  const [addInboxItem, { isLoading: addIsLoading }] = useAddInboxItemMutation();
+  const [updateInboxItem] = useUpdateInboxItemMutation();
+
+  const {
+    // items,
+    completeItem,
+    getItems,
+    addItem,
+    deleteItem,
+    setSelectedItem,
+  } = useInbox();
 
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [newItemTitle, setNewItemTitle] = useState("");
 
   const handleCheckItem = async (item: InboxItem) => {
-    const res = await axiosAPI.put(`api/inbox/${item.id}`, {
-      isDone: !item.is_done,
-    });
-
-    getItems();
-
-    console.log(res);
+    try {
+      await updateInboxItem({ id: item.id, is_done: !item.is_done }).unwrap();
+    } catch (e) {
+      console.log(e);
+    }
+    // await completeItem(item.id, !item.is_done);
+    // getItems();
   };
 
   const handleAddInboxItem = async () => {
-    await addItem(newItemTitle);
-    setNewItemTitle("");
+    try {
+      await addInboxItem({ title: newItemTitle }).unwrap();
+      setNewItemTitle("");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const handleClickItem = async (item: InboxItem) => {
@@ -66,6 +101,42 @@ const TaskList = () => {
     setShowDelete(false);
   };
 
+  let content;
+
+  if (isLoading) {
+    content = (
+      <>
+        <Text>Loading...</Text>
+        <Spinner />
+      </>
+    );
+  } else if (isSuccess) {
+    if (isFetching) {
+      content = (
+        <>
+          <Text>Loading...</Text>
+          <Spinner />
+        </>
+      );
+    } else {
+      content = (
+        <List spacing={0} rounded="lg" overflow="hidden" bg="blue.800" w="full">
+          {items.map((item, idx) => (
+            <InboxRow
+              key={idx}
+              onClick={handleClickItem}
+              onCheck={handleCheckItem}
+              onDelete={handleConfirmDelete}
+              item={item}
+            />
+          ))}
+        </List>
+      );
+    }
+  } else if (isError) {
+    content = <Text>{error.toString()}</Text>;
+  }
+
   return (
     <>
       <Flex gap={3} direction="column" maxW="4xl" w="full" alignItems="center">
@@ -80,19 +151,7 @@ const TaskList = () => {
             Add inbox item
           </Button>
         </Flex>
-        <List spacing={0} rounded="lg" overflow="hidden" bg="blue.800" w="full">
-          {items.map((item, idx) => {
-            return (
-              <InboxRow
-                key={idx}
-                onClick={handleClickItem}
-                onCheck={handleCheckItem}
-                onDelete={handleConfirmDelete}
-                item={item}
-              />
-            );
-          })}
-        </List>
+        {content}
       </Flex>
       <TaskDeleteModal
         isOpen={showDelete}
@@ -123,11 +182,6 @@ const InboxRow = ({
   onCheck: (item: InboxItem) => Promise<void>;
   onDelete: (item: InboxItem) => Promise<void>;
 }) => {
-  const [checked, setChecked] = useState(item.is_done);
-
-  useEffect(() => {
-    setChecked(item.is_done);
-  }, [item.is_done]);
   return (
     <ListItem>
       <Flex
@@ -140,9 +194,8 @@ const InboxRow = ({
       >
         <Checkbox
           m={3}
-          isChecked={checked}
+          isChecked={item.is_done}
           onChange={() => {
-            setChecked((checked) => !checked);
             onCheck(item);
           }}
         />
