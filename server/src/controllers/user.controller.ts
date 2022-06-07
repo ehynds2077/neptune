@@ -5,6 +5,7 @@ import {
   checkRefreshToken,
   createAccessToken,
   createRefreshToken,
+  refreshAccessToken,
 } from "../utils/tokenUtils";
 import { hashPass } from "../utils/crypto";
 import { configuration } from "../config";
@@ -127,6 +128,29 @@ export const getUser = function (req: any, res: Response, next: NextFunction) {
     res.json({ uid: user.id, name: user.name, email: user.email });
   } else {
     res.status(400).send();
+  }
+};
+
+export const refreshToken = async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { refreshToken } = req.cookies;
+  console.log(refreshToken);
+  console.log(typeof refreshToken);
+  try {
+    if (!refreshToken) {
+      throw new Error("must provide refresh token");
+    }
+    const newToken = await refreshAccessToken(refreshToken);
+
+    res.cookie("accessToken", newToken, cookieOptions);
+
+    res.send();
+  } catch (e) {
+    res.status(400);
+    next(e);
   }
 };
 

@@ -2,30 +2,39 @@ import { Button } from "@chakra-ui/button";
 import { Input } from "@chakra-ui/input";
 import { Flex, Heading, Link, Stack, Text } from "@chakra-ui/layout";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 
-import { useAuth } from "../providers/AuthProvider";
+import { Credentials, useLoginMutation } from "../features/auth/authApi";
+import { selectUser, setUser } from "../features/auth/authSlice";
 
 export const Login = () => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const handleEmailChange = (event: any) => setEmail(event.target.value);
   const handlePasswordChange = (event: any) => setPassword(event.target.value);
 
-  const auth = useAuth();
+  const user = useSelector(selectUser);
+
   const navigate = useNavigate();
 
+  const [apiLogin] = useLoginMutation();
+
   useEffect(() => {
-    if (auth.user) {
+    if (user) {
       navigate("/app", { replace: true });
     }
-  });
+  }, [user, navigate]);
 
   const login = async () => {
-    const res = await auth.login(email, password);
-
-    if (res) {
+    try {
+      const credentials: Credentials = { email, password };
+      const user = await apiLogin(credentials).unwrap();
+      dispatch(setUser(user));
       navigate("/app", { replace: true });
+    } catch (e) {
+      console.log(e);
     }
   };
 

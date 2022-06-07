@@ -1,7 +1,7 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react";
+
 import { InboxItem } from "../features/inbox/InboxItem";
 import { axiosAPI } from "../utils/apiUtils";
-import { useAuth } from "./AuthProvider";
 
 interface InboxContextType {
   items: InboxItem[];
@@ -20,7 +20,6 @@ interface InboxContextType {
 const InboxContext = createContext<InboxContextType>(null!);
 
 export const InboxProvider = ({ children }: { children: ReactNode }) => {
-  const auth = useAuth();
   // const [user, setUser] = useState<any>(null);
   const [items, setItems] = useState<InboxItem[]>([]);
   const [selectedItem, setSelectedItem] = useState<InboxItem | null>(null);

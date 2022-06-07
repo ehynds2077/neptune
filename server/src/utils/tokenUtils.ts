@@ -16,8 +16,17 @@ export const checkRefreshToken = async function (
   return id;
 };
 
+export const refreshAccessToken = async function (
+  token: string
+): Promise<string | undefined> {
+  const id = await checkRefreshToken(token);
+  if (id) {
+    return createAccessToken(id);
+  }
+};
+
 export const createAccessToken = (id: string): string => {
-  const expires = "15m";
+  const expires = "1m";
 
   const token = jwt.sign({ id }, configuration.ACCESS_SECRET, {
     expiresIn: expires,

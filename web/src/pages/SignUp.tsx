@@ -1,12 +1,10 @@
 import { Button } from "@chakra-ui/button";
 import { Input } from "@chakra-ui/input";
-import { Flex, Heading, Stack } from "@chakra-ui/layout";
-import axios from "axios";
+import { Flex, Heading, Link, Stack, Text } from "@chakra-ui/layout";
 import React, { useState } from "react";
-import { Link } from "@chakra-ui/layout";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { Text } from "@chakra-ui/layout";
-import { useAuth } from "../providers/AuthProvider";
+
+import { useLoginMutation, useSignUpMutation } from "../features/auth/authApi";
 
 export const SignUp = () => {
   const [name, setName] = useState("");
@@ -17,28 +15,18 @@ export const SignUp = () => {
   const handleEmailChange = (event: any) => setEmail(event.target.value);
   const handlePasswordChange = (event: any) => setPassword(event.target.value);
 
-  const auth = useAuth();
   const navigate = useNavigate();
 
-  // const handleLogin = () => {
-  //   console.log("helo9hehellehlllhell");
-  //   axios
-  //     .post("http://localhost:4000/register", {
-  //       name,
-  //       email,
-  //       password,
-  //     })
-  //     .then((res) => {
-  //       console.log(res);
-  //     });
-  // };
+  const [apiSignUp] = useSignUpMutation();
+  const [apiLogin] = useLoginMutation();
 
   const register = async () => {
     try {
-      const res = await auth.register(name, email, password);
-      if (res) {
-        navigate("/app", { replace: true });
-      }
+      const loginCreds = { email, password };
+      const signUpCreds = { name, ...loginCreds };
+      await apiSignUp(signUpCreds).unwrap();
+      await apiLogin(loginCreds).unwrap();
+      navigate("/app", { replace: true });
     } catch (e) {
       console.log(e);
     }

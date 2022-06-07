@@ -4,6 +4,7 @@ import {
   getUser,
   login,
   logout,
+  refreshToken,
   register,
 } from "../controllers/user.controller";
 import { protectRoute } from "../middleware/protectRoute";
@@ -18,6 +19,7 @@ router.get("", (req, res) => {
 router.post("/register", register);
 router.post("/login", login);
 router.post("/logout", logout);
+router.get("/refreshToken", refreshToken);
 router.get("/user", protectRoute, getUser);
 
-router.use("/api", protectRoute, apiRouter);
+router.use("/", protectRoute, apiRouter);

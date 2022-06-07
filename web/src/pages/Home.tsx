@@ -10,29 +10,30 @@ import {
 import { useEffect, useState } from "react";
 import React from "react";
 import { IoMdTrash } from "react-icons/io";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
 import { TaskDeleteModal } from "../components/TaskDeleteModal";
 import { TaskEditModal } from "../components/TaskEditModal";
-import { InboxItem } from "../features/inbox/InboxItem";
-import { useAuth } from "../providers/AuthProvider";
-import { InboxProvider, useInbox } from "../providers/InboxProvider";
-import { axiosAPI } from "../utils/apiUtils";
+import { selectUser } from "../features/auth/authSlice";
 import {
   useAddInboxItemMutation,
   useGetInboxItemsQuery,
   useUpdateInboxItemMutation,
 } from "../features/inbox/inboxApi";
+import { InboxItem } from "../features/inbox/InboxItem";
+import { InboxProvider, useInbox } from "../providers/InboxProvider";
 
 export const Home = () => {
-  const auth = useAuth();
   const navigate = useNavigate();
+  const user = useSelector(selectUser);
 
   useEffect(() => {
-    if (!auth.user) {
+    if (!user) {
+      console.log("ooooops");
       navigate("/login", { replace: true });
     }
-  }, [auth.user, navigate]);
+  }, [user, navigate]);
 
   return (
     <InboxProvider>
@@ -49,23 +50,23 @@ const TaskList = () => {
     isError,
     error,
     isSuccess,
+    refetch,
   } = useGetInboxItemsQuery();
 
   const [addInboxItem, { isLoading: addIsLoading }] = useAddInboxItemMutation();
   const [updateInboxItem] = useUpdateInboxItemMutation();
 
-  const {
-    // items,
-    completeItem,
-    getItems,
-    addItem,
-    deleteItem,
-    setSelectedItem,
-  } = useInbox();
+  const { deleteItem, setSelectedItem } = useInbox();
 
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [newItemTitle, setNewItemTitle] = useState("");
+
+  useEffect(() => {
+    if (isError) {
+      setTimeout(refetch, 100);
+    }
+  });
 
   const handleCheckItem = async (item: InboxItem) => {
     try {
@@ -134,6 +135,7 @@ const TaskList = () => {
       );
     }
   } else if (isError) {
+    console.log(error);
     content = <Text>{error.toString()}</Text>;
   }
 
