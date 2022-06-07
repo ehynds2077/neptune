@@ -1,3 +1,6 @@
+import { Reducer } from "redux";
+import { PersistConfig } from "redux-persist";
+
 import {
   combineReducers,
   configureStore,
@@ -14,12 +17,20 @@ const reducers = combineReducers({
   [emptySplitApi.reducerPath]: emptySplitApi.reducer,
 });
 
-const persistConfig = {
+const rootReducer: Reducer = (state: RootState, action) => {
+  if (action.type === "auth/logoutUser") {
+    storage.removeItem("persist:root");
+    state = {} as RootState;
+  }
+  return reducers(state, action);
+};
+
+const persistConfig: PersistConfig<any> = {
   key: "root",
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, reducers);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
@@ -27,4 +38,4 @@ export const store = configureStore({
     getDefaultMiddleware().concat(emptySplitApi.middleware),
 });
 
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof rootReducer>;

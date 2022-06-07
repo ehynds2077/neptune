@@ -8,8 +8,8 @@ import { PersistGate } from "redux-persist/integration/react";
 import { NavBar } from "./components/NavBar";
 import { RequireAuth } from "./components/RequireAuth";
 import { Home } from "./pages/Home";
-import { Login } from "./pages/Login";
-import { SignUp } from "./pages/SignUp";
+import { Login } from "./features/auth/Login";
+import { SignUp } from "./features/auth/SignUp";
 import { Welcome } from "./pages/Welcome";
 import { store } from "./store";
 
@@ -26,6 +26,8 @@ export const App = () => (
             minH="100vh"
             justifyContent="center"
             alignItems="flex-start"
+            // bg="gray.300"
+            // _dark={{bg: }}
             p={5}
           >
             <Routes>

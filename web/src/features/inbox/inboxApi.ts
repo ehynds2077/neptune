@@ -21,19 +21,16 @@ const inboxApi = emptySplitApi.injectEndpoints({
             ]
           : [{ type: "InboxItem", id: "LIST" }],
       transformResponse: (data) => {
-        console.log(data);
         return (data as any).inbox;
       },
     }),
+
     addInboxItem: builder.mutation<InboxItem, NewInboxItem>({
-      query: (item) => {
-        return {
-          url: "inbox",
-          method: "POST",
-          credentials: "include",
-          body: item,
-        };
-      },
+      query: (item) => ({
+        url: "inbox",
+        method: "POST",
+        body: item,
+      }),
       invalidatesTags: [{ type: "InboxItem", id: "LIST" }],
       async onQueryStarted(item, { dispatch, queryFulfilled }) {
         const postResult = dispatch(
@@ -44,25 +41,21 @@ const inboxApi = emptySplitApi.injectEndpoints({
 
         try {
           await queryFulfilled;
-          console.log("up in here");
         } catch (err) {
-          console.log("ooops");
           postResult.undo();
         }
       },
     }),
+
     updateInboxItem: builder.mutation<
       void,
       Pick<InboxItem, "id"> & Partial<InboxItem>
     >({
-      query: (updatedItem) => {
-        return {
-          url: `inbox/${updatedItem.id}`,
-          method: "PUT",
-          credentials: "include",
-          body: updatedItem,
-        };
-      },
+      query: (updatedItem) => ({
+        url: `inbox/${updatedItem.id}`,
+        method: "PUT",
+        body: updatedItem,
+      }),
 
       async onQueryStarted(
         { id, ...updatedItem },
@@ -79,12 +72,20 @@ const inboxApi = emptySplitApi.injectEndpoints({
 
         try {
           await queryFulfilled;
-          console.log("up in here");
         } catch (err) {
-          console.log("ooops");
           putResult.undo();
         }
       },
+    }),
+
+    deleteInboxItem: builder.mutation<void, string>({
+      query: (itemId) => {
+        return {
+          url: `inbox/${itemId}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: [{ type: "InboxItem", id: "LIST" }],
     }),
   }),
   overrideExisting: false,
@@ -94,4 +95,5 @@ export const {
   useGetInboxItemsQuery,
   useAddInboxItemMutation,
   useUpdateInboxItemMutation,
+  useDeleteInboxItemMutation,
 } = inboxApi;

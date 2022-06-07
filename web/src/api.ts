@@ -7,7 +7,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { setUser, logoutUser } from "./features/auth/authSlice";
 
-const baseQuery = fetchBaseQuery({
+export const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:4000/",
   credentials: "include",
 });
@@ -17,8 +17,11 @@ const baseQueryReauth: BaseQueryFn<
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
+  const argObj = args as any;
   let result = await baseQuery(args, api, extraOptions);
-  if (result.error && (result.error as any).originalStatus === 401) {
+  if (argObj.url === "login" || argObj.url === "register") {
+    return result;
+  } else if (result.error && (result.error as any).originalStatus === 401) {
     const refreshResult = await baseQuery("/refreshToken", api, extraOptions);
     if (!refreshResult.error) {
       result = await baseQuery(args, api, extraOptions);

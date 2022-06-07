@@ -11,5 +11,6 @@ export const apiRouter = express.Router();
 // Inbox routes
 apiRouter.post("/inbox", addItem);
 apiRouter.get("/inbox", getItems);
+
 apiRouter.put("/inbox/:id", updateItem);
 apiRouter.delete("/inbox/:id", deleteItem);

@@ -1,12 +1,5 @@
 import { Divider, Flex, Heading, List, ListItem } from "@chakra-ui/layout";
-import {
-  Button,
-  Checkbox,
-  IconButton,
-  Input,
-  Spinner,
-  Text,
-} from "@chakra-ui/react";
+import { Button, Checkbox, IconButton, Spinner, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import React from "react";
 import { IoMdTrash } from "react-icons/io";
@@ -16,8 +9,9 @@ import { useNavigate } from "react-router";
 import { TaskDeleteModal } from "../components/TaskDeleteModal";
 import { TaskEditModal } from "../components/TaskEditModal";
 import { selectUser } from "../features/auth/authSlice";
+import { AddInboxItemForm } from "../features/inbox/AddInboxItemForm";
 import {
-  useAddInboxItemMutation,
+  useDeleteInboxItemMutation,
   useGetInboxItemsQuery,
   useUpdateInboxItemMutation,
 } from "../features/inbox/inboxApi";
@@ -53,35 +47,23 @@ const TaskList = () => {
     refetch,
   } = useGetInboxItemsQuery();
 
-  const [addInboxItem, { isLoading: addIsLoading }] = useAddInboxItemMutation();
   const [updateInboxItem] = useUpdateInboxItemMutation();
+  const [deleteInboxItem] = useDeleteInboxItemMutation();
 
-  const { deleteItem, setSelectedItem } = useInbox();
+  const { deleteItem, setSelectedItem, selectedItem } = useInbox();
 
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
-  const [newItemTitle, setNewItemTitle] = useState("");
 
   useEffect(() => {
     if (isError) {
-      setTimeout(refetch, 100);
+      setTimeout(refetch, 1000);
     }
   });
 
   const handleCheckItem = async (item: InboxItem) => {
     try {
       await updateInboxItem({ id: item.id, is_done: !item.is_done }).unwrap();
-    } catch (e) {
-      console.log(e);
-    }
-    // await completeItem(item.id, !item.is_done);
-    // getItems();
-  };
-
-  const handleAddInboxItem = async () => {
-    try {
-      await addInboxItem({ title: newItemTitle }).unwrap();
-      setNewItemTitle("");
     } catch (e) {
       console.log(e);
     }
@@ -98,7 +80,13 @@ const TaskList = () => {
   };
 
   const handleDeleteItem = async () => {
-    await deleteItem();
+    try {
+      if (selectedItem && selectedItem.id) {
+        await deleteInboxItem(selectedItem.id).unwrap();
+      }
+    } catch (e) {
+      console.log(e);
+    }
     setShowDelete(false);
   };
 
@@ -121,7 +109,14 @@ const TaskList = () => {
       );
     } else {
       content = (
-        <List spacing={0} rounded="lg" overflow="hidden" bg="blue.800" w="full">
+        <List
+          spacing={0}
+          rounded="lg"
+          overflow="hidden"
+          bg="gray.100"
+          _dark={{ bg: "blue.800" }}
+          w="full"
+        >
           {items.map((item, idx) => (
             <InboxRow
               key={idx}
@@ -143,16 +138,7 @@ const TaskList = () => {
     <>
       <Flex gap={3} direction="column" maxW="4xl" w="full" alignItems="center">
         <Heading>Inbox</Heading>
-        <Flex direction="row" w="full" gap={2}>
-          <Input
-            value={newItemTitle}
-            placeholder="New Item"
-            onChange={(event: any) => setNewItemTitle(event.target.value)}
-          />
-          <Button px={10} onClick={handleAddInboxItem}>
-            Add inbox item
-          </Button>
-        </Flex>
+        <AddInboxItemForm />
         {content}
       </Flex>
       <TaskDeleteModal
@@ -190,6 +176,7 @@ const InboxRow = ({
         justifyContent="flex-start"
         rounded="none"
         variant="ghost"
+        _hover={{ _light: { bg: "gray.400" } }}
         as={Button}
         w="full"
         p={0}
@@ -197,6 +184,7 @@ const InboxRow = ({
         <Checkbox
           m={3}
           isChecked={item.is_done}
+          _light={{ borderColor: "gray.600" }}
           onChange={() => {
             onCheck(item);
           }}
