@@ -1,2 +1,3 @@
-# neptune
-A free and open source GTD system
+# Neptune
+
+A free and open source task manager based on the GTD methodology
