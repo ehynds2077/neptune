@@ -1,5 +1,6 @@
 import { Knex, knex } from "knex";
 import { InboxItem, ListItem } from "./models/Inbox";
+import { List } from "./models/List";
 import { RefreshToken } from "./models/RefreshToken";
 import { User } from "./models/User";
 
@@ -22,9 +23,11 @@ declare module "knex/types/tables" {
       // Insert
       Pick<RefreshToken, "token"> &
         Pick<RefreshToken, "expires"> &
-        Pick<RefreshToken, "expires"> &
         Pick<RefreshToken, "user_id">
     >;
+
+    list: List;
+    list_composite: Knex.CompositeTableType<List, Pick<List, "title">>;
 
     list_item: ListItem;
     list_item_composite: Knex.CompositeTableType<

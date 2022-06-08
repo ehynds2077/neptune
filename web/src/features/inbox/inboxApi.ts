@@ -11,7 +11,6 @@ const inboxApi = emptySplitApi.injectEndpoints({
       query: () => ({
         url: "/inbox",
         method: "GET",
-        credentials: "include",
       }),
       providesTags: (result) =>
         result

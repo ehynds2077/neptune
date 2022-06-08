@@ -35,6 +35,6 @@ const baseQueryReauth: BaseQueryFn<
 
 export const emptySplitApi = createApi({
   baseQuery: baseQueryReauth,
-  tagTypes: ["InboxItem"],
+  tagTypes: ["InboxItem", "List"],
   endpoints: () => ({}),
 });

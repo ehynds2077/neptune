@@ -17,7 +17,7 @@ export const AccountMenu = () => {
         as={IconButton}
         aria-label="Account"
         icon={<Icon as={MdAccountCircle} />}
-        variant="outline"
+        variant="ghost"
       />
       <MenuList>
         {user ? <UserMenuItems /> : <PublicMenuItems />}

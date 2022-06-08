@@ -1,31 +1,26 @@
-import { Divider, Flex, Heading, List, ListItem } from "@chakra-ui/layout";
-import { Button, Checkbox, IconButton, Spinner, Text } from "@chakra-ui/react";
+import { Flex, Heading, List } from "@chakra-ui/layout";
+import { Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import React from "react";
-import { IoMdTrash } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { Link as RouterLink } from "react-router-dom";
+import { Input } from "@chakra-ui/react";
 
-import { TaskDeleteModal } from "../components/TaskDeleteModal";
-import { TaskEditModal } from "../components/TaskEditModal";
 import { selectUser } from "../features/auth/authSlice";
-import { AddInboxItemForm } from "../features/inbox/AddInboxItemForm";
 import {
-  useDeleteInboxItemMutation,
-  useGetInboxItemsQuery,
-  useUpdateInboxItemMutation,
-} from "../features/inbox/inboxApi";
-import { InboxItem } from "../features/inbox/InboxItem";
-import { InboxProvider, useInbox } from "../providers/InboxProvider";
+  useAddListMutation,
+  useGetListsQuery,
+} from "../features/lists/listApi";
 
 export const Home = () => {
   const navigate = useNavigate();
   const user = useSelector(selectUser);
 
+  const { data: lists = [] } = useGetListsQuery();
+
   useEffect(() => {
     if (!user) {
-      console.log("ooooops");
       navigate("/login", { replace: true });
     }
   }, [user, navigate]);
@@ -33,11 +28,52 @@ export const Home = () => {
   return (
     <Flex w="full" maxW="xl" alignItems="center" gap={3} direction="column">
       <Heading alignSelf="start">Lists</Heading>
-      <List w="full" maxW="xl">
-        <Button w="full" as={RouterLink} to="/inbox">
+      <AddListForm />
+      <List w="full" maxW="xl" spacing={3}>
+        <Button
+          mb={4}
+          justifyContent="start"
+          w="full"
+          as={RouterLink}
+          to="/inbox"
+        >
           Inbox
         </Button>
+        {lists.map((list) => {
+          return (
+            <Button justifyContent="start" w="full">
+              {list.title}
+            </Button>
+          );
+        })}
       </List>
+    </Flex>
+  );
+};
+
+export const AddListForm = () => {
+  const [newListTitle, setNewListTitle] = useState("");
+  const [addList] = useAddListMutation();
+
+  const handleAddList = async () => {
+    try {
+      await addList({ title: newListTitle }).unwrap();
+      setNewListTitle("");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  return (
+    <Flex direction="row" w="full" gap={2}>
+      <Input
+        value={newListTitle}
+        placeholder="New List"
+        onChange={(event: any) => setNewListTitle(event.target.value)}
+      />
+      <Button px={10} onClick={handleAddList}>
+        Add list
+      </Button>
     </Flex>
   );
 };
