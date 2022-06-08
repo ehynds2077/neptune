@@ -1,10 +1,6 @@
 import express from "express";
-import {
-  addItem,
-  deleteItem,
-  getItems,
-  updateItem,
-} from "../controllers/inbox.controller";
+import { addItem, getItems } from "../controllers/inbox.controller";
+import { deleteItem, updateItem } from "../controllers/item.controller";
 
 export const apiRouter = express.Router();
 
@@ -12,5 +8,6 @@ export const apiRouter = express.Router();
 apiRouter.post("/inbox", addItem);
 apiRouter.get("/inbox", getItems);
 
-apiRouter.put("/inbox/:id", updateItem);
-apiRouter.delete("/inbox/:id", deleteItem);
+// List item routes
+apiRouter.put("/item/:id", updateItem);
+apiRouter.delete("/item/:id", deleteItem);

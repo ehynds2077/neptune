@@ -12,14 +12,6 @@ const hashToken = (token: string) => {
   return crypto.createHash("sha256").update(token).digest("base64");
 };
 
-export const createTokenSchema = async function (schema: Knex.SchemaBuilder) {
-  await schema.createTable("refresh_token", (table) => {
-    table.string("token_hash").notNullable().primary().unique();
-    table.datetime("expires", { useTz: false }).notNullable();
-    table.uuid("user_id").notNullable().references("id").inTable("user");
-  });
-};
-
 export const getUserTokens = async function (uid: string) {
   deleteExpiredTokens();
   return await db

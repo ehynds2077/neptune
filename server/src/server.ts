@@ -1,7 +1,7 @@
 import { app } from "./app";
-import { testDb } from "./services/db";
+import db from "./services/db";
 
-testDb();
+// testDb();
 const port = 4000;
 
 app.listen(port, () => {

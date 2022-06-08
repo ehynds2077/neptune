@@ -1,5 +1,5 @@
 import { Knex, knex } from "knex";
-import { InboxItem } from "./models/InboxItem";
+import { InboxItem, ListItem } from "./models/Inbox";
 import { RefreshToken } from "./models/RefreshToken";
 import { User } from "./models/User";
 
@@ -26,21 +26,21 @@ declare module "knex/types/tables" {
         Pick<RefreshToken, "user_id">
     >;
 
-    inbox_item: InboxItem;
-    inbox_item_composite: Knex.CompositeTableType<
+    list_item: ListItem;
+    list_item_composite: Knex.CompositeTableType<
       // Base
-      InboxItem,
+      ListItem,
       // Insert
-      Pick<InboxItem, "title"> &
-        Pick<InboxItem, "user_id"> &
-        Pick<InboxItem, "created_at"> &
-        Pick<InboxItem, "id"> &
-        Partial<Pick<InboxItem, "notes">>,
+      Pick<ListItem, "title"> &
+        Pick<ListItem, "user_id"> &
+        Pick<ListItem, "created_at"> &
+        Pick<ListItem, "id"> &
+        Partial<Pick<ListItem, "notes">>,
       // Update
       Partial<
-        Omit<InboxItem, "user_id"> &
-          Omit<InboxItem, "id"> &
-          Omit<InboxItem, "created_at">
+        Omit<ListItem, "user_id"> &
+          Omit<ListItem, "id"> &
+          Omit<ListItem, "created_at">
       >
     >;
   }

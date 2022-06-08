@@ -8,29 +8,14 @@ export interface User {
   id: string;
 }
 
-export const USER_TABLE = "user";
-
-export const createUserSchema = async function (schema: Knex.SchemaBuilder) {
-  await schema.createTable(USER_TABLE, (table) => {
-    table.string("name").notNullable();
-    table.string("password_hash").notNullable();
-    table.string("email").unique().notNullable();
-    table
-      .uuid("id")
-      .primary()
-      .unique()
-      .defaultTo(db.raw("(gen_random_uuid())"));
-  });
-};
-
 export const testInsertUser = async function () {
-  await db.table(USER_TABLE).insert({
+  await db.table("user").insert({
     name: "a",
     email: "yo@yo.com",
     password_hash: "alskdjfklsdj",
     id: "2d5fba14-a850-45d4-a3ba-700b9363f6f9",
   });
-  await db.table(USER_TABLE).insert({
+  await db.table("user").insert({
     name: "a",
     email: "yoasdf@yo.com",
     password_hash: "alssdfasdfkdjfklsdj",

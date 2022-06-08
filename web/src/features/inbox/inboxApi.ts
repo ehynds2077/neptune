@@ -52,7 +52,7 @@ const inboxApi = emptySplitApi.injectEndpoints({
       Pick<InboxItem, "id"> & Partial<InboxItem>
     >({
       query: (updatedItem) => ({
-        url: `inbox/${updatedItem.id}`,
+        url: `item/${updatedItem.id}`,
         method: "PUT",
         body: updatedItem,
       }),
@@ -81,7 +81,7 @@ const inboxApi = emptySplitApi.injectEndpoints({
     deleteInboxItem: builder.mutation<void, string>({
       query: (itemId) => {
         return {
-          url: `inbox/${itemId}`,
+          url: `item/${itemId}`,
           method: "DELETE",
         };
       },

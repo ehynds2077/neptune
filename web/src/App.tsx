@@ -7,9 +7,10 @@ import { PersistGate } from "redux-persist/integration/react";
 
 import { NavBar } from "./components/NavBar";
 import { RequireAuth } from "./components/RequireAuth";
-import { Home } from "./pages/Home";
 import { Login } from "./features/auth/Login";
 import { SignUp } from "./features/auth/SignUp";
+import { Inbox } from "./features/inbox/Inbox";
+import { Home } from "./pages/Home";
 import { Welcome } from "./pages/Welcome";
 import { store } from "./store";
 
@@ -37,6 +38,14 @@ export const App = () => (
                 element={
                   <RequireAuth>
                     <Home />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/inbox"
+                element={
+                  <RequireAuth>
+                    <Inbox />
                   </RequireAuth>
                 }
               />
