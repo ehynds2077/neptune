@@ -30,7 +30,8 @@ export const getUserList = async function (uid: string, listId: string) {
       "list_item.id",
       "list_item.title",
       "list_item.is_done",
-      "list_item.notes"
+      "list_item.notes",
+      "list_item.list_id as listId"
     )
     .table("list")
     .where("list.user_id", uid)

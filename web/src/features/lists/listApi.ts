@@ -32,6 +32,12 @@ export interface DeleteItemRequest {
   id: string;
 }
 
+export interface UpdateItemListRequest {
+  listId: string;
+  newListId: string;
+  id: string;
+}
+
 const listApi = emptySplitApi.injectEndpoints({
   endpoints: (builder) => ({
     getLists: builder.query<List[], void>({
@@ -75,6 +81,36 @@ const listApi = emptySplitApi.injectEndpoints({
         method: "POST",
         body: item,
       }),
+      invalidatesTags: ["List"],
+    }),
+
+    updateListItemList: builder.mutation<ListItemType, UpdateItemListRequest>({
+      query: (request) => ({
+        url: `/item/${request.id}`,
+        method: "PUT",
+        body: request,
+      }),
+
+      async onQueryStarted(
+        { id, listId, newListId },
+        { dispatch, queryFulfilled }
+      ) {
+        const removeFromCurrent = dispatch(
+          listApi.util.updateQueryData("getList", { id: listId }, (draft) => {
+            const index = draft.items.findIndex((item) => item.id === id);
+            if (index > -1) {
+              draft.items.splice(index, 1);
+            }
+          })
+        );
+
+        try {
+          await queryFulfilled;
+        } catch (err) {
+          removeFromCurrent.undo();
+        }
+      },
+
       invalidatesTags: ["List"],
     }),
 
@@ -139,6 +175,7 @@ export const {
   useGetListsQuery,
   useAddListMutation,
   useUpdateListItemMutation,
+  useUpdateListItemListMutation,
   useDeleteListItemMutation,
   useGetListQuery,
   useAddListItemMutation,

@@ -10,11 +10,16 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Select,
 } from "@chakra-ui/react";
 import React from "react";
 import { useEffect, useState } from "react";
 import { useUpdateInboxItemMutation } from "../features/inbox/inboxApi";
-import { useUpdateListItemMutation } from "../features/lists/listApi";
+import {
+  useGetListsQuery,
+  useUpdateListItemListMutation,
+  useUpdateListItemMutation,
+} from "../features/lists/listApi";
 
 import { useInbox, useList } from "../providers/InboxProvider";
 
@@ -85,13 +90,31 @@ export const ItemEditModal = ({
   onClose: () => void;
 }) => {
   const [title, setTitle] = useState("");
-  const { selectedItem, listId } = useList();
+  const { selectedItem } = useList();
   const [updateListItem] = useUpdateListItemMutation();
+  const [updateList] = useUpdateListItemListMutation();
+  const [selectedListId, setSelectedListId] = useState("");
+
+  const { data: lists = [] } = useGetListsQuery();
 
   const handleEditItem = async () => {
     try {
-      if (selectedItem && listId) {
-        await updateListItem({ listId, id: selectedItem.id, title });
+      if (selectedItem && selectedItem.listId) {
+        if (title !== selectedItem.title) {
+          await updateListItem({
+            listId: selectedItem.listId,
+            id: selectedItem.id,
+            title,
+          });
+        }
+
+        if (selectedListId !== selectedItem.listId) {
+          await updateList({
+            listId: selectedItem.listId,
+            newListId: selectedListId,
+            id: selectedItem.id,
+          });
+        }
       }
       onClose();
     } catch (e) {
@@ -104,6 +127,13 @@ export const ItemEditModal = ({
       setTitle(selectedItem.title);
     }
   }, [selectedItem]);
+
+  useEffect(() => {
+    if (selectedItem?.listId) {
+      setSelectedListId(selectedItem.listId);
+    }
+  }, [selectedItem?.listId]);
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -121,6 +151,18 @@ export const ItemEditModal = ({
                 }}
                 placeholder="Item title"
               />
+              <FormLabel>List</FormLabel>
+              <Select
+                value={selectedListId}
+                onChange={(event: any) => {
+                  setSelectedListId(event.target.value);
+                }}
+              >
+                <option value="">Inbox</option>
+                {lists.map((list) => {
+                  return <option value={list.id}>{list.title}</option>;
+                })}
+              </Select>
             </FormControl>
           </ModalBody>
 

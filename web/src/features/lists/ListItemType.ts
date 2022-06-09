@@ -5,5 +5,5 @@ export interface ListItemType {
   title: string;
   is_done: boolean;
   notes?: string;
-  list?: ListType;
+  listId: string;
 }

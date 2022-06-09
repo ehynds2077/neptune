@@ -31,12 +31,18 @@ export const updateListItem = async function (
   uid: string,
   title: string | undefined,
   isDone: boolean | undefined,
-  notes: string | undefined
+  notes: string | undefined,
+  newListId: string | undefined
 ) {
   return await db("list_item")
     .where("user_id", uid)
     .andWhere("id", id)
-    .update({ title, is_done: isDone, notes });
+    .update({
+      title,
+      is_done: isDone,
+      notes,
+      list_id: newListId === "" ? null : newListId,
+    });
 };
 
 export const deleteListItem = async function (id: string, uid: string) {

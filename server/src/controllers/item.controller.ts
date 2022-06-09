@@ -42,19 +42,31 @@ export const updateItem = async function (
   next: NextFunction
 ) {
   const { id } = req.params;
-  const { title, is_done, notes } = req.body;
+  const { title, is_done, notes, newListId } = req.body;
   try {
     if (!id) {
       throw new Error("Must provide id");
     }
 
-    if (title === undefined && is_done === undefined && notes === undefined) {
+    if (
+      title === undefined &&
+      is_done === undefined &&
+      notes === undefined &&
+      newListId === undefined
+    ) {
       throw new Error("Must provide paramater to update");
     }
 
     const uid = (req as any).user.id;
 
-    const result = await updateListItem(id, uid, title, is_done, notes);
+    const result = await updateListItem(
+      id,
+      uid,
+      title,
+      is_done,
+      notes,
+      newListId
+    );
     if (!result) {
       throw new Error("Could not update item");
     }
