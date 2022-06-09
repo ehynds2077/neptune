@@ -56,6 +56,7 @@ const listApi = emptySplitApi.injectEndpoints({
         url: `/list/${listReq.id}`,
         method: "GET",
       }),
+      // providesTags: ["List"],
       providesTags: (result) =>
         result
           ? [
@@ -74,7 +75,7 @@ const listApi = emptySplitApi.injectEndpoints({
         method: "POST",
         body: item,
       }),
-      invalidatesTags: ["ListItem"],
+      invalidatesTags: ["List"],
     }),
 
     updateListItem: builder.mutation<

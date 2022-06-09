@@ -41,14 +41,19 @@ export const useInbox = () => {
 interface ListContextType {
   selectedItem: ListItemType | null;
   setSelectedItem: any;
+  listId: string | null | undefined;
+  setListId: any;
 }
 
 const ListContext = createContext<ListContextType>(null!);
 
 export const ListProvider = ({ children }: { children: ReactNode }) => {
   const [selectedItem, setSelectedItem] = useState<ListItemType | null>(null);
+  const [listId, setListId] = useState<string | null | undefined>(undefined);
 
   const value = {
+    listId,
+    setListId,
     selectedItem,
     setSelectedItem,
   };

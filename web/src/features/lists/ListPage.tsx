@@ -16,7 +16,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { ListItemType } from "./ListItemType";
 import { IoMdTrash } from "react-icons/io";
-import { TaskEditModal } from "../../components/TaskEditModal";
+import { ItemEditModal, TaskEditModal } from "../../components/TaskEditModal";
 import {
   ItemDeleteModal,
   TaskDeleteModal,
@@ -54,7 +54,7 @@ const ItemList = ({ listId }: { listId: string }) => {
   const [updateListItem] = useUpdateListItemMutation();
   const [deleteListItem] = useDeleteListItemMutation();
 
-  const { setSelectedItem, selectedItem } = useList();
+  const { setSelectedItem, selectedItem, setListId } = useList();
 
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
@@ -64,6 +64,10 @@ const ItemList = ({ listId }: { listId: string }) => {
       setTimeout(refetch, 1000);
     }
   }, [isError, refetch, list, listId]);
+
+  useEffect(() => {
+    setListId(listId);
+  }, [listId, setListId]);
 
   const handleClickItem = async (item: ListItemType) => {
     setShowEdit(true);
@@ -156,13 +160,13 @@ const ItemList = ({ listId }: { listId: string }) => {
           setShowDelete(false);
         }}
       />
-      {/* <TaskEditModal
+      <ItemEditModal
         isOpen={showEdit}
         onClose={() => {
           setSelectedItem(null);
           setShowEdit(false);
         }}
-      /> */}
+      />
     </>
   );
 };
