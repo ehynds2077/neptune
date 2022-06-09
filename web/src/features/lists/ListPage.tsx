@@ -17,9 +17,17 @@ import { useParams } from "react-router-dom";
 import { ListItemType } from "./ListItemType";
 import { IoMdTrash } from "react-icons/io";
 import { TaskEditModal } from "../../components/TaskEditModal";
-import { TaskDeleteModal } from "../../components/TaskDeleteModal";
+import {
+  ItemDeleteModal,
+  TaskDeleteModal,
+} from "../../components/TaskDeleteModal";
 import { ListProvider, useList } from "../../providers/InboxProvider";
-import { useAddListItemMutation, useGetListQuery } from "./listApi";
+import {
+  useAddListItemMutation,
+  useDeleteListItemMutation,
+  useGetListQuery,
+  useUpdateListItemMutation,
+} from "./listApi";
 
 export const ListPage = () => {
   const params = useParams();
@@ -43,6 +51,8 @@ const ItemList = ({ listId }: { listId: string }) => {
 
   // const [updateInboxItem] = useUpdateInboxItemMutation();
   // const [deleteInboxItem] = useDeleteInboxItemMutation();
+  const [updateListItem] = useUpdateListItemMutation();
+  const [deleteListItem] = useDeleteListItemMutation();
 
   const { setSelectedItem, selectedItem } = useList();
 
@@ -65,22 +75,26 @@ const ItemList = ({ listId }: { listId: string }) => {
     setSelectedItem(item);
   };
   const handleCheckItem = async (item: ListItemType) => {
-    // try {
-    //   await updateInboxItem({ id: item.id, is_done: !item.is_done }).unwrap();
-    // } catch (e) {
-    //   console.log(e);
-    // }
+    try {
+      await updateListItem({
+        listId: listId,
+        id: item.id,
+        is_done: !item.is_done,
+      }).unwrap();
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const handleDeleteItem = async () => {
-    // try {
-    //   if (selectedItem && selectedItem.id) {
-    //     await deleteInboxItem(selectedItem.id).unwrap();
-    //   }
-    // } catch (e) {
-    //   console.log(e);
-    // }
-    // setShowDelete(false);
+    try {
+      if (selectedItem && selectedItem.id) {
+        await deleteListItem({ listId, id: selectedItem.id }).unwrap();
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    setShowDelete(false);
   };
 
   let content;
@@ -135,14 +149,14 @@ const ItemList = ({ listId }: { listId: string }) => {
         <AddListItemForm />
         {content}
       </Flex>
-      {/* <TaskDeleteModal
+      <ItemDeleteModal
         isOpen={showDelete}
         onDelete={handleDeleteItem}
         onClose={() => {
           setShowDelete(false);
         }}
       />
-      <TaskEditModal
+      {/* <TaskEditModal
         isOpen={showEdit}
         onClose={() => {
           setSelectedItem(null);
@@ -175,11 +189,11 @@ export const AddListItemForm = () => {
     <Flex direction="row" w="full" gap={2}>
       <Input
         value={newItemTitle}
-        placeholder="New Item"
+        placeholder="Item title..."
         onChange={(event: any) => setNewItemTitle(event.target.value)}
       />
       <Button px={10} onClick={handleAddListItem}>
-        Add inbox item
+        Add new item
       </Button>
     </Flex>
   );

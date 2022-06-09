@@ -35,7 +35,8 @@ export const getUserList = async function (uid: string, listId: string) {
     .table("list")
     .where("list.user_id", uid)
     .join("list_item", "list_item.list_id", "=", "list.id")
-    .where("list.id", listId);
+    .where("list.id", listId)
+    .orderBy("list_item.created_at");
 
   return { ...list, items };
 };
