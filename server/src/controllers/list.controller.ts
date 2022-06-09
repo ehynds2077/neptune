@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { createList, getUserLists } from "../models/List";
+import { createList, getUserList, getUserLists } from "../models/List";
 
 export const getLists = async function (
   req: Request,
@@ -11,6 +11,30 @@ export const getLists = async function (
   const lists = await getUserLists(id);
   console.log(lists);
   res.json(lists);
+};
+
+export const getList = async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { listId } = req.params;
+  console.log(listId);
+
+  try {
+    if (!listId) {
+      throw new Error("Must provide list id");
+    }
+
+    const uid = (req as any).user.id;
+
+    const result = await getUserList(uid, listId);
+    console.log(result);
+    res.json(result);
+  } catch (e) {
+    res.status(400);
+    next(e);
+  }
 };
 
 export const addList = async function (

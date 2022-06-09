@@ -1,6 +1,40 @@
 import { NextFunction, Request, Response } from "express";
 
-import { deleteListItem, updateListItem } from "../models/ListItem";
+import {
+  createListItem,
+  deleteListItem,
+  updateListItem,
+} from "../models/ListItem";
+
+export const addListItem = async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { listId } = req.params;
+  const { title } = req.body;
+
+  try {
+    if (!listId) {
+      throw new Error("Must provide list id");
+    }
+
+    if (!title) {
+      throw new Error("Must provide item title");
+    }
+
+    const uid = (req as any).user.id;
+
+    const result = await createListItem(uid, listId, title, false, undefined);
+    console.log("listitem create results");
+    console.log(result);
+
+    res.json(result);
+  } catch (e) {
+    res.status(400);
+    next(e);
+  }
+};
 
 export const updateItem = async function (
   req: Request,

@@ -40,8 +40,8 @@ export const SignUp = () => {
     <Flex direction="column" alignItems="center">
       <Heading>Sign Up</Heading>
       <Stack
-        color="white"
-        bg="blue.900"
+        _dark={{ bg: "blue.900" }}
+        bg="gray.100"
         p={5}
         rounded="xl"
         m={5}
@@ -49,27 +49,41 @@ export const SignUp = () => {
         w="full"
       >
         <Input
-          color="white"
+          variant="outline"
+          borderColor="gray.400"
+          borderWidth={2}
           placeholder="Name"
           value={name}
           onChange={handleNameChange}
         />
         <Input
-          color="white"
           placeholder="Email"
+          variant="outline"
+          borderColor="gray.400"
+          borderWidth={2}
           value={email}
           onChange={handleEmailChange}
         />
         <Input
           type="password"
+          variant="outline"
+          borderColor="gray.400"
+          borderWidth={2}
           placeholder="Password"
           value={password}
           onChange={handlePasswordChange}
         />
-        <Button onClick={handleLogin}>Sign Up</Button>
+        <Button colorScheme="blue" onClick={handleLogin}>
+          Sign Up
+        </Button>
         <Text p={2} color="gray.500">
           Already have an account?{" "}
-          <Link color="white" to="/login" as={RouterLink}>
+          <Link
+            _dark={{ color: "white" }}
+            color="blue.700"
+            to="/login"
+            as={RouterLink}
+          >
             Login here
           </Link>
         </Text>

@@ -41,7 +41,12 @@ export const Home = () => {
         </Button>
         {lists.map((list) => {
           return (
-            <Button justifyContent="start" w="full">
+            <Button
+              as={RouterLink}
+              to={`/list/${list.id}`}
+              justifyContent="start"
+              w="full"
+            >
               {list.title}
             </Button>
           );

@@ -68,8 +68,8 @@ export const Login = () => {
     <Flex direction="column" alignItems="center">
       <Heading>Login</Heading>
       <Stack
-        color="white"
-        bg="blue.900"
+        _dark={{ bg: "blue.900" }}
+        bg="gray.100"
         p={5}
         rounded="xl"
         m={5}
@@ -78,21 +78,33 @@ export const Login = () => {
       >
         {isError && loginAlert}
         <Input
-          color="white"
           placeholder="Email"
+          variant="outline"
+          borderColor="gray.400"
+          borderWidth={2}
           value={email}
           onChange={handleEmailChange}
         />
         <Input
+          variant="outline"
+          borderColor="gray.400"
+          borderWidth={2}
           type="password"
           placeholder="Password"
           value={password}
           onChange={handlePasswordChange}
         />
-        <Button onClick={handleLogin}>Login</Button>
+        <Button colorScheme="blue" onClick={handleLogin}>
+          Login
+        </Button>
         <Text p={2} color="gray.500">
           Need an account?{" "}
-          <Link color="white" to="/signup" as={RouterLink}>
+          <Link
+            color="blue.700"
+            _dark={{ color: "white" }}
+            to="/signup"
+            as={RouterLink}
+          >
             Sign up here
           </Link>
         </Text>

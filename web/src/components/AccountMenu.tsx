@@ -14,24 +14,20 @@ export const AccountMenu = () => {
   return (
     <Menu>
       <MenuButton
+        _light={{ _hover: { color: "black" }, _active: { color: "black" } }}
         as={IconButton}
         aria-label="Account"
+        fontSize="xl"
         icon={<Icon as={MdAccountCircle} />}
         variant="ghost"
       />
-      <MenuList>
+      <MenuList _light={{ color: "black" }}>
         {user ? <UserMenuItems /> : <PublicMenuItems />}
         {/* <CommonMenuItems /> */}
       </MenuList>
     </Menu>
   );
 };
-
-// const CommonMenuItems = () => (
-//   <MenuItem>
-//     <ColorModeSwitcher />
-//   </MenuItem>
-// );
 
 const PublicMenuItems = () => {
   return (

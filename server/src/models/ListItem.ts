@@ -10,6 +10,22 @@ export interface ListItem {
   user_id: string;
 }
 
+export const createListItem = async function (
+  uid: string,
+  listId: string,
+  title = "",
+  isDone = false,
+  notes: string | undefined
+) {
+  return await db("list_item").insert({
+    title,
+    is_done: isDone,
+    notes,
+    user_id: uid,
+    list_id: listId,
+  });
+};
+
 export const updateListItem = async function (
   id: string,
   uid: string,

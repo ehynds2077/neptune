@@ -10,6 +10,7 @@ import { RequireAuth } from "./components/RequireAuth";
 import { Login } from "./features/auth/Login";
 import { SignUp } from "./features/auth/SignUp";
 import { Inbox } from "./features/inbox/Inbox";
+import { ListPage } from "./features/lists/ListPage";
 import { Home } from "./pages/Home";
 import { Welcome } from "./pages/Welcome";
 import { store } from "./store";
@@ -46,6 +47,14 @@ export const App = () => (
                 element={
                   <RequireAuth>
                     <Inbox />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/list/:listId"
+                element={
+                  <RequireAuth>
+                    <ListPage />
                   </RequireAuth>
                 }
               />

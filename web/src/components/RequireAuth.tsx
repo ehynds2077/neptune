@@ -9,7 +9,6 @@ export const RequireAuth = ({ children }: { children: JSX.Element }) => {
   const user = useSelector(selectUser);
 
   if (!user) {
-    console.log("why is this happening");
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 

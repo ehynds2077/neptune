@@ -21,15 +21,17 @@ export const NavBar = () => {
         </Link>
       </Heading>
       <Flex gap={5} direction="row">
+        <ColorModeSwitcher />
         <IconButton
+          _light={{ _hover: { color: "black" } }}
           as={RouterLink}
           to="/app"
           variant="ghost"
           size="md"
+          fontSize="xl"
           aria-label="Home"
           icon={<IoMdHome />}
         />
-        <ColorModeSwitcher />
         <AccountMenu />
       </Flex>
     </Flex>
