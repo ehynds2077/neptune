@@ -38,5 +38,5 @@ export const getItems = async function (
 
   const items = await getUserInbox(id);
   console.log(items);
-  res.json({ inbox: items });
+  res.json({ title: "Inbox", id: "", items });
 };

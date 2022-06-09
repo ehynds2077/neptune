@@ -9,7 +9,6 @@ import { NavBar } from "./components/NavBar";
 import { RequireAuth } from "./components/RequireAuth";
 import { Login } from "./features/auth/Login";
 import { SignUp } from "./features/auth/SignUp";
-import { Inbox } from "./features/inbox/Inbox";
 import { ListPage } from "./features/lists/ListPage";
 import { Home } from "./pages/Home";
 import { Welcome } from "./pages/Welcome";
@@ -46,7 +45,7 @@ export const App = () => (
                 path="/inbox"
                 element={
                   <RequireAuth>
-                    <Inbox />
+                    <ListPage />
                   </RequireAuth>
                 }
               />

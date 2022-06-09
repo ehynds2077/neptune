@@ -59,10 +59,9 @@ const listApi = emptySplitApi.injectEndpoints({
 
     getList: builder.query<ListType, ListRequest>({
       query: (listReq) => ({
-        url: `/list/${listReq.id}`,
+        url: listReq.id === "" ? "/inbox" : `/list/${listReq.id}`,
         method: "GET",
       }),
-      // providesTags: ["List"],
       providesTags: (result) =>
         result
           ? [
@@ -77,7 +76,7 @@ const listApi = emptySplitApi.injectEndpoints({
 
     addListItem: builder.mutation<ListItemType, NewListItem>({
       query: (item) => ({
-        url: `/list/${item.listId}`,
+        url: item.listId === "" ? "inbox" : `/list/${item.listId}`,
         method: "POST",
         body: item,
       }),
@@ -111,7 +110,7 @@ const listApi = emptySplitApi.injectEndpoints({
         }
       },
 
-      invalidatesTags: ["List"],
+      invalidatesTags: ["List", "InboxItem"],
     }),
 
     updateListItem: builder.mutation<
@@ -129,12 +128,16 @@ const listApi = emptySplitApi.injectEndpoints({
         { dispatch, queryFulfilled }
       ) {
         const putResult = dispatch(
-          listApi.util.updateQueryData("getList", { id: listId }, (draft) => {
-            const item = draft.items.find((item) => item.id === id);
-            if (item) {
-              Object.assign(item, updated);
+          listApi.util.updateQueryData(
+            "getList",
+            { id: listId ? listId : "" },
+            (draft) => {
+              const item = draft.items.find((item) => item.id === id);
+              if (item) {
+                Object.assign(item, updated);
+              }
             }
-          })
+          )
         );
 
         try {

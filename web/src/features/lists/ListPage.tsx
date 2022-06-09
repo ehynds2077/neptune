@@ -13,21 +13,19 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import React from "react";
-import { useParams } from "react-router-dom";
-import { ListItemType } from "./ListItemType";
 import { IoMdTrash } from "react-icons/io";
-import { ItemEditModal, TaskEditModal } from "../../components/TaskEditModal";
-import {
-  ItemDeleteModal,
-  TaskDeleteModal,
-} from "../../components/TaskDeleteModal";
-import { ListProvider, useList } from "../../providers/InboxProvider";
+import { useParams } from "react-router-dom";
+
+import { ItemDeleteModal } from "../../components/ItemDeleteModal";
+import { ItemEditModal } from "../../components/ItemEditModal";
+import { ListProvider, useList } from "../../providers/ListProvider";
 import {
   useAddListItemMutation,
   useDeleteListItemMutation,
   useGetListQuery,
   useUpdateListItemMutation,
 } from "./listApi";
+import { ListItemType } from "./ListItemType";
 
 export const ListPage = () => {
   const params = useParams();
@@ -119,7 +117,6 @@ const ItemList = ({ listId }: { listId: string }) => {
         </>
       );
     } else {
-      console.log(list.items);
       content = (
         <List
           spacing={0}

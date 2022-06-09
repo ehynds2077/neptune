@@ -46,6 +46,7 @@ export const Home = () => {
               to={`/list/${list.id}`}
               justifyContent="start"
               w="full"
+              key={list.id}
             >
               {list.title}
             </Button>
