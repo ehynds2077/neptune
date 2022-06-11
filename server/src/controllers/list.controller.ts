@@ -42,22 +42,22 @@ export const addList = async function (
   res: Response,
   next: NextFunction
 ) {
-  const { title } = req.body;
+  const { title, list_type } = req.body;
   console.log(title);
 
   try {
-    if (!title) {
-      throw new Error("Must include title");
+    if (!title || !list_type) {
+      throw new Error("Must include title and list type");
     }
 
     const id = (req as any).user.id;
 
-    const result = await createList(id, title);
+    const result = await createList(id, title, list_type);
     if ((!result as any).rowCount) {
       throw new Error("Encountered a problem adding list");
     }
 
-    const list = { title };
+    const list = { title, list_type };
     res.json(list);
   } catch (e) {
     res.status(400);

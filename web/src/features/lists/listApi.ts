@@ -1,16 +1,11 @@
 import { emptySplitApi } from "../../api";
 import { ListItemType } from "./ListItemType";
+import { List_ListType } from "./ListType";
 import { ListType } from "./ListType";
-
-interface List {
-  id: string;
-
-  title: string;
-  created_at: Date;
-}
 
 export interface NewList {
   title: string;
+  list_type: List_ListType;
 }
 
 export interface ListRequest {
@@ -40,7 +35,7 @@ export interface UpdateItemListRequest {
 
 const listApi = emptySplitApi.injectEndpoints({
   endpoints: (builder) => ({
-    getLists: builder.query<List[], void>({
+    getLists: builder.query<ListType[], void>({
       query: () => ({
         url: "/lists",
         method: "GET",

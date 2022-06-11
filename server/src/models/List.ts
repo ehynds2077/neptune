@@ -6,12 +6,37 @@ export interface List {
 
   user_id: string;
 
-  title: string;
+  project_id?: string;
+  list_parent_id?: string;
+
+  title?: string;
+  list_type: string;
 }
+
+enum List_ListType {
+  Next = "NEXT",
+  Someday = "SOMEDAY",
+  Waiting = "WAITING",
+  Agenda = "AGENDA",
+  ProjectSupport = "PROJECT_SUPPORT",
+  Reference = "REFERENCE",
+}
+
+export const getUserListsOfType = async function (
+  uid: string,
+  type: List_ListType
+) {
+  return await db
+    .select("title", "id")
+    .table("list")
+    .where("user_id", uid)
+    .andWhere("list_type", type)
+    .orderBy("created_at");
+};
 
 export const getUserLists = async function (uid: string) {
   return await db
-    .select("title", "id")
+    .select("title", "id", "list_type")
     .table("list")
     .where("user_id", uid)
     .orderBy("created_at");
@@ -19,7 +44,7 @@ export const getUserLists = async function (uid: string) {
 
 export const getUserList = async function (uid: string, listId: string) {
   const lists = await db
-    .select("title", "id")
+    .select("title", "id", "list_type")
     .table("list")
     .where("user_id", uid)
     .andWhere("id", listId);
@@ -42,9 +67,14 @@ export const getUserList = async function (uid: string, listId: string) {
   return { ...list, items };
 };
 
-export const createList = async function (uid: string, title: string) {
+export const createList = async function (
+  uid: string,
+  title: string,
+  type: List_ListType
+) {
   return await db.table("list").insert({
     title,
     user_id: uid,
+    list_type: type,
   });
 };

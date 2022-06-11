@@ -47,12 +47,10 @@ const ItemList = ({ listId }: { listId: string }) => {
     refetch,
   } = useGetListQuery({ id: listId });
 
-  // const [updateInboxItem] = useUpdateInboxItemMutation();
-  // const [deleteInboxItem] = useDeleteInboxItemMutation();
   const [updateListItem] = useUpdateListItemMutation();
   const [deleteListItem] = useDeleteListItemMutation();
 
-  const { setSelectedItem, selectedItem, setListId } = useList();
+  const { setSelectedItem, selectedItem, setListId, setListType } = useList();
 
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
@@ -60,6 +58,11 @@ const ItemList = ({ listId }: { listId: string }) => {
   useEffect(() => {
     if (isError) {
       setTimeout(refetch, 1000);
+    } else {
+      if (list) {
+        setListType(list.list_type);
+        console.log(list.list_type);
+      }
     }
   }, [isError, refetch, list, listId]);
 

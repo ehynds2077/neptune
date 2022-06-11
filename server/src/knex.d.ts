@@ -1,6 +1,7 @@
 import { Knex, knex } from "knex";
 import { InboxItem, ListItem } from "./models/Inbox";
 import { List } from "./models/List";
+import { Project } from "./models/Project";
 import { RefreshToken } from "./models/RefreshToken";
 import { User } from "./models/User";
 
@@ -28,6 +29,9 @@ declare module "knex/types/tables" {
 
     list: List;
     list_composite: Knex.CompositeTableType<List, Pick<List, "title">>;
+
+    project: Project;
+    list_composite: Knex.CompositeTableType<Project, Pick<Project, "title">>;
 
     list_item: ListItem;
     list_item_composite: Knex.CompositeTableType<
