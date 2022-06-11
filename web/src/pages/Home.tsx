@@ -1,6 +1,7 @@
 import { Flex, Heading, List } from "@chakra-ui/layout";
 import { AddListModal } from "../components/AddListModal";
 import {
+  Text,
   Button,
   ModalBody,
   FormLabel,
@@ -21,17 +22,24 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { Link as RouterLink } from "react-router-dom";
 
+import { useGetProjectsQuery } from "../features/projects/projectApi";
 import { selectUser } from "../features/auth/authSlice";
 import {
   useAddListMutation,
   useGetListsQuery,
 } from "../features/lists/listApi";
 import { List_ListType } from "../features/lists/ListType";
+import { AddProjectModal } from "../features/projects/AddProjectModal";
 
 export const Home = () => {
   const navigate = useNavigate();
   const user = useSelector(selectUser);
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const {
+    isOpen: isOpenProject,
+    onClose: onCloseProject,
+    onOpen: onOpenProject,
+  } = useDisclosure();
   const [addListType, setAddListType] = useState<List_ListType | null>(null);
 
   const { data: lists = [] } = useGetListsQuery();
@@ -50,8 +58,10 @@ export const Home = () => {
     title: string;
   }) => {
     return (
-      <List w="full" maxW="xl" spacing={3}>
-        <Heading alignSelf="start">{title}</Heading>
+      <List w="full" mb={8} maxW="xl" spacing={3}>
+        <Text fontSize="xl" fontWeight="bold" alignSelf="start">
+          {title}
+        </Text>
         {lists
           .filter((list) => list.list_type === type)
           .map((list) => {
@@ -80,6 +90,33 @@ export const Home = () => {
     );
   };
 
+  const ProjectsList = () => {
+    const { data: projects = [] } = useGetProjectsQuery();
+    return (
+      <List w="full" mb={8} maxW="xl" spacing={3}>
+        <Text fontSize="xl" fontWeight="bold" alignSelf="start">
+          Projects
+        </Text>
+        {projects.map((project) => {
+          return (
+            <Button
+              as={RouterLink}
+              to={`/project/${project.id}`}
+              justifyContent="start"
+              w="full"
+              key={project.id}
+            >
+              {project.title}
+            </Button>
+          );
+        })}
+        <Button onClick={onOpenProject} w="full">
+          <AddIcon />
+        </Button>
+      </List>
+    );
+  };
+
   return (
     <Flex w="full" maxW="xl" alignItems="center" gap={3} direction="column">
       <Heading alignSelf="start">Lists</Heading>
@@ -94,11 +131,13 @@ export const Home = () => {
           Inbox
         </Button>
 
+        <ProjectsList />
         <ListsOfType title="Next" type="NEXT" />
         <ListsOfType title="Waiting" type="WAITING" />
         <ListsOfType title="Someday/Maybe" type="SOMEDAY" />
         <ListsOfType title="Agendas" type="AGENDA" />
         <ListsOfType title="Reference" type="REFERENCE" />
+        <AddProjectModal isOpen={isOpenProject} onClose={onCloseProject} />
         <AddListModal
           isOpen={isOpen}
           onClose={onClose}

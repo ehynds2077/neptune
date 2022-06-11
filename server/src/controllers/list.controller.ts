@@ -53,7 +53,7 @@ export const addList = async function (
     const id = (req as any).user.id;
 
     const result = await createList(id, title, list_type);
-    if ((!result as any).rowCount) {
+    if (!(result as any).rowCount) {
       throw new Error("Encountered a problem adding list");
     }
 

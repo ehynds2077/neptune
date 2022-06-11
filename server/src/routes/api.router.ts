@@ -6,6 +6,7 @@ import {
   updateItem,
 } from "../controllers/item.controller";
 import { addList, getList, getLists } from "../controllers/list.controller";
+import { addProject, getProjects } from "../controllers/project.controller";
 
 export const apiRouter = express.Router();
 
@@ -22,3 +23,8 @@ apiRouter.get("/list/:listId", getList);
 apiRouter.put("/item/:id", updateItem);
 apiRouter.delete("/item/:id", deleteItem);
 apiRouter.post("/list/:listId", addListItem);
+
+// Project routes
+
+apiRouter.get("/projects", getProjects);
+apiRouter.post("/projects", addProject);

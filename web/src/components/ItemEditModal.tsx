@@ -21,6 +21,7 @@ import {
   useUpdateListItemMutation,
 } from "../features/lists/listApi";
 import { listTypes, List_ListType } from "../features/lists/ListType";
+import { useGetProjectsQuery } from "../features/projects/projectApi";
 import { useList } from "../providers/ListProvider";
 
 export interface ItemEditModalProps {
@@ -50,11 +51,13 @@ export const ItemEditModal = ({ isOpen, onClose }: ItemEditModalProps) => {
   const { selectedItem, listType } = useList();
 
   const [title, setTitle] = useState("");
-  const [selectedListId, setSelectedListId] = useState("");
   const [selectedType, setSelectedType] = useState("");
+  const [selectedListId, setSelectedListId] = useState("");
+  const [selectedProjectId, setSelectedProjectId] = useState("");
 
   // RTK Query hooks
   const { data: lists = [] } = useGetListsQuery();
+  const { data: projects = [] } = useGetProjectsQuery();
   const [updateListItem] = useUpdateListItemMutation();
   const [updateList] = useUpdateListItemListMutation();
 
@@ -111,6 +114,11 @@ export const ItemEditModal = ({ isOpen, onClose }: ItemEditModalProps) => {
     }
   };
 
+  const allowSave = () => {
+    // Check if any fields are differnet
+    // Check for required fields
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>
       <ModalOverlay />
@@ -143,7 +151,7 @@ export const ItemEditModal = ({ isOpen, onClose }: ItemEditModalProps) => {
               })}
             </Select>
 
-            {selectedType === "NEXT" && (
+            {selectedType !== "PROJECT_SUPPORT" && selectedType !== "" && (
               <>
                 <FormLabel>List</FormLabel>
                 <Select
@@ -155,30 +163,27 @@ export const ItemEditModal = ({ isOpen, onClose }: ItemEditModalProps) => {
                 >
                   <option value=""></option>
                   {lists
-                    .filter((list) => list.list_type === "NEXT")
+                    .filter((list) => list.list_type === selectedType)
                     .map((list) => {
                       return <option value={list.id}>{list.title}</option>;
                     })}
                 </Select>
               </>
             )}
-
-            {selectedType === "AGENDA" && (
+            {selectedType !== "" && (
               <>
-                <FormLabel>List</FormLabel>
+                <FormLabel>Project</FormLabel>
                 <Select
                   mb={4}
-                  value={selectedListId}
+                  value={selectedProjectId}
                   onChange={(event: any) => {
-                    setSelectedListId(event.target.value);
+                    setSelectedProjectId(event.target.value);
                   }}
                 >
-                  <option value=""></option>
-                  {lists
-                    .filter((list) => list.list_type === "AGENDA")
-                    .map((list) => {
-                      return <option value={list.id}>{list.title}</option>;
-                    })}
+                  <option value="">None</option>
+                  {projects.map((project) => {
+                    return <option value={project.id}>{project.title}</option>;
+                  })}
                 </Select>
               </>
             )}

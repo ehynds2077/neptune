@@ -8,7 +8,7 @@ import {
   register,
 } from "../controllers/user.controller";
 import { protectRoute } from "../middleware/protectRoute";
-import { apiRouter } from "./api";
+import { apiRouter } from "./api.router";
 
 export const router = express.Router();
 
