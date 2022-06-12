@@ -26,6 +26,7 @@ import {
   useUpdateListItemMutation,
 } from "./listApi";
 import { ListItemType } from "./ListItemType";
+import { List_ListType } from "./ListType";
 
 export const ListPage = () => {
   const params = useParams();
@@ -132,6 +133,7 @@ const ItemList = ({ listId }: { listId: string }) => {
           {list.items.map((item, idx) => (
             <ItemRow
               key={idx}
+              listType={list.list_type}
               onClick={handleClickItem}
               onCheck={handleCheckItem}
               onDelete={handleConfirmDelete}
@@ -205,11 +207,13 @@ export const AddListItemForm = () => {
 
 const ItemRow = ({
   item,
+  listType,
   onClick,
   onCheck,
   onDelete,
 }: {
   item: ListItemType;
+  listType: List_ListType;
   onClick: (item: ListItemType) => Promise<void>;
   onCheck: (item: ListItemType) => Promise<void>;
   onDelete: (item: ListItemType) => Promise<void>;
@@ -225,14 +229,16 @@ const ItemRow = ({
         w="full"
         p={0}
       >
-        <Checkbox
-          m={3}
-          isChecked={item.is_done}
-          _light={{ borderColor: "gray.600" }}
-          onChange={() => {
-            onCheck(item);
-          }}
-        />
+        {listType !== "REFERENCE" && (
+          <Checkbox
+            m={3}
+            isChecked={item.is_done}
+            _light={{ borderColor: "gray.600" }}
+            onChange={() => {
+              onCheck(item);
+            }}
+          />
+        )}
         <Button
           bg="transparent"
           justifyContent="flex-start"
@@ -245,6 +251,7 @@ const ItemRow = ({
         >
           {item.title}
         </Button>
+        {item.project && <Text>Project: {item.project?.title}</Text>}
         <IconButton
           variant="ghost"
           onClick={() => {

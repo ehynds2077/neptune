@@ -12,12 +12,11 @@ export const apiRouter = express.Router();
 
 // Inbox routes
 apiRouter.post("/inbox", addItem);
-apiRouter.get("/inbox", getItems);
 
 // List routes
 apiRouter.get("/lists", getLists);
 apiRouter.post("/list", addList);
-apiRouter.get("/list/:listId", getList);
+apiRouter.get("/list/:listId?", getList);
 
 // List item routes
 apiRouter.put("/item/:id", updateItem);

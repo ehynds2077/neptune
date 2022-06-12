@@ -1,6 +1,8 @@
 import {
   Button,
   FormControl,
+  FormErrorIcon,
+  FormErrorMessage,
   FormLabel,
   Input,
   Modal,
@@ -66,9 +68,15 @@ export const ItemEditModal = ({ isOpen, onClose }: ItemEditModalProps) => {
     if (selectedItem) {
       setTitle(selectedItem.title);
       setSelectedListId(selectedItem.listId);
+      setSelectedProjectId("");
+      if (selectedItem.project) {
+        setSelectedProjectId(selectedItem.project.id);
+      }
       if (selectedItem.listId) {
         console.log(listType);
         setSelectedType(listType);
+      } else {
+        setSelectedType("");
       }
     }
   }, [selectedItem, listType]);
@@ -79,31 +87,44 @@ export const ItemEditModal = ({ isOpen, onClose }: ItemEditModalProps) => {
     onClose();
   };
 
+  const projectId = () => {
+    if (selectedItem && selectedItem.project) {
+      return selectedItem.project.id;
+    } else {
+      return "";
+    }
+  };
+
   const handleEditItem = async () => {
+    console.log(projects);
     try {
       if (selectedItem) {
-        if (title !== selectedItem.title) {
+        if (title !== selectedItem.title || selectedProjectId !== projectId()) {
+          const project = projects.find(
+            (project) => project.id === selectedProjectId
+          );
           await updateListItem({
             listId: selectedItem.listId,
             id: selectedItem.id,
+            projectId: selectedProjectId,
+            project,
             title,
-          }).unwrap();
-        }
-
-        if (selectedType !== listType && selectedType === "") {
-          await updateList({
-            listId: selectedItem.listId,
-            newListId: "",
-            id: selectedItem.id,
           }).unwrap();
         }
         if (
           selectedListId !== selectedItem.listId ||
           selectedType !== listType
         ) {
+          const newListId =
+            selectedType !== ""
+              ? selectedType !== "PROJECT_SUPPORT"
+                ? selectedListId
+                : "PROJECT_SUPPORT"
+              : "";
           await updateList({
             listId: selectedItem.listId,
-            newListId: selectedType === "" ? "" : selectedListId,
+            newListId,
+            projectId: selectedProjectId,
             id: selectedItem.id,
           }).unwrap();
         }
@@ -114,7 +135,11 @@ export const ItemEditModal = ({ isOpen, onClose }: ItemEditModalProps) => {
     }
   };
 
-  const allowSave = () => {
+  const disableSave = (): boolean => {
+    if (selectedType === "PROJECT_SUPPORT") {
+      return selectedProjectId === "";
+    }
+    return false;
     // Check if any fields are differnet
     // Check for required fields
   };
@@ -126,52 +151,56 @@ export const ItemEditModal = ({ isOpen, onClose }: ItemEditModalProps) => {
         <ModalHeader>Edit Item</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <FormControl>
-            <FormLabel>Title</FormLabel>
-            <Input
-              mb={4}
-              value={title}
-              onChange={(event: any) => {
-                setTitle(event.target.value);
-              }}
-              placeholder="Item title"
-            />
+          <FormLabel>Title</FormLabel>
+          <Input
+            mb={4}
+            value={title}
+            onChange={(event: any) => {
+              setTitle(event.target.value);
+            }}
+            placeholder="Item title"
+          />
 
-            <FormLabel>Type</FormLabel>
-            <Select
-              mb={4}
-              value={selectedType}
-              onChange={(event: any) => {
-                setSelectedType(event.target.value);
-              }}
-            >
-              <option value="">Inbox</option>
-              {Object.keys(itemTypeDict).map((key) => {
-                return <option value={key}>{itemTypeDict[key]}</option>;
-              })}
-            </Select>
+          <FormLabel>Type</FormLabel>
+          <Select
+            mb={4}
+            value={selectedType}
+            onChange={(event: any) => {
+              setSelectedType(event.target.value);
+            }}
+          >
+            <option value="">Inbox</option>
+            {Object.keys(itemTypeDict).map((key) => {
+              return <option value={key}>{itemTypeDict[key]}</option>;
+            })}
+          </Select>
 
-            {selectedType !== "PROJECT_SUPPORT" && selectedType !== "" && (
-              <>
-                <FormLabel>List</FormLabel>
-                <Select
-                  mb={4}
-                  value={selectedListId}
-                  onChange={(event: any) => {
-                    setSelectedListId(event.target.value);
-                  }}
-                >
-                  <option value=""></option>
-                  {lists
-                    .filter((list) => list.list_type === selectedType)
-                    .map((list) => {
-                      return <option value={list.id}>{list.title}</option>;
-                    })}
-                </Select>
-              </>
-            )}
-            {selectedType !== "" && (
-              <>
+          {selectedType !== "PROJECT_SUPPORT" && selectedType !== "" && (
+            <>
+              <FormLabel>List</FormLabel>
+              <Select
+                mb={4}
+                value={selectedListId}
+                onChange={(event: any) => {
+                  setSelectedListId(event.target.value);
+                }}
+              >
+                <option value=""></option>
+                {lists
+                  .filter((list) => list.list_type === selectedType)
+                  .map((list) => {
+                    return <option value={list.id}>{list.title}</option>;
+                  })}
+              </Select>
+            </>
+          )}
+          {selectedType !== "" && (
+            <>
+              <FormControl
+                isInvalid={
+                  selectedType === "PROJECT_SUPPORT" && selectedProjectId === ""
+                }
+              >
                 <FormLabel>Project</FormLabel>
                 <Select
                   mb={4}
@@ -185,13 +214,22 @@ export const ItemEditModal = ({ isOpen, onClose }: ItemEditModalProps) => {
                     return <option value={project.id}>{project.title}</option>;
                   })}
                 </Select>
-              </>
-            )}
-          </FormControl>
+                <FormErrorMessage>
+                  <FormErrorIcon />
+                  Must choose a project for "Project Support" type
+                </FormErrorMessage>
+              </FormControl>
+            </>
+          )}
         </ModalBody>
 
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={handleEditItem}>
+          <Button
+            disabled={disableSave()}
+            colorScheme="blue"
+            mr={3}
+            onClick={handleEditItem}
+          >
             Save
           </Button>
           <Button onClick={handleClose}>Cancel</Button>

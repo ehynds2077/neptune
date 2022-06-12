@@ -42,27 +42,60 @@ export const getUserLists = async function (uid: string) {
     .orderBy("created_at");
 };
 
-export const getUserList = async function (uid: string, listId: string) {
-  const lists = await db
-    .select("title", "id", "list_type")
-    .table("list")
-    .where("user_id", uid)
-    .andWhere("id", listId);
-  const list = lists[0];
+export const getUserList = async function (uid: string, listId: string | null) {
+  let list;
+  let items;
+  if (listId) {
+    const lists = await db
+      .select("title", "id", "list_type")
+      .table("list")
+      .where("user_id", uid)
+      .andWhere("id", listId);
+    list = lists[0];
+    items = await db
+      .table("list_item")
+      .leftJoin("project", "list_item.project_id", "=", "project.id")
+      .where("list_item.user_id", uid)
+      .where("list_item.list_id", listId)
+      .orderBy("list_item.created_at")
+      .columns([
+        "list_item.id",
+        "list_item.title",
+        "list_item.is_done",
+        "list_item.notes",
+        "list_item.list_id as listId",
+        "project.title as projectTitle",
+        "project.id as projectId",
+      ]);
+    console.log(items);
+    console.log("YOOOOOO");
+  } else {
+    list = { title: "Inbox", id: "" };
+    items = await db
+      .select("id", "title", "is_done", "notes", "list_id as listId")
+      .table("list_item")
+      .where("user_id", uid)
+      .where("list_id", null)
+      .orderBy("created_at");
+  }
 
-  const items = await db
-    .select(
-      "list_item.id",
-      "list_item.title",
-      "list_item.is_done",
-      "list_item.notes",
-      "list_item.list_id as listId"
-    )
-    .table("list")
-    .where("list.user_id", uid)
-    .join("list_item", "list_item.list_id", "=", "list.id")
-    .where("list.id", listId)
-    .orderBy("list_item.created_at");
+  items = items.map((item: any) => {
+    const ret = {
+      ...item,
+      project:
+        item.projectId === null
+          ? null
+          : {
+              title: item.projectTitle,
+              id: item.projectId,
+            },
+    };
+
+    delete ret.projectId;
+    delete ret.projectTitle;
+
+    return ret;
+  });
 
   return { ...list, items };
 };

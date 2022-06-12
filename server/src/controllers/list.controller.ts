@@ -18,17 +18,18 @@ export const getList = async function (
   res: Response,
   next: NextFunction
 ) {
-  const { listId } = req.params;
+  let { listId } = req.params;
   console.log(listId);
 
   try {
-    if (!listId) {
-      throw new Error("Must provide list id");
+    const uid = (req as any).user.id;
+    let result;
+    if (listId === "") {
+      const result = await getUserList(uid, null);
+    } else {
+      result = await getUserList(uid, listId);
     }
 
-    const uid = (req as any).user.id;
-
-    const result = await getUserList(uid, listId);
     console.log(result);
     res.json(result);
   } catch (e) {

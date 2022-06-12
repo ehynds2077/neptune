@@ -20,6 +20,7 @@ export interface NewListItem {
 export interface UpdateItemRequest {
   listId: string;
   id: string;
+  projectId?: string;
 }
 
 export interface DeleteItemRequest {
@@ -29,7 +30,8 @@ export interface DeleteItemRequest {
 
 export interface UpdateItemListRequest {
   listId: string;
-  newListId: string;
+  newListId?: string;
+  projectId?: string;
   id: string;
 }
 
@@ -54,7 +56,7 @@ const listApi = emptySplitApi.injectEndpoints({
 
     getList: builder.query<ListType, ListRequest>({
       query: (listReq) => ({
-        url: listReq.id === "" ? "/inbox" : `/list/${listReq.id}`,
+        url: `/list/${listReq.id}`,
         method: "GET",
       }),
       providesTags: (result) =>
@@ -89,19 +91,22 @@ const listApi = emptySplitApi.injectEndpoints({
         { id, listId, newListId },
         { dispatch, queryFulfilled }
       ) {
-        const removeFromCurrent = dispatch(
-          listApi.util.updateQueryData("getList", { id: listId }, (draft) => {
-            const index = draft.items.findIndex((item) => item.id === id);
-            if (index > -1) {
-              draft.items.splice(index, 1);
-            }
-          })
-        );
+        console.log(newListId);
+        if (newListId) {
+          const removeFromCurrent = dispatch(
+            listApi.util.updateQueryData("getList", { id: listId }, (draft) => {
+              const index = draft.items.findIndex((item) => item.id === id);
+              if (index > -1) {
+                draft.items.splice(index, 1);
+              }
+            })
+          );
 
-        try {
-          await queryFulfilled;
-        } catch (err) {
-          removeFromCurrent.undo();
+          try {
+            await queryFulfilled;
+          } catch (err) {
+            removeFromCurrent.undo();
+          }
         }
       },
 

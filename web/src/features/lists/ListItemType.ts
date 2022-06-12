@@ -6,4 +6,10 @@ export interface ListItemType {
   is_done: boolean;
   notes?: string;
   listId: string;
+  project?: ListItemProjectType;
+}
+
+export interface ListItemProjectType {
+  id: string;
+  title: string;
 }

@@ -42,7 +42,16 @@ export const updateItem = async function (
   next: NextFunction
 ) {
   const { id } = req.params;
-  const { title, is_done, notes, newListId } = req.body;
+  const {
+    title,
+    is_done,
+    notes,
+    newListId,
+    projectId: newProjectId,
+    project,
+  } = req.body;
+  let projectId = project ? project.id : newProjectId;
+  console.log(projectId);
   try {
     if (!id) {
       throw new Error("Must provide id");
@@ -52,7 +61,8 @@ export const updateItem = async function (
       title === undefined &&
       is_done === undefined &&
       notes === undefined &&
-      newListId === undefined
+      newListId === undefined &&
+      projectId === undefined
     ) {
       throw new Error("Must provide paramater to update");
     }
@@ -65,7 +75,8 @@ export const updateItem = async function (
       title,
       is_done,
       notes,
-      newListId
+      newListId,
+      projectId
     );
     if (!result) {
       throw new Error("Could not update item");
