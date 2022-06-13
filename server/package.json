@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon ./src/server.ts",
     "migrate:make": "yarn knex migrate:make",
-    "migrate:latest": "yarn knex migrate:latest"
+    "migrate:latest": "docker-compose run server yarn knex migrate:latest",
+    "migrate:rollback": "docker-compose run server yarn knex migrate:rollback"
   },
   "license": "MIT",
   "devDependencies": {
