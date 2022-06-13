@@ -5,8 +5,17 @@ import {
   deleteItem,
   updateItem,
 } from "../controllers/item.controller";
-import { addList, getList, getLists } from "../controllers/list.controller";
-import { addProject, getProjects } from "../controllers/project.controller";
+import {
+  addList,
+  deleteList,
+  getList,
+  getLists,
+} from "../controllers/list.controller";
+import {
+  addProject,
+  getProject,
+  getProjects,
+} from "../controllers/project.controller";
 
 export const apiRouter = express.Router();
 
@@ -17,6 +26,7 @@ apiRouter.post("/inbox", addItem);
 apiRouter.get("/lists", getLists);
 apiRouter.post("/list", addList);
 apiRouter.get("/list/:listId?", getList);
+apiRouter.delete("/list/:listId", deleteList);
 
 // List item routes
 apiRouter.put("/item/:id", updateItem);
@@ -26,4 +36,5 @@ apiRouter.post("/list/:listId", addListItem);
 // Project routes
 
 apiRouter.get("/projects", getProjects);
+apiRouter.get("/project/:projectId", getProject);
 apiRouter.post("/projects", addProject);

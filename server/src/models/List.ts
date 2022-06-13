@@ -42,6 +42,10 @@ export const getUserLists = async function (uid: string) {
     .orderBy("created_at");
 };
 
+export const deleteUserList = async function (uid: string, id: string) {
+  return await db("list").where("user_id", uid).andWhere("id", id).del();
+};
+
 export const getUserList = async function (uid: string, listId: string | null) {
   let list;
   let items;

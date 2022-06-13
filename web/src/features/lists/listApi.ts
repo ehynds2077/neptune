@@ -28,6 +28,10 @@ export interface DeleteItemRequest {
   id: string;
 }
 
+export interface DeleteListRequest {
+  id: string;
+}
+
 export interface UpdateItemListRequest {
   listId: string;
   newListId?: string;
@@ -148,6 +152,14 @@ const listApi = emptySplitApi.injectEndpoints({
       },
     }),
 
+    deleteList: builder.mutation<void, DeleteListRequest>({
+      query: ({ id }) => ({
+        url: `list/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["List"],
+    }),
+
     deleteListItem: builder.mutation<void, DeleteItemRequest>({
       query: ({ id }) => ({
         url: `item/${id}`,
@@ -180,6 +192,7 @@ export const {
   useUpdateListItemMutation,
   useUpdateListItemListMutation,
   useDeleteListItemMutation,
+  useDeleteListMutation,
   useGetListQuery,
   useAddListItemMutation,
 } = listApi;

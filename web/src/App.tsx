@@ -10,6 +10,7 @@ import { RequireAuth } from "./components/RequireAuth";
 import { Login } from "./features/auth/Login";
 import { SignUp } from "./features/auth/SignUp";
 import { ListPage } from "./features/lists/ListPage";
+import ProjectPage from "./features/projects/ProjectPage";
 import { Home } from "./pages/Home";
 import { Welcome } from "./pages/Welcome";
 import { store } from "./store";
@@ -54,6 +55,14 @@ export const App = () => (
                 element={
                   <RequireAuth>
                     <ListPage />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/project/:projectId"
+                element={
+                  <RequireAuth>
+                    <ProjectPage />
                   </RequireAuth>
                 }
               />

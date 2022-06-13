@@ -15,6 +15,15 @@ export const getUserProjects = async function (uid: string) {
     .orderBy("created_at");
 };
 
+export const getUserProject = async function (uid: string, projectId: string) {
+  const matches = await db
+    .select("id", "title")
+    .table("project")
+    .where("user_id", uid)
+    .andWhere("id", projectId);
+  return matches[0];
+};
+
 export const createProject = async function (uid: string, title: string) {
   const projectInsert = await db.table("project").returning("id").insert({
     title,
@@ -30,5 +39,7 @@ export const createProject = async function (uid: string, title: string) {
     user_id: uid,
   });
 
-  console.log(projectId);
+  console.log(projectInsert);
+
+  return projectInsert;
 };

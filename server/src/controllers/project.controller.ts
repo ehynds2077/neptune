@@ -1,5 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { createProject, getUserProjects } from "../models/Project";
+import {
+  createProject,
+  getUserProject,
+  getUserProjects,
+} from "../models/Project";
 
 export const getProjects = async function (
   req: Request,
@@ -10,6 +14,26 @@ export const getProjects = async function (
 
   const projects = await getUserProjects(id);
   res.json(projects);
+};
+
+export const getProject = async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const id = (req as any).user.id;
+  const { projectId } = req.params;
+  try {
+    if (!projectId) {
+      throw new Error("Must include project id to get");
+    }
+
+    const project = await getUserProject(id, projectId);
+    res.json(project);
+  } catch (err) {
+    res.status(400);
+    next(err);
+  }
 };
 
 export const addProject = async function (
@@ -26,7 +50,7 @@ export const addProject = async function (
     const uid = (req as any).user.id;
 
     const result = await createProject(uid, title);
-    if (!(result as any).rowCount) {
+    if (!result.length) {
       throw new Error("Encountered a problem adding project");
     }
 

@@ -1,5 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { createList, getUserList, getUserLists } from "../models/List";
+import {
+  createList,
+  deleteUserList,
+  getUserList,
+  getUserLists,
+} from "../models/List";
 
 export const getLists = async function (
   req: Request,
@@ -35,6 +40,30 @@ export const getList = async function (
   } catch (e) {
     res.status(400);
     next(e);
+  }
+};
+
+export const deleteList = async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { listId } = req.params;
+  console.log(listId);
+
+  try {
+    const uid = (req as any).user.id;
+    if (!listId) {
+      throw new Error("Must provice list id to delete");
+    }
+
+    const result = await deleteUserList(uid, listId);
+    console.log(result);
+
+    res.send();
+  } catch (err) {
+    res.status(400);
+    next(err);
   }
 };
 
