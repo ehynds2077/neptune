@@ -7,7 +7,6 @@ export const addItem = async function (
   next: NextFunction
 ) {
   const { title, isDone, notes } = req.body;
-  console.log(req.body);
   try {
     if (!title) {
       throw new Error("Must include title");
@@ -37,6 +36,5 @@ export const getItems = async function (
   const id = (req as any).user.id;
 
   const items = await getUserInbox(id);
-  console.log(items);
   res.json({ title: "Inbox", id: "", items });
 };

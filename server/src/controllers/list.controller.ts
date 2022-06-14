@@ -15,7 +15,6 @@ export const getLists = async function (
   const id = (req as any).user.id;
 
   const lists = await getUserLists(id);
-  console.log(lists);
   res.json(lists);
 };
 
@@ -25,7 +24,6 @@ export const getList = async function (
   next: NextFunction
 ) {
   let { listId } = req.params;
-  console.log(listId);
 
   try {
     const uid = (req as any).user.id;
@@ -36,7 +34,6 @@ export const getList = async function (
       result = await getUserList(uid, listId);
     }
 
-    console.log(result);
     res.json(result);
   } catch (e) {
     res.status(400);
@@ -51,7 +48,6 @@ export const updateList = async function (
 ) {
   const { listId } = req.params;
   const { title } = req.body;
-  console.log(listId);
 
   try {
     const uid = (req as any).user.id;
@@ -64,7 +60,6 @@ export const updateList = async function (
     }
 
     const result = await updateUserList(uid, listId, title);
-    console.log(result);
 
     res.send();
   } catch (err) {
@@ -79,7 +74,6 @@ export const deleteList = async function (
   next: NextFunction
 ) {
   const { listId } = req.params;
-  console.log(listId);
 
   try {
     const uid = (req as any).user.id;
@@ -88,7 +82,6 @@ export const deleteList = async function (
     }
 
     const result = await deleteUserList(uid, listId);
-    console.log(result);
 
     res.send();
   } catch (err) {
@@ -103,7 +96,6 @@ export const addList = async function (
   next: NextFunction
 ) {
   const { title, list_type } = req.body;
-  console.log(title);
 
   try {
     if (!title || !list_type) {

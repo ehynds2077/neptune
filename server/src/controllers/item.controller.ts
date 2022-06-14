@@ -26,8 +26,6 @@ export const addListItem = async function (
     const uid = (req as any).user.id;
 
     const result = await createListItem(uid, listId, title, false, undefined);
-    console.log("listitem create results");
-    console.log(result);
 
     res.json(result);
   } catch (e) {
@@ -51,7 +49,6 @@ export const updateItem = async function (
     project,
   } = req.body;
   let projectId = project ? project.id : newProjectId;
-  console.log(projectId);
   try {
     if (!id) {
       throw new Error("Must provide id");
@@ -103,7 +100,6 @@ export const deleteItem = async function (
     const uid = (req as any).user.id;
 
     const result = await deleteListItem(id, uid);
-    console.log(result);
 
     res.send();
   } catch (e) {

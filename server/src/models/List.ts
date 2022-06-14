@@ -71,8 +71,6 @@ export const getUserList = async function (uid: string, listId: string | null) {
         "project.title as projectTitle",
         "project.id as projectId",
       ]);
-    console.log(items);
-    console.log("YOOOOOO");
   } else {
     list = { title: "Inbox", id: "" };
     items = await db

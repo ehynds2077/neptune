@@ -28,8 +28,8 @@ export const App = () => (
             minH="100vh"
             justifyContent="center"
             alignItems="flex-start"
-            // bg="gray.300"
-            // _dark={{bg: }}
+            bg="gray.300"
+            _dark={{ bg: "gray.900" }}
             p={5}
           >
             <Routes>

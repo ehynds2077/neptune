@@ -15,6 +15,7 @@ import {
 } from "./listApi";
 import { ListItemType } from "./ListItemType";
 import { ListContainer } from "../../components/ListContainer";
+import { NeptuneList } from "../../components/NeptuneList";
 
 export const ListPage = () => {
   const params = useParams();
@@ -110,14 +111,7 @@ const ItemList = ({ listId }: { listId: string }) => {
       );
     } else {
       content = (
-        <List
-          spacing={0}
-          rounded="lg"
-          overflow="hidden"
-          bg="gray.100"
-          _dark={{ bg: "blue.800" }}
-          w="full"
-        >
+        <NeptuneList>
           {list.items.map((item, idx) => (
             <ItemRow
               key={idx}
@@ -128,7 +122,7 @@ const ItemList = ({ listId }: { listId: string }) => {
               item={item}
             />
           ))}
-        </List>
+        </NeptuneList>
       );
     }
   } else if (isError) {

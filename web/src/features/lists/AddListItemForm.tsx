@@ -25,6 +25,7 @@ export const AddListItemForm = () => {
   return (
     <Flex direction="row" w="full" gap={2}>
       <Input
+        _light={{ borderColor: "gray.500" }}
         value={newItemTitle}
         placeholder="Item title..."
         onChange={(event: any) => setNewItemTitle(event.target.value)}

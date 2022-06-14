@@ -20,6 +20,7 @@ import React from "react";
 import { IoMdTrash } from "react-icons/io";
 import { useParams } from "react-router-dom";
 
+import { NeptuneList } from "../../components/NeptuneList";
 import { ListContainer } from "../../components/ListContainer";
 import { List_ListType, listTypeDict } from "../lists/ListType";
 import { useGetProjectQuery } from "./projectApi";
@@ -45,14 +46,7 @@ const ProjectPage = ({ projectId }: { projectId: string }) => {
   return (
     <ListContainer>
       <Heading>{project && project.title}</Heading>
-      <List
-        spacing={0}
-        rounded="lg"
-        overflow="hidden"
-        bg="gray.100"
-        _dark={{ bg: "blue.800" }}
-        w="full"
-      >
+      <NeptuneList>
         <Tabs>
           <TabList>
             {project &&
@@ -70,7 +64,7 @@ const ProjectPage = ({ projectId }: { projectId: string }) => {
               project.items &&
               Object.keys(listTypeDict).map((itemType) => {
                 return (
-                  <TabPanel>
+                  <TabPanel px={0}>
                     {project.items
                       .filter((item) => item.list_type === itemType)
                       .map((item, idx) => {
@@ -90,23 +84,7 @@ const ProjectPage = ({ projectId }: { projectId: string }) => {
               })}
           </TabPanels>
         </Tabs>
-        {/* // {project &&
-        //   project.items &&
-        //   project.items
-        //     .filter((item) => true)
-        //     .map((item, idx) => {
-        //       return (
-        //         <ProjectItemRow
-        //           item={item}
-        //           key={idx}
-        //           listType={item.list_type}
-        //           onClick={async (item) => {}}
-        //           onCheck={async (item) => {}}
-        //           onDelete={async (item) => {}}
-        //         />
-        //       );
-        //     })} */}
-      </List>
+      </NeptuneList>
     </ListContainer>
   );
 };
