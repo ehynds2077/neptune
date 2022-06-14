@@ -3,6 +3,8 @@ import {
   Checkbox,
   Divider,
   Flex,
+  Heading,
+  HStack,
   IconButton,
   List,
   ListItem,
@@ -42,8 +44,7 @@ const ProjectPage = ({ projectId }: { projectId: string }) => {
   console.log(project);
   return (
     <ListContainer>
-      <Text>{project && project.id}</Text>
-      <Text>{project && project.title}</Text>
+      <Heading>{project && project.title}</Heading>
       <List
         spacing={0}
         rounded="lg"
@@ -134,7 +135,7 @@ export const ProjectItemRow = ({
         w="full"
         p={0}
       >
-        {listType !== "REFERENCE" && (
+        {listType !== "REFERENCE" && listType !== "PROJECT_SUPPORT" && (
           <Checkbox
             m={3}
             isChecked={item.is_done}
@@ -154,9 +155,17 @@ export const ProjectItemRow = ({
           onClick={() => onClick(item)}
           w="full"
         >
-          {item.title}
+          <HStack w="full" justifyContent="space-between">
+            <Text>{item.title}</Text>
+            {item.list_title && (
+              <HStack justifySelf="end">
+                <Text color="gray.400">List: </Text>
+                <Text>{item.list_title}</Text>
+              </HStack>
+            )}
+          </HStack>
         </Button>
-        <Text>Item Type: {item.list_type}</Text>
+
         <IconButton
           variant="ghost"
           onClick={() => {

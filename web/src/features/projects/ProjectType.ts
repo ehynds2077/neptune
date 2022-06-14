@@ -6,6 +6,7 @@ export interface ProjectListItemType {
   is_done: boolean;
   notes?: string;
   list_type: List_ListType;
+  list_title?: string;
 }
 
 export interface ProjectType {

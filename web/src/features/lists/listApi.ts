@@ -140,6 +140,7 @@ const listApi = emptySplitApi.injectEndpoints({
         method: "PUT",
         body: updated,
       }),
+      invalidatesTags: ["Project"],
 
       async onQueryStarted(
         { id, listId, ...updated },

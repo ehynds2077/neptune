@@ -30,7 +30,8 @@ export const getUserProject = async function (uid: string, projectId: string) {
       "list_item.is_done",
       "list_item.notes",
       "list_item.id",
-      "list.list_type as list_type"
+      "list.list_type as list_type",
+      "list.title as list_title"
     )
     .table("list_item")
     .where("list_item.user_id", uid)
