@@ -26,6 +26,7 @@ export const ListsList = ({
 }) => {
   const [selectedList, setSelectedList] = useState<ListType | null>(null);
 
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const {
     isOpen: deleteIsOpen,
     onClose: deleteOnClose,
@@ -37,7 +38,6 @@ export const ListsList = ({
     deleteOnOpen();
   };
 
-  const { isOpen, onClose, onOpen } = useDisclosure();
   return (
     <List w="full" mb={8} maxW="xl" spacing={3}>
       <Text fontSize="xl" fontWeight="bold" alignSelf="start">

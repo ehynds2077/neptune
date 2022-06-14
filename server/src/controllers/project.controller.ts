@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import {
   createProject,
+  deleteUserProject,
   getUserProject,
   getUserProjects,
 } from "../models/Project";
@@ -56,6 +57,30 @@ export const addProject = async function (
 
     const project = { title };
     res.json(project);
+  } catch (err) {
+    res.status(400);
+    next(err);
+  }
+};
+
+export const deleteProject = async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { projectId } = req.params;
+  console.log(projectId);
+
+  try {
+    const uid = (req as any).user.id;
+    if (!projectId) {
+      throw new Error("Must provide project id to delete");
+    }
+
+    const result = await deleteUserProject(uid, projectId);
+    console.log(result);
+
+    res.send();
   } catch (err) {
     res.status(400);
     next(err);

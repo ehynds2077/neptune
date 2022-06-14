@@ -24,6 +24,10 @@ export const getUserProject = async function (uid: string, projectId: string) {
   return matches[0];
 };
 
+export const deleteUserProject = async function (uid: string, id: string) {
+  return await db("project").where("user_id", uid).andWhere("id", id).del();
+};
+
 export const createProject = async function (uid: string, title: string) {
   const projectInsert = await db.table("project").returning("id").insert({
     title,

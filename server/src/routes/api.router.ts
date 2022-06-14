@@ -13,6 +13,7 @@ import {
 } from "../controllers/list.controller";
 import {
   addProject,
+  deleteProject,
   getProject,
   getProjects,
 } from "../controllers/project.controller";
@@ -36,5 +37,6 @@ apiRouter.post("/list/:listId", addListItem);
 // Project routes
 
 apiRouter.get("/projects", getProjects);
-apiRouter.get("/project/:projectId", getProject);
 apiRouter.post("/projects", addProject);
+apiRouter.get("/project/:projectId", getProject);
+apiRouter.delete("/project/:projectId", deleteProject);

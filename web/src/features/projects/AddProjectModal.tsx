@@ -31,6 +31,8 @@ export const AddProjectModal = ({
       await addProject({ title }).unwrap();
     } catch (err) {
       console.log(err);
+    } finally {
+      handleClose();
     }
   };
 
