@@ -4,6 +4,7 @@ import {
   deleteUserProject,
   getUserProject,
   getUserProjects,
+  updateUserProject,
 } from "../models/Project";
 
 export const getProjects = async function (
@@ -78,6 +79,34 @@ export const deleteProject = async function (
     }
 
     const result = await deleteUserProject(uid, projectId);
+    console.log(result);
+
+    res.send();
+  } catch (err) {
+    res.status(400);
+    next(err);
+  }
+};
+
+export const updateProject = async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { projectId } = req.params;
+  const { title } = req.body;
+  console.log(projectId);
+
+  try {
+    const uid = (req as any).user.id;
+    if (!projectId) {
+      throw new Error("Must provide project id to delete");
+    }
+
+    if (!title) {
+      throw new Error("Must provide parameter to update");
+    }
+    const result = await updateUserProject(uid, projectId, title);
     console.log(result);
 
     res.send();

@@ -16,12 +16,24 @@ import { DeleteProjectModal } from "./DeleteProjectModal";
 import { useGetProjectsQuery } from "./projectApi";
 import { ProjectType } from "./ProjectType";
 
+import { IoPencil } from "react-icons/io5";
+import { EditProjectModal } from "./EditProjectModal";
+
 export const ProjectsList = () => {
   const { data: projects = [] } = useGetProjectsQuery();
   const [selectedProject, setSelectedProject] = useState<ProjectType | null>(
     null
   );
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const {
+    isOpen: addIsOpen,
+    onClose: addOnClose,
+    onOpen: addOnOpen,
+  } = useDisclosure();
+  const {
+    isOpen: editIsOpen,
+    onClose: editOnClose,
+    onOpen: editOnOpen,
+  } = useDisclosure();
   const {
     isOpen: deleteIsOpen,
     onClose: deleteOnClose,
@@ -31,6 +43,11 @@ export const ProjectsList = () => {
   const handleConfirmDelete = (project: ProjectType) => {
     setSelectedProject(project);
     deleteOnOpen();
+  };
+
+  const handleShowEdit = (project: ProjectType) => {
+    setSelectedProject(project);
+    editOnOpen();
   };
 
   return (
@@ -52,6 +69,13 @@ export const ProjectsList = () => {
             </Button>
             <IconButton
               onClick={() => {
+                handleShowEdit(project);
+              }}
+              aria-label="Edit project"
+              icon={<IoPencil />}
+            />
+            <IconButton
+              onClick={() => {
                 handleConfirmDelete(project);
               }}
               aria-label="Delete project"
@@ -60,10 +84,16 @@ export const ProjectsList = () => {
           </HStack>
         );
       })}
-      <Button onClick={onOpen} w="full">
+      <Button onClick={addOnOpen} w="full">
         <AddIcon />
       </Button>
-      <AddProjectModal isOpen={isOpen} onClose={onClose} />
+      <AddProjectModal isOpen={addIsOpen} onClose={addOnClose} />
+      <EditProjectModal
+        isOpen={editIsOpen}
+        onClose={editOnClose}
+        selected={selectedProject}
+        setSelected={setSelectedProject}
+      />
       <DeleteProjectModal
         isOpen={deleteIsOpen}
         onClose={deleteOnClose}

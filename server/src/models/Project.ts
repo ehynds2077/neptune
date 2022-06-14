@@ -47,3 +47,14 @@ export const createProject = async function (uid: string, title: string) {
 
   return projectInsert;
 };
+
+export const updateUserProject = async function (
+  uid: string,
+  id: string,
+  title: string
+) {
+  return await db("project")
+    .where("user_id", uid)
+    .andWhere("id", id)
+    .update({ title });
+};

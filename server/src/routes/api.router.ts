@@ -16,6 +16,7 @@ import {
   deleteProject,
   getProject,
   getProjects,
+  updateProject,
 } from "../controllers/project.controller";
 
 export const apiRouter = express.Router();
@@ -35,8 +36,9 @@ apiRouter.delete("/item/:id", deleteItem);
 apiRouter.post("/list/:listId", addListItem);
 
 // Project routes
-
 apiRouter.get("/projects", getProjects);
 apiRouter.post("/projects", addProject);
+
 apiRouter.get("/project/:projectId", getProject);
 apiRouter.delete("/project/:projectId", deleteProject);
+apiRouter.put("/project/:projectId", updateProject);

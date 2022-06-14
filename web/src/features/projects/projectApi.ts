@@ -13,6 +13,11 @@ export interface DeleteProjectRequest {
   id: string;
 }
 
+export interface UpdateProjectRequest {
+  id: string;
+  title: string;
+}
+
 const projectApi = emptySplitApi.injectEndpoints({
   endpoints: (builder) => ({
     getProjects: builder.query<ProjectType[], void>({
@@ -38,6 +43,15 @@ const projectApi = emptySplitApi.injectEndpoints({
       invalidatesTags: ["Project"],
     }),
 
+    updateProject: builder.mutation<void, UpdateProjectRequest>({
+      query: (request) => ({
+        url: `/project/${request.id}`,
+        method: "PUT",
+        body: request,
+      }),
+      invalidatesTags: ["Project"],
+    }),
+
     addProject: builder.mutation<void, NewProject>({
       query: (project) => ({
         url: "/projects",
@@ -54,4 +68,5 @@ export const {
   useGetProjectsQuery,
   useAddProjectMutation,
   useDeleteProjectMutation,
+  useUpdateProjectMutation,
 } = projectApi;
