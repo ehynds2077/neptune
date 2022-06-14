@@ -25,7 +25,9 @@ export const Home = () => {
 
   return (
     <Flex w="full" maxW="xl" alignItems="center" gap={3} direction="column">
-      <Heading alignSelf="start">Lists</Heading>
+      <Heading size="lg" alignSelf="start">
+        Home
+      </Heading>
       <List w="full" maxW="xl" spacing={3}>
         <Button
           mb={4}

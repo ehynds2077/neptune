@@ -55,6 +55,7 @@ export const updateListItem = async function (
         is_done: isDone,
         notes,
         list_id: supportList.id,
+        project_id: projectId,
       });
   } else {
     return await db("list_item")

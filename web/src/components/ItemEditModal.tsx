@@ -25,29 +25,12 @@ import {
 import { listTypes, List_ListType } from "../features/lists/ListType";
 import { useGetProjectsQuery } from "../features/projects/projectApi";
 import { useList } from "../providers/ListProvider";
+import { listTypeDict } from "../features/lists/ListType";
 
 export interface ItemEditModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
-
-export interface ItemDict {
-  NEXT: string;
-  WAITING: string;
-  SOMEDAY: string;
-  AGENDA: string;
-  REFERENCE: string;
-  PROJECT_SUPPORT: string;
-  [key: string]: string;
-}
-export const itemTypeDict: ItemDict = {
-  NEXT: "Next",
-  WAITING: "Waiting",
-  SOMEDAY: "Someday / Maybe",
-  AGENDA: "Agenda",
-  REFERENCE: "Reference",
-  PROJECT_SUPPORT: "Project Support",
-};
 
 export const ItemEditModal = ({ isOpen, onClose }: ItemEditModalProps) => {
   const { selectedItem, listType } = useList();
@@ -170,8 +153,8 @@ export const ItemEditModal = ({ isOpen, onClose }: ItemEditModalProps) => {
             }}
           >
             <option value="">Inbox</option>
-            {Object.keys(itemTypeDict).map((key) => {
-              return <option value={key}>{itemTypeDict[key]}</option>;
+            {Object.keys(listTypeDict).map((key) => {
+              return <option value={key}>{listTypeDict[key]}</option>;
             })}
           </Select>
 

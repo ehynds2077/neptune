@@ -5,7 +5,6 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { ItemDict } from "../components/ItemEditModal";
 
 import { ListItemType } from "../features/lists/ListItemType";
 import { List_ListType } from "../features/lists/ListType";

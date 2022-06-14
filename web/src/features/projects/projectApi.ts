@@ -33,6 +33,7 @@ const projectApi = emptySplitApi.injectEndpoints({
         url: `/project/${request.id}`,
         method: "GET",
       }),
+      providesTags: ["Project"],
     }),
 
     deleteProject: builder.mutation<void, DeleteProjectRequest>({

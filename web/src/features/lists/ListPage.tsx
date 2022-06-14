@@ -14,6 +14,7 @@ import {
   useUpdateListItemMutation,
 } from "./listApi";
 import { ListItemType } from "./ListItemType";
+import { ListContainer } from "../../components/ListContainer";
 
 export const ListPage = () => {
   const params = useParams();
@@ -52,7 +53,7 @@ const ItemList = ({ listId }: { listId: string }) => {
         console.log(list.list_type);
       }
     }
-  }, [isError, refetch, list, listId]);
+  }, [isError, refetch, list, setListType]);
 
   useEffect(() => {
     setListId(listId);
@@ -137,11 +138,11 @@ const ItemList = ({ listId }: { listId: string }) => {
 
   return (
     <>
-      <Flex gap={3} direction="column" maxW="4xl" w="full" alignItems="center">
+      <ListContainer>
         <Heading>{list && list.title}</Heading>
         <AddListItemForm />
         {content}
-      </Flex>
+      </ListContainer>
       <ItemDeleteModal
         isOpen={showDelete}
         onDelete={handleDeleteItem}

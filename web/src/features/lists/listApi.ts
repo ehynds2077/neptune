@@ -95,7 +95,7 @@ const listApi = emptySplitApi.injectEndpoints({
         method: "PUT",
         body: request,
       }),
-      invalidatesTags: ["List"],
+      invalidatesTags: ["List", "Project"],
     }),
 
     updateListItemList: builder.mutation<ListItemType, UpdateItemListRequest>({
@@ -128,7 +128,7 @@ const listApi = emptySplitApi.injectEndpoints({
         }
       },
 
-      invalidatesTags: ["List", "InboxItem"],
+      invalidatesTags: ["List", "Project", "InboxItem"],
     }),
 
     updateListItem: builder.mutation<
