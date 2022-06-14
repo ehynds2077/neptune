@@ -8,12 +8,14 @@ import { IconButton } from "@chakra-ui/react";
 import { IoMdTrash } from "react-icons/io";
 import { Link as RouterLink } from "react-router-dom";
 import { ListType } from "./ListType";
+import { IoPencil } from "react-icons/io5";
 
 import { List } from "@chakra-ui/react";
 import { Text } from "@chakra-ui/react";
 import { useGetListsQuery } from "./listApi";
 import { Button } from "@chakra-ui/react";
 import { DeleteListModal } from "./DeleteListModal";
+import { EditListModal } from "./EditListModal";
 
 export const ListsList = ({
   type,
@@ -28,6 +30,11 @@ export const ListsList = ({
 
   const { isOpen, onClose, onOpen } = useDisclosure();
   const {
+    isOpen: editIsOpen,
+    onClose: editOnClose,
+    onOpen: editOnOpen,
+  } = useDisclosure();
+  const {
     isOpen: deleteIsOpen,
     onClose: deleteOnClose,
     onOpen: deleteOnOpen,
@@ -36,6 +43,11 @@ export const ListsList = ({
   const handleConfirmDelete = (list: ListType) => {
     setSelectedList(list);
     deleteOnOpen();
+  };
+
+  const handleShowEdit = (list: ListType) => {
+    setSelectedList(list);
+    editOnOpen();
   };
 
   return (
@@ -59,9 +71,16 @@ export const ListsList = ({
               </Button>
               <IconButton
                 onClick={() => {
+                  handleShowEdit(list);
+                }}
+                aria-label="Edit List"
+                icon={<IoPencil />}
+              />
+              <IconButton
+                onClick={() => {
                   handleConfirmDelete(list);
                 }}
-                aria-label="Delete Item"
+                aria-label="Delete List"
                 icon={<IoMdTrash />}
               />
             </HStack>
@@ -76,6 +95,12 @@ export const ListsList = ({
         <AddIcon />
       </Button>
       <AddListModal isOpen={isOpen} onClose={onClose} listType={type} />
+      <EditListModal
+        isOpen={editIsOpen}
+        onClose={editOnClose}
+        selected={selectedList}
+        setSelected={setSelectedList}
+      />
       <DeleteListModal
         isOpen={deleteIsOpen}
         onClose={deleteOnClose}

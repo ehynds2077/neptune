@@ -4,6 +4,7 @@ import {
   deleteUserList,
   getUserList,
   getUserLists,
+  updateUserList,
 } from "../models/List";
 
 export const getLists = async function (
@@ -40,6 +41,35 @@ export const getList = async function (
   } catch (e) {
     res.status(400);
     next(e);
+  }
+};
+
+export const updateList = async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { listId } = req.params;
+  const { title } = req.body;
+  console.log(listId);
+
+  try {
+    const uid = (req as any).user.id;
+    if (!listId) {
+      throw new Error("Must provide list id to update");
+    }
+
+    if (!title) {
+      throw new Error("Must provide parameter to update");
+    }
+
+    const result = await updateUserList(uid, listId, title);
+    console.log(result);
+
+    res.send();
+  } catch (err) {
+    res.status(400);
+    next(err);
   }
 };
 

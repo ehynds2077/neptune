@@ -32,6 +32,11 @@ export interface DeleteListRequest {
   id: string;
 }
 
+export interface UpdateListRequest {
+  id: string;
+  title: string;
+}
+
 export interface UpdateItemListRequest {
   listId: string;
   newListId?: string;
@@ -80,6 +85,15 @@ const listApi = emptySplitApi.injectEndpoints({
         url: item.listId === "" ? "inbox" : `/list/${item.listId}`,
         method: "POST",
         body: item,
+      }),
+      invalidatesTags: ["List"],
+    }),
+
+    updateList: builder.mutation<void, UpdateListRequest>({
+      query: (request) => ({
+        url: `/list/${request.id}`,
+        method: "PUT",
+        body: request,
       }),
       invalidatesTags: ["List"],
     }),
@@ -189,6 +203,7 @@ const listApi = emptySplitApi.injectEndpoints({
 export const {
   useGetListsQuery,
   useAddListMutation,
+  useUpdateListMutation,
   useUpdateListItemMutation,
   useUpdateListItemListMutation,
   useDeleteListItemMutation,

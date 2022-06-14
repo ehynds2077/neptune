@@ -115,3 +115,14 @@ export const createList = async function (
     list_type: type,
   });
 };
+
+export const updateUserList = async function (
+  uid: string,
+  id: string,
+  title: string
+) {
+  return await db("list")
+    .where("user_id", uid)
+    .andWhere("id", id)
+    .update({ title });
+};

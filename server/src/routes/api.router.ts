@@ -10,6 +10,7 @@ import {
   deleteList,
   getList,
   getLists,
+  updateList,
 } from "../controllers/list.controller";
 import {
   addProject,
@@ -29,6 +30,7 @@ apiRouter.get("/lists", getLists);
 apiRouter.post("/list", addList);
 apiRouter.get("/list/:listId?", getList);
 apiRouter.delete("/list/:listId", deleteList);
+apiRouter.put("/list/:listId", updateList);
 
 // List item routes
 apiRouter.put("/item/:id", updateItem);
