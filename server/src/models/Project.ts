@@ -35,22 +35,11 @@ export const getUserProject = async function (uid: string, projectId: string) {
     )
     .table("list_item")
     .where("list_item.user_id", uid)
+    .join("list", "list_item.list_id", "=", "list.id")
     .where("list_item.project_id", projectId)
-    .join("list", "list_item.list_id", "=", "list.id");
+    .orWhere("list.project_id", projectId);
 
-  const supportItems = await db
-    .select(
-      "list_item.title",
-      "list_item.is_done",
-      "list_item.id",
-      "list.list_type as list_type"
-    )
-    .table("list")
-    .where("list.project_id", projectId)
-    .where("list.user_id", uid)
-    .join("list_item", "list_item.list_id", "=", "list.id");
-
-  return { ...project, items: [...items, ...supportItems] };
+  return { ...project, items };
 };
 
 export const deleteUserProject = async function (uid: string, id: string) {

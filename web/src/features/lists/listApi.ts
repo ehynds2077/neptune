@@ -206,6 +206,7 @@ const listApi = emptySplitApi.injectEndpoints({
         url: `item/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["Project", "List", "InboxItem"],
 
       async onQueryStarted({ id, list_id }, { dispatch, queryFulfilled }) {
         const deleteResult = dispatch(

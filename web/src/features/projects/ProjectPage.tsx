@@ -30,7 +30,7 @@ import {
   useUpdateListItemMutation,
 } from "../lists/listApi";
 import { ItemDeleteModal } from "../../components/ItemDeleteModal";
-import { ItemEditModal } from "../../components/ItemEditModal";
+import EditItemModal from "../../components/EditItemModal";
 
 const ProjectPageContainer = () => {
   const params = useParams();
@@ -147,13 +147,13 @@ const ProjectPage = ({ projectId }: { projectId: string }) => {
           setShowDelete(false);
         }}
       />
-      <ItemEditModal
+      {/* <ItemEditModal
         isOpen={showEdit}
         onClose={() => {
           setSelected(null);
           setShowEdit(false);
         }}
-      />
+      /> */}
     </ListContainer>
   );
 };

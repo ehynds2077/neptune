@@ -4,7 +4,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 
 import { ItemDeleteModal } from "../../components/ItemDeleteModal";
-import { ItemEditModal } from "../../components/ItemEditModal";
+import EditItemModal from "../../components/EditItemModal";
 import { ListProvider, useList } from "../../providers/ListProvider";
 import { AddListItemForm } from "./AddListItemForm";
 import { ItemRow } from "./ItemRow";
@@ -139,7 +139,7 @@ const ItemList = ({ listId }: { listId: string }) => {
           setShowDelete(false);
         }}
       />
-      <ItemEditModal
+      <EditItemModal
         isOpen={showEdit}
         onClose={() => {
           setSelectedItem(null);
