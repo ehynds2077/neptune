@@ -22,10 +22,9 @@ import {
   useUpdateListItemListMutation,
   useUpdateListItemMutation,
 } from "../features/lists/listApi";
-import { listTypes, List_ListType } from "../features/lists/ListType";
+import { listTypeDict } from "../features/lists/ListType";
 import { useGetProjectsQuery } from "../features/projects/projectApi";
 import { useList } from "../providers/ListProvider";
-import { listTypeDict } from "../features/lists/ListType";
 
 export interface ItemEditModalProps {
   isOpen: boolean;
@@ -50,12 +49,12 @@ export const ItemEditModal = ({ isOpen, onClose }: ItemEditModalProps) => {
   useEffect(() => {
     if (selectedItem) {
       setTitle(selectedItem.title);
-      setSelectedListId(selectedItem.listId);
+      setSelectedListId(selectedItem.list_id);
       setSelectedProjectId("");
       if (selectedItem.project) {
         setSelectedProjectId(selectedItem.project.id);
       }
-      if (selectedItem.listId) {
+      if (selectedItem.list_id) {
         console.log(listType);
         setSelectedType(listType);
       } else {
@@ -87,15 +86,15 @@ export const ItemEditModal = ({ isOpen, onClose }: ItemEditModalProps) => {
             (project) => project.id === selectedProjectId
           );
           await updateListItem({
-            listId: selectedItem.listId,
+            list_id: selectedItem.list_id,
             id: selectedItem.id,
-            projectId: selectedProjectId,
+            project_id: selectedProjectId,
             project,
             title,
           }).unwrap();
         }
         if (
-          selectedListId !== selectedItem.listId ||
+          selectedListId !== selectedItem.list_id ||
           selectedType !== listType
         ) {
           const newListId =
@@ -105,9 +104,9 @@ export const ItemEditModal = ({ isOpen, onClose }: ItemEditModalProps) => {
                 : "PROJECT_SUPPORT"
               : "";
           await updateList({
-            listId: selectedItem.listId,
-            newListId,
-            projectId: selectedProjectId,
+            list_id: selectedItem.list_id,
+            new_list_id: newListId,
+            project_id: selectedProjectId,
             id: selectedItem.id,
           }).unwrap();
         }

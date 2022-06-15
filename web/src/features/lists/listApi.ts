@@ -2,6 +2,7 @@ import { emptySplitApi } from "../../api";
 import { ListItemType } from "./ListItemType";
 import { List_ListType } from "./ListType";
 import { ListType } from "./ListType";
+import { projectApi } from "../projects/projectApi";
 
 export interface NewList {
   title: string;
@@ -14,17 +15,18 @@ export interface ListRequest {
 
 export interface NewListItem {
   title: string;
-  listId: string;
+  list_id: string;
 }
 
 export interface UpdateItemRequest {
-  listId: string;
+  list_id?: string;
   id: string;
-  projectId?: string;
+  project_id?: string;
 }
 
 export interface DeleteItemRequest {
-  listId: string;
+  list_id?: string;
+  project_id?: string;
   id: string;
 }
 
@@ -38,9 +40,9 @@ export interface UpdateListRequest {
 }
 
 export interface UpdateItemListRequest {
-  listId: string;
-  newListId?: string;
-  projectId?: string;
+  list_id: string;
+  new_list_id?: string;
+  project_id?: string;
   id: string;
 }
 
@@ -82,7 +84,7 @@ const listApi = emptySplitApi.injectEndpoints({
 
     addListItem: builder.mutation<ListItemType, NewListItem>({
       query: (item) => ({
-        url: item.listId === "" ? "inbox" : `/list/${item.listId}`,
+        url: item.list_id === "" ? "inbox" : `/list/${item.list_id}`,
         method: "POST",
         body: item,
       }),
@@ -106,18 +108,22 @@ const listApi = emptySplitApi.injectEndpoints({
       }),
 
       async onQueryStarted(
-        { id, listId, newListId },
+        { id, list_id, new_list_id },
         { dispatch, queryFulfilled }
       ) {
-        console.log(newListId);
-        if (newListId) {
+        console.log(new_list_id);
+        if (new_list_id) {
           const removeFromCurrent = dispatch(
-            listApi.util.updateQueryData("getList", { id: listId }, (draft) => {
-              const index = draft.items.findIndex((item) => item.id === id);
-              if (index > -1) {
-                draft.items.splice(index, 1);
+            listApi.util.updateQueryData(
+              "getList",
+              { id: list_id },
+              (draft) => {
+                const index = draft.items.findIndex((item) => item.id === id);
+                if (index > -1) {
+                  draft.items.splice(index, 1);
+                }
               }
-            })
+            )
           );
 
           try {
@@ -140,16 +146,36 @@ const listApi = emptySplitApi.injectEndpoints({
         method: "PUT",
         body: updated,
       }),
-      invalidatesTags: ["Project"],
+      invalidatesTags: ["Project", "List", "InboxItem"],
 
       async onQueryStarted(
-        { id, listId, ...updated },
+        { id, list_id, project_id, ...updated },
         { dispatch, queryFulfilled }
       ) {
+        if (project_id) {
+          const putResult = dispatch(
+            projectApi.util.updateQueryData(
+              "getProject",
+              { id: project_id },
+              (draft) => {
+                const item = draft.items.find((item) => item.id === id);
+                if (item) {
+                  Object.assign(item, updated);
+                }
+              }
+            )
+          );
+
+          try {
+            await queryFulfilled;
+          } catch (err) {
+            putResult.undo();
+          }
+        }
         const putResult = dispatch(
           listApi.util.updateQueryData(
             "getList",
-            { id: listId ? listId : "" },
+            { id: list_id ? list_id : "" },
             (draft) => {
               const item = draft.items.find((item) => item.id === id);
               if (item) {
@@ -181,9 +207,9 @@ const listApi = emptySplitApi.injectEndpoints({
         method: "DELETE",
       }),
 
-      async onQueryStarted({ id, listId }, { dispatch, queryFulfilled }) {
+      async onQueryStarted({ id, list_id }, { dispatch, queryFulfilled }) {
         const deleteResult = dispatch(
-          listApi.util.updateQueryData("getList", { id: listId }, (draft) => {
+          listApi.util.updateQueryData("getList", { id: list_id }, (draft) => {
             const index = draft.items.findIndex((item) => item.id === id);
             if (index > -1) {
               draft.items.splice(index, 1);

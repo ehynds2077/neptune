@@ -44,10 +44,11 @@ export const updateItem = async function (
     title,
     is_done,
     notes,
-    newListId,
-    projectId: newProjectId,
+    new_list_id,
+    project_id: newProjectId,
     project,
   } = req.body;
+
   let projectId = project ? project.id : newProjectId;
   try {
     if (!id) {
@@ -58,7 +59,7 @@ export const updateItem = async function (
       title === undefined &&
       is_done === undefined &&
       notes === undefined &&
-      newListId === undefined &&
+      new_list_id === undefined &&
       projectId === undefined
     ) {
       throw new Error("Must provide paramater to update");
@@ -72,7 +73,7 @@ export const updateItem = async function (
       title,
       is_done,
       notes,
-      newListId,
+      new_list_id,
       projectId
     );
     if (!result) {

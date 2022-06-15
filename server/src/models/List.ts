@@ -67,14 +67,14 @@ export const getUserList = async function (uid: string, listId: string | null) {
         "list_item.title",
         "list_item.is_done",
         "list_item.notes",
-        "list_item.list_id as listId",
+        "list_item.list_id as list_id",
         "project.title as projectTitle",
         "project.id as projectId",
       ]);
   } else {
     list = { title: "Inbox", id: "" };
     items = await db
-      .select("id", "title", "is_done", "notes", "list_id as listId")
+      .select("id", "title", "is_done", "notes", "list_id ")
       .table("list_item")
       .where("user_id", uid)
       .where("list_id", null)

@@ -18,7 +18,7 @@ export interface UpdateProjectRequest {
   title: string;
 }
 
-const projectApi = emptySplitApi.injectEndpoints({
+export const projectApi = emptySplitApi.injectEndpoints({
   endpoints: (builder) => ({
     getProjects: builder.query<ProjectType[], void>({
       query: () => ({

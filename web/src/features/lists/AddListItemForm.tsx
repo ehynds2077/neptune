@@ -14,7 +14,7 @@ export const AddListItemForm = () => {
     try {
       await addListItem({
         title: newItemTitle,
-        listId: params.listId || "",
+        list_id: params.listId || "",
       }).unwrap();
       setNewItemTitle("");
     } catch (e) {

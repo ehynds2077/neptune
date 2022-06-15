@@ -57,9 +57,9 @@ export const ListsList = ({
       </Text>
       {lists
         .filter((list) => list.list_type === type)
-        .map((list) => {
+        .map((list, idx) => {
           return (
-            <HStack>
+            <HStack key={idx}>
               <Button
                 as={RouterLink}
                 to={`/list/${list.id}`}

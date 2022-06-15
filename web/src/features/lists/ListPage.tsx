@@ -40,6 +40,8 @@ const ItemList = ({ listId }: { listId: string }) => {
   const [updateListItem] = useUpdateListItemMutation();
   const [deleteListItem] = useDeleteListItemMutation();
 
+  const [selected, setSelected] = useState<ListItemType | null>(null);
+
   const { setSelectedItem, selectedItem, setListId, setListType } = useList();
 
   const [showEdit, setShowEdit] = useState(false);
@@ -72,7 +74,7 @@ const ItemList = ({ listId }: { listId: string }) => {
   const handleCheckItem = async (item: ListItemType) => {
     try {
       await updateListItem({
-        listId: listId,
+        list_id: listId,
         id: item.id,
         is_done: !item.is_done,
       }).unwrap();
@@ -83,8 +85,8 @@ const ItemList = ({ listId }: { listId: string }) => {
 
   const handleDeleteItem = async () => {
     try {
-      if (selectedItem && selectedItem.id) {
-        await deleteListItem({ listId, id: selectedItem.id }).unwrap();
+      if (selected && selected.id) {
+        await deleteListItem({ list_id: listId, id: selected.id }).unwrap();
       }
     } catch (e) {
       console.log(e);
@@ -102,29 +104,20 @@ const ItemList = ({ listId }: { listId: string }) => {
       </>
     );
   } else if (isSuccess) {
-    if (isFetching) {
-      content = (
-        <>
-          <Text>Loading...</Text>
-          <Spinner />
-        </>
-      );
-    } else {
-      content = (
-        <NeptuneList>
-          {list.items.map((item, idx) => (
-            <ItemRow
-              key={idx}
-              listType={list.list_type}
-              onClick={handleClickItem}
-              onCheck={handleCheckItem}
-              onDelete={handleConfirmDelete}
-              item={item}
-            />
-          ))}
-        </NeptuneList>
-      );
-    }
+    content = (
+      <NeptuneList>
+        {list.items.map((item, idx) => (
+          <ItemRow
+            key={idx}
+            listType={list.list_type}
+            onClick={handleClickItem}
+            onCheck={handleCheckItem}
+            onDelete={handleConfirmDelete}
+            item={item}
+          />
+        ))}
+      </NeptuneList>
+    );
   } else if (isError) {
     console.log(error);
     content = <Text>{error.toString()}</Text>;
@@ -140,7 +133,9 @@ const ItemList = ({ listId }: { listId: string }) => {
       <ItemDeleteModal
         isOpen={showDelete}
         onDelete={handleDeleteItem}
+        selected={selected}
         onClose={() => {
+          setSelected(null);
           setShowDelete(false);
         }}
       />

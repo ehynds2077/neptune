@@ -16,7 +16,7 @@ export const createInboxItem = async function (
 
 export const getUserInbox = async function (uid: string) {
   return await db
-    .select("title", "is_done", "notes", "id", "list_id as listId")
+    .select("title", "is_done", "notes", "id", "list_id")
     .table("list_item")
     .where("user_id", uid)
     .where("list_id", null)

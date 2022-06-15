@@ -153,15 +153,3 @@ export const refreshToken = async function (
     next(e);
   }
 };
-
-// export const refresh = async function (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) {
-//   const { refreshToken } = req.body;
-
-//   try {
-//     if ()
-//   }
-// }

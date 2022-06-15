@@ -55,9 +55,9 @@ export const ProjectsList = () => {
       <Text fontSize="xl" fontWeight="bold" alignSelf="start">
         Projects
       </Text>
-      {projects.map((project) => {
+      {projects.map((project, idx) => {
         return (
-          <HStack>
+          <HStack key={idx}>
             <Button
               as={RouterLink}
               to={`/project/${project.id}`}

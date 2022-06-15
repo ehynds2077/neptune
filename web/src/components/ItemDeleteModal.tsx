@@ -9,21 +9,20 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React, { useRef } from "react";
-import { useEffect, useState } from "react";
-
-import { useList } from "../providers/ListProvider";
+import { ListItemType } from "../features/lists/ListItemType";
+import { ProjectListItemType } from "../features/projects/ProjectType";
 
 export const ItemDeleteModal = ({
   isOpen,
   onClose,
   onDelete,
+  selected,
 }: {
   isOpen: boolean;
   onClose: () => void;
   onDelete: () => void;
+  selected: ListItemType | ProjectListItemType | null;
 }) => {
-  const { selectedItem } = useList();
-
   const cancelRef = useRef(null);
 
   return (
@@ -37,7 +36,7 @@ export const ItemDeleteModal = ({
           <AlertDialogContent>
             <AlertDialogHeader>Delete inbox item</AlertDialogHeader>
             <AlertDialogBody>
-              {selectedItem && selectedItem.title}
+              {selected && selected.title}
               <Text>
                 Are you sure you want to delete this item? You can't undo this
                 action.

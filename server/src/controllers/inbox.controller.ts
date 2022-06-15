@@ -6,7 +6,7 @@ export const addItem = async function (
   res: Response,
   next: NextFunction
 ) {
-  const { title, isDone, notes } = req.body;
+  const { title, is_done, notes } = req.body;
   try {
     if (!title) {
       throw new Error("Must include title");
@@ -14,12 +14,12 @@ export const addItem = async function (
 
     const id = (req as any).user.id;
 
-    const result = await createInboxItem(id, title, isDone, notes);
+    const result = await createInboxItem(id, title, is_done, notes);
     if (!(result as any).rowCount) {
       throw new Error("Encountered a problem adding inbox item");
     }
 
-    const item = { title, isDone, notes };
+    const item = { title, is_done, notes };
 
     res.json(item);
   } catch (e) {

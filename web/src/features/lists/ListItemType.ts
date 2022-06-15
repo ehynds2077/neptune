@@ -5,7 +5,7 @@ export interface ListItemType {
   title: string;
   is_done: boolean;
   notes?: string;
-  listId: string;
+  list_id: string;
   project?: ListItemProjectType;
 }
 

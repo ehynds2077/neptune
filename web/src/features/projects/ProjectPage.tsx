@@ -25,6 +25,12 @@ import { ListContainer } from "../../components/ListContainer";
 import { List_ListType, listTypeDict } from "../lists/ListType";
 import { useGetProjectQuery } from "./projectApi";
 import { ProjectListItemType } from "./ProjectType";
+import {
+  useDeleteListItemMutation,
+  useUpdateListItemMutation,
+} from "../lists/listApi";
+import { ItemDeleteModal } from "../../components/ItemDeleteModal";
+import { ItemEditModal } from "../../components/ItemEditModal";
 
 const ProjectPageContainer = () => {
   const params = useParams();
@@ -42,7 +48,54 @@ const ProjectPageContainer = () => {
 
 const ProjectPage = ({ projectId }: { projectId: string }) => {
   const { data: project } = useGetProjectQuery({ id: projectId });
-  console.log(project);
+
+  const [updateListItem] = useUpdateListItemMutation();
+  const [deleteListItem] = useDeleteListItemMutation();
+
+  const [selected, setSelected] = useState<ProjectListItemType | null>(null);
+
+  const handleDeleteItem = async () => {
+    try {
+      if (selected && selected.id) {
+        if (project) {
+          await deleteListItem({
+            project_id: project.id,
+            id: selected.id,
+          }).unwrap();
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    setShowDelete(false);
+  };
+
+  const [showEdit, setShowEdit] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+
+  const handleClickItem = async (item: ProjectListItemType) => {
+    setShowEdit(true);
+    setSelected(item);
+  };
+
+  const handleConfirmDelete = async (item: ProjectListItemType) => {
+    setShowDelete(true);
+    setSelected(item);
+  };
+  const handleCheckItem = async (item: ProjectListItemType) => {
+    try {
+      if (project) {
+        await updateListItem({
+          project_id: project.id,
+          id: item.id,
+          is_done: !item.is_done,
+        }).unwrap();
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <ListContainer>
       <Heading>{project && project.title}</Heading>
@@ -51,9 +104,9 @@ const ProjectPage = ({ projectId }: { projectId: string }) => {
           <TabList>
             {project &&
               project.items &&
-              Object.keys(listTypeDict).map((itemType) => {
+              Object.keys(listTypeDict).map((itemType, idx) => {
                 return (
-                  <Tab _focus={{ boxShadow: "none" }}>
+                  <Tab _focus={{ boxShadow: "none" }} key={idx}>
                     {listTypeDict[itemType]}
                   </Tab>
                 );
@@ -62,9 +115,9 @@ const ProjectPage = ({ projectId }: { projectId: string }) => {
           <TabPanels>
             {project &&
               project.items &&
-              Object.keys(listTypeDict).map((itemType) => {
+              Object.keys(listTypeDict).map((itemType, idx) => {
                 return (
-                  <TabPanel px={0}>
+                  <TabPanel key={idx} px={0}>
                     {project.items
                       .filter((item) => item.list_type === itemType)
                       .map((item, idx) => {
@@ -73,9 +126,9 @@ const ProjectPage = ({ projectId }: { projectId: string }) => {
                             item={item}
                             key={idx}
                             listType={item.list_type}
-                            onClick={async (item) => {}}
-                            onCheck={async (item) => {}}
-                            onDelete={async (item) => {}}
+                            onClick={handleClickItem}
+                            onCheck={handleCheckItem}
+                            onDelete={handleConfirmDelete}
                           />
                         );
                       })}
@@ -85,6 +138,22 @@ const ProjectPage = ({ projectId }: { projectId: string }) => {
           </TabPanels>
         </Tabs>
       </NeptuneList>
+      <ItemDeleteModal
+        isOpen={showDelete}
+        onDelete={handleDeleteItem}
+        selected={selected}
+        onClose={() => {
+          setSelected(null);
+          setShowDelete(false);
+        }}
+      />
+      <ItemEditModal
+        isOpen={showEdit}
+        onClose={() => {
+          setSelected(null);
+          setShowEdit(false);
+        }}
+      />
     </ListContainer>
   );
 };
