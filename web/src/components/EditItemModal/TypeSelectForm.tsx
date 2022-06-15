@@ -16,9 +16,11 @@ export const TypeSelectForm = () => {
         }}
       >
         <option value="">Inbox</option>
-        {Object.keys(listTypeDict).map((key) => {
-          return <option value={key}>{listTypeDict[key]}</option>;
-        })}
+        {Object.keys(listTypeDict).map((key, idx) => (
+          <option key={idx} value={key}>
+            {listTypeDict[key]}
+          </option>
+        ))}
       </Select>
     </>
   );

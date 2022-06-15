@@ -5,7 +5,6 @@ import { useEditItem } from "./EditItemProvider";
 import { useGetListsQuery } from "../../features/lists/listApi";
 
 export const ListSelectForm = () => {
-  const { listType } = useList();
   const { selectedListId, setSelectedListId, selectedType } = useEditItem();
 
   const { data: lists = [] } = useGetListsQuery();
@@ -24,9 +23,13 @@ export const ListSelectForm = () => {
           >
             <option value=""></option>
             {lists
-              .filter((list) => list.list_type === listType)
-              .map((list) => {
-                return <option value={list.id}>{list.title}</option>;
+              .filter((list) => list.list_type === selectedType)
+              .map((list, idx) => {
+                return (
+                  <option key={idx} value={list.id}>
+                    {list.title}
+                  </option>
+                );
               })}
           </Select>
         </>

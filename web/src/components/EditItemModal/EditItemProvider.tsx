@@ -43,7 +43,9 @@ export const EditItemProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (selectedItem) {
       setTitle(selectedItem.title);
-      setSelectedListId(selectedItem.list_id);
+      if (selectedItem.list_id) {
+        setSelectedListId(selectedItem.list_id);
+      }
       setSelectedProjectId("");
       if (selectedItem.project) {
         setSelectedProjectId(selectedItem.project.id);
@@ -90,12 +92,14 @@ export const EditItemProvider = ({ children }: { children: ReactNode }) => {
                 ? selectedListId
                 : "PROJECT_SUPPORT"
               : "";
-          await updateList({
-            list_id: selectedItem.list_id,
-            new_list_id: newListId,
-            project_id: selectedProjectId,
-            id: selectedItem.id,
-          }).unwrap();
+          if (selectedItem.list_id) {
+            await updateList({
+              list_id: selectedItem.list_id,
+              new_list_id: newListId,
+              project_id: selectedProjectId,
+              id: selectedItem.id,
+            }).unwrap();
+          }
         }
       }
     } catch (e) {

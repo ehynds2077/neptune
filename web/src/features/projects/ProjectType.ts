@@ -7,6 +7,11 @@ export interface ProjectListItemType {
   notes?: string;
   list_type: List_ListType;
   list_title?: string;
+  list_id?: string;
+  project?: {
+    title: string;
+    id: string;
+  };
 }
 
 export interface ProjectType {

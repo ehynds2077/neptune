@@ -31,8 +31,12 @@ export const ProjectSelectForm = () => {
               }}
             >
               <option value="">None</option>
-              {projects.map((project) => {
-                return <option value={project.id}>{project.title}</option>;
+              {projects.map((project, idx) => {
+                return (
+                  <option key={idx} value={project.id}>
+                    {project.title}
+                  </option>
+                );
               })}
             </Select>
             <FormErrorMessage>
