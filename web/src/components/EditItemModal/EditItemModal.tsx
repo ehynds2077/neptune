@@ -10,8 +10,6 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 
-import { ProjectListItemType } from "../../features/projects/ProjectType";
-import { useList } from "../../providers/ListProvider";
 import { useEditItem } from "./EditItemProvider";
 import { ListSelectForm } from "./ListSelectForm";
 import { ProjectSelectForm } from "./ProjectSelectForm";

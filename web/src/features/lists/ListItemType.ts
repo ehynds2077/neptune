@@ -5,11 +5,11 @@ export interface ListItemType {
   title: string;
   is_done: boolean;
   notes?: string;
+  list_type?: string;
   list_id?: string;
   list_title?: string;
   project_id?: string;
   project_title?: string;
-  list_type?: string;
 }
 
 export interface ListItemProjectType {

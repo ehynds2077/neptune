@@ -5,17 +5,10 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import {
-  useGetListsQuery,
-  useUpdateListItemMutation,
-} from "../../features/lists/listApi";
+
+import { useUpdateListItemMutation } from "../../features/lists/listApi";
 import { ListItemType } from "../../features/lists/ListItemType";
-import {
-  List_ListType,
-  List_ListTypeSupport,
-} from "../../features/lists/ListType";
-import { useGetProjectsQuery } from "../../features/projects/projectApi";
-import { ProjectListItemType } from "../../features/projects/ProjectType";
+import { List_ListTypeSupport } from "../../features/lists/ListType";
 import { useList } from "../../providers/ListProvider";
 
 interface EditItemContextType {
@@ -29,10 +22,7 @@ interface EditItemContextType {
   setSelectedListId: (id: string) => void;
   setSelectedProjectId: (id: string) => void;
   editItem: () => void;
-  onOpen: (
-    item: ProjectListItemType | ListItemType,
-    type: List_ListTypeSupport
-  ) => void;
+  onOpen: (item: ListItemType, type: List_ListTypeSupport) => void;
   onClose: () => void;
 }
 
@@ -43,16 +33,12 @@ export const EditItemProvider = ({ children }: { children: ReactNode }) => {
 
   const [updateListItem] = useUpdateListItemMutation();
 
-  const { data: projects = [] } = useGetProjectsQuery();
-
   const [title, setTitle] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [selectedListId, setSelectedListId] = useState("");
   const [selectedProjectId, setSelectedProjectId] = useState("");
 
-  const [selectedItem, setSelectedItem] = useState<
-    ProjectListItemType | ListItemType | null
-  >(null);
+  const [selectedItem, setSelectedItem] = useState<ListItemType | null>(null);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -63,10 +49,7 @@ export const EditItemProvider = ({ children }: { children: ReactNode }) => {
     setSelectedProjectId("");
   };
 
-  const onOpen = (
-    item: ProjectListItemType | ListItemType,
-    type: List_ListTypeSupport
-  ) => {
+  const onOpen = (item: ListItemType, type: List_ListTypeSupport) => {
     resetFields();
     setSelectedItem(item);
     console.log(item);

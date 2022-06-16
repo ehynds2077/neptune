@@ -1,17 +1,10 @@
-import React, {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { createContext, ReactNode, useContext, useState } from "react";
 
 import { ListItemType } from "../features/lists/ListItemType";
 import { List_ListType } from "../features/lists/ListType";
-import { ProjectListItemType } from "../features/projects/ProjectType";
 
 interface ListContextType {
-  selectedItem: ListItemType | ProjectListItemType | null;
+  selectedItem: ListItemType | null;
   setSelectedItem: any;
   setListType: any;
   listId: string | null | undefined;
@@ -22,9 +15,7 @@ interface ListContextType {
 const ListContext = createContext<ListContextType>(null!);
 
 export const ListProvider = ({ children }: { children: ReactNode }) => {
-  const [selectedItem, setSelectedItem] = useState<
-    ListItemType | ProjectListItemType | null
-  >(null);
+  const [selectedItem, setSelectedItem] = useState<ListItemType | null>(null);
   const [listId, setListId] = useState<string | null | undefined>(undefined);
   const [listType, setListType] = useState<"" | List_ListType>("");
 
@@ -43,7 +34,7 @@ export const ListProvider = ({ children }: { children: ReactNode }) => {
 export const useList = () => {
   const list = useContext(ListContext);
   if (!list) {
-    throw new Error("Musst be used inside List provider");
+    throw new Error("Must be used inside List provider");
   }
   return list;
 };

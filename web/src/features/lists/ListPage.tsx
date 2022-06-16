@@ -10,13 +10,13 @@ import { ListContainer } from "../../components/ListContainer";
 import { NeptuneList } from "../../components/NeptuneList";
 import { ListProvider, useList } from "../../providers/ListProvider";
 import { AddListItemForm } from "./AddListItemForm";
-import { ItemRow } from "./ItemRow";
 import {
   useDeleteListItemMutation,
   useGetListQuery,
   useUpdateListItemMutation,
 } from "./listApi";
 import { ListItemType } from "./ListItemType";
+import { ItemRow } from "./ItemRow";
 
 export const ListPage = () => {
   const params = useParams();
@@ -108,6 +108,8 @@ const ItemList = ({ listId }: { listId: string }) => {
           <ItemRow
             key={idx}
             listType={list.list_type}
+            showList={false}
+            showProject={true}
             onCheck={handleCheckItem}
             onDelete={handleConfirmDelete}
             item={item}

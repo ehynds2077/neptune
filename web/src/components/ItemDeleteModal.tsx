@@ -10,7 +10,6 @@ import {
 } from "@chakra-ui/react";
 import React, { useRef } from "react";
 import { ListItemType } from "../features/lists/ListItemType";
-import { ProjectListItemType } from "../features/projects/ProjectType";
 
 export const ItemDeleteModal = ({
   isOpen,
@@ -21,7 +20,7 @@ export const ItemDeleteModal = ({
   isOpen: boolean;
   onClose: () => void;
   onDelete: () => void;
-  selected: ListItemType | ProjectListItemType | null;
+  selected: ListItemType | null;
 }) => {
   const cancelRef = useRef(null);
 
