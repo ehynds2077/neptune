@@ -52,6 +52,7 @@ export const SignUp = () => {
             borderColor="gray.400"
             borderWidth={2}
             placeholder="Name"
+            _invalid={{ borderColor: "gray.400" }}
             value={name}
             onChange={handleNameChange}
           />
@@ -63,6 +64,7 @@ export const SignUp = () => {
             variant="outline"
             borderColor="gray.400"
             borderWidth={2}
+            _invalid={{ borderColor: "gray.400" }}
             value={email}
             onChange={handleEmailChange}
           />
@@ -77,6 +79,7 @@ export const SignUp = () => {
             borderColor="gray.400"
             borderWidth={2}
             placeholder="Password"
+            _invalid={{ borderColor: "gray.400" }}
             value={password}
             onChange={handlePasswordChange}
           />

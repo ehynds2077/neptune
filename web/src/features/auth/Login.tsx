@@ -87,6 +87,7 @@ export const Login = () => {
             borderColor="gray.400"
             borderWidth={2}
             value={email}
+            _invalid={{ borderColor: "gray.400" }}
             onChange={handleEmailChange}
           />
           <FormErrorMessage>
@@ -101,6 +102,7 @@ export const Login = () => {
             type="password"
             placeholder="Password"
             value={password}
+            _invalid={{ borderColor: "gray.400" }}
             onChange={handlePasswordChange}
           />
           <FormErrorMessage>
