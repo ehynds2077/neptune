@@ -68,7 +68,9 @@ export const ItemRow = ({
               <Text>{item.title}</Text>
               {showList && item.list_title && (
                 <HStack justifySelf="end">
-                  <Text color="gray.400">List: </Text>
+                  <Text _light={{ color: "gray.600" }} color="gray.400">
+                    List:{" "}
+                  </Text>
                   <Text>{item.list_title}</Text>
                 </HStack>
               )}

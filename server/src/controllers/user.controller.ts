@@ -10,6 +10,7 @@ import {
 import { hashPass } from "../utils/crypto";
 import { configuration } from "../config";
 import { checkValidToken, deleteToken } from "../models/RefreshToken";
+import { validateEmail } from "../utils/validateEmail";
 
 const cookieOptions = {
   httpOnly: true,
@@ -58,6 +59,11 @@ export const login = async function (
       throw new Error("Credentials not provided");
     }
 
+    // Check for valid email
+    if (!validateEmail(email)) {
+      throw new Error("Invalid email address provided");
+    }
+
     const errMsg = "Email or password is incorrect or user does not exist";
 
     // Check user exists
@@ -97,15 +103,23 @@ export const register = async function (
   console.log(email, password);
 
   try {
+    // Check for credentials
     if (!(name && email && password)) {
       throw new Error("Credentials not provided");
     }
 
+    // Check for valid email
+    if (!validateEmail(email)) {
+      throw new Error("Invalid email address provided");
+    }
+
+    // Check user exists
     const existing = await getUserByEmail(email);
     if (existing) {
       throw new Error("User with email already exists");
     }
 
+    // Check password length
     if ((password as string).length > 72) {
       throw new Error("Password must be at most 72 characters long");
     }

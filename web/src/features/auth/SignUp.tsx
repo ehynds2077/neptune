@@ -1,8 +1,10 @@
 import { Button } from "@chakra-ui/button";
 import { Input } from "@chakra-ui/input";
 import { Flex, Heading, Link, Stack, Text } from "@chakra-ui/layout";
+import { FormControl, FormErrorIcon, FormErrorMessage } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { validateEmail } from "../../utils/validateEmail";
 
 import { useLoginMutation, useSignUpMutation } from "./authApi";
 
@@ -20,7 +22,7 @@ export const SignUp = () => {
   const [apiSignUp] = useSignUpMutation();
   const [apiLogin] = useLoginMutation();
 
-  const register = async () => {
+  const handleLogin = async () => {
     try {
       const loginCreds = { email, password };
       const signUpCreds = { name, ...loginCreds };
@@ -30,10 +32,6 @@ export const SignUp = () => {
     } catch (e) {
       console.log(e);
     }
-  };
-
-  const handleLogin = () => {
-    register();
   };
 
   return (
@@ -48,31 +46,46 @@ export const SignUp = () => {
         maxW="xl"
         w="full"
       >
-        <Input
-          variant="outline"
-          borderColor="gray.400"
-          borderWidth={2}
-          placeholder="Name"
-          value={name}
-          onChange={handleNameChange}
-        />
-        <Input
-          placeholder="Email"
-          variant="outline"
-          borderColor="gray.400"
-          borderWidth={2}
-          value={email}
-          onChange={handleEmailChange}
-        />
-        <Input
-          type="password"
-          variant="outline"
-          borderColor="gray.400"
-          borderWidth={2}
-          placeholder="Password"
-          value={password}
-          onChange={handlePasswordChange}
-        />
+        <FormControl isInvalid={!name}>
+          <Input
+            variant="outline"
+            borderColor="gray.400"
+            borderWidth={2}
+            placeholder="Name"
+            value={name}
+            onChange={handleNameChange}
+          />
+          <FormErrorMessage>Name Required</FormErrorMessage>
+        </FormControl>
+        <FormControl isInvalid={!email || !validateEmail(email)}>
+          <Input
+            placeholder="Email"
+            variant="outline"
+            borderColor="gray.400"
+            borderWidth={2}
+            value={email}
+            onChange={handleEmailChange}
+          />
+          <FormErrorMessage>
+            {!email ? "Email Required" : "Invalid email"}
+          </FormErrorMessage>
+        </FormControl>
+        <FormControl isInvalid={!password || password.length > 72}>
+          <Input
+            type="password"
+            variant="outline"
+            borderColor="gray.400"
+            borderWidth={2}
+            placeholder="Password"
+            value={password}
+            onChange={handlePasswordChange}
+          />
+          <FormErrorMessage>
+            {!password
+              ? "Password Required"
+              : "Password must be less than 72 characters"}
+          </FormErrorMessage>
+        </FormControl>
         <Button colorScheme="blue" onClick={handleLogin}>
           Sign Up
         </Button>

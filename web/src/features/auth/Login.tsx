@@ -6,11 +6,14 @@ import {
   AlertDescription,
   AlertIcon,
   AlertTitle,
+  FormControl,
+  FormErrorMessage,
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { validateEmail } from "../../utils/validateEmail";
 
 import { Credentials, useLoginMutation } from "./authApi";
 import { selectUser, setUser } from "./authSlice";
@@ -77,23 +80,35 @@ export const Login = () => {
         w="full"
       >
         {isError && loginAlert}
-        <Input
-          placeholder="Email"
-          variant="outline"
-          borderColor="gray.400"
-          borderWidth={2}
-          value={email}
-          onChange={handleEmailChange}
-        />
-        <Input
-          variant="outline"
-          borderColor="gray.400"
-          borderWidth={2}
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={handlePasswordChange}
-        />
+        <FormControl isInvalid={!email || !validateEmail(email)}>
+          <Input
+            placeholder="Email"
+            variant="outline"
+            borderColor="gray.400"
+            borderWidth={2}
+            value={email}
+            onChange={handleEmailChange}
+          />
+          <FormErrorMessage>
+            {!email ? "Email Required" : "Invalid email"}
+          </FormErrorMessage>
+        </FormControl>
+        <FormControl isInvalid={!password || password.length > 72}>
+          <Input
+            variant="outline"
+            borderColor="gray.400"
+            borderWidth={2}
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={handlePasswordChange}
+          />
+          <FormErrorMessage>
+            {!password
+              ? "Password Required"
+              : "Password must be less than 72 characters"}
+          </FormErrorMessage>
+        </FormControl>
         <Button colorScheme="blue" onClick={handleLogin}>
           Login
         </Button>
