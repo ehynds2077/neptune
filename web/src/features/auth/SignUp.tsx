@@ -3,12 +3,15 @@ import { Input } from "@chakra-ui/input";
 import { Flex, Heading, Link, Stack, Text } from "@chakra-ui/layout";
 import { FormControl, FormErrorIcon, FormErrorMessage } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { validateEmail } from "../../utils/validateEmail";
 
 import { useLoginMutation, useSignUpMutation } from "./authApi";
+import { setUser } from "./authSlice";
 
 export const SignUp = () => {
+  const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,12 +25,13 @@ export const SignUp = () => {
   const [apiSignUp] = useSignUpMutation();
   const [apiLogin] = useLoginMutation();
 
-  const handleLogin = async () => {
+  const handleSignUp = async () => {
     try {
       const loginCreds = { email, password };
       const signUpCreds = { name, ...loginCreds };
       await apiSignUp(signUpCreds).unwrap();
-      await apiLogin(loginCreds).unwrap();
+      const user = await apiLogin(loginCreds).unwrap();
+      dispatch(setUser(user));
       navigate("/app", { replace: true });
     } catch (e) {
       console.log(e);
@@ -89,7 +93,7 @@ export const SignUp = () => {
               : "Password must be less than 72 characters"}
           </FormErrorMessage>
         </FormControl>
-        <Button colorScheme="blue" onClick={handleLogin}>
+        <Button colorScheme="blue" onClick={handleSignUp}>
           Sign Up
         </Button>
         <Text p={2} color="gray.500">
