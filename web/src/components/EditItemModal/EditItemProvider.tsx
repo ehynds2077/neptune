@@ -10,10 +10,17 @@ import {
   useUpdateListItemListMutation,
   useUpdateListItemMutation,
 } from "../../features/lists/listApi";
+import { ListItemType } from "../../features/lists/ListItemType";
+import {
+  List_ListType,
+  List_ListTypeSupport,
+} from "../../features/lists/ListType";
 import { useGetProjectsQuery } from "../../features/projects/projectApi";
+import { ProjectListItemType } from "../../features/projects/ProjectType";
 import { useList } from "../../providers/ListProvider";
 
 interface EditItemContextType {
+  isOpen: boolean;
   title: string;
   selectedType: string;
   selectedProjectId: string;
@@ -23,12 +30,17 @@ interface EditItemContextType {
   setSelectedListId: (id: string) => void;
   setSelectedProjectId: (id: string) => void;
   editItem: () => void;
+  onOpen: (
+    item: ProjectListItemType | ListItemType,
+    type: List_ListTypeSupport
+  ) => void;
+  onClose: () => void;
 }
 
 const EditItemContext = createContext<EditItemContextType>(null!);
 
 export const EditItemProvider = ({ children }: { children: ReactNode }) => {
-  const { selectedItem, listType } = useList();
+  const { listType } = useList();
 
   const [updateListItem] = useUpdateListItemMutation();
   const [updateList] = useUpdateListItemListMutation();
@@ -40,24 +52,39 @@ export const EditItemProvider = ({ children }: { children: ReactNode }) => {
   const [selectedListId, setSelectedListId] = useState("");
   const [selectedProjectId, setSelectedProjectId] = useState("");
 
-  useEffect(() => {
-    if (selectedItem) {
-      setTitle(selectedItem.title);
-      if (selectedItem.list_id) {
-        setSelectedListId(selectedItem.list_id);
-      }
-      setSelectedProjectId("");
-      if (selectedItem.project) {
-        setSelectedProjectId(selectedItem.project.id);
-      }
-      if (selectedItem.list_id) {
-        console.log(listType);
-        setSelectedType(listType);
-      } else {
-        setSelectedType("");
-      }
+  const [selectedItem, setSelectedItem] = useState<
+    ProjectListItemType | ListItemType | null
+  >(null);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const onOpen = (
+    item: ProjectListItemType | ListItemType,
+    type: List_ListTypeSupport
+  ) => {
+    setSelectedItem(item);
+    console.log(item);
+    setTitle(item.title);
+    if (item.list_id) {
+      setSelectedType(type);
+      setSelectedListId(item.list_id);
+    } else {
+      setSelectedType("");
     }
-  }, [selectedItem, listType]);
+    if (item.project) {
+      setSelectedProjectId(item.project.id);
+    }
+    if (item.project_id) {
+      setSelectedProjectId(item.project_id);
+    }
+
+    setIsOpen(true);
+  };
+
+  const onClose = () => {
+    setSelectedItem(null);
+    setIsOpen(false);
+  };
 
   const projectId = () => {
     if (selectedItem && selectedItem.project) {
@@ -74,6 +101,7 @@ export const EditItemProvider = ({ children }: { children: ReactNode }) => {
           const project = projects.find(
             (project) => project.id === selectedProjectId
           );
+          console.log("updating");
           await updateListItem({
             list_id: selectedItem.list_id,
             id: selectedItem.id,
@@ -92,16 +120,16 @@ export const EditItemProvider = ({ children }: { children: ReactNode }) => {
                 ? selectedListId
                 : "PROJECT_SUPPORT"
               : "";
-          if (selectedItem.list_id) {
-            await updateList({
-              list_id: selectedItem.list_id,
-              new_list_id: newListId,
-              project_id: selectedProjectId,
-              id: selectedItem.id,
-            }).unwrap();
-          }
+          console.log("updating");
+          await updateList({
+            list_id: selectedItem.list_id ? selectedItem.list_id : "",
+            new_list_id: newListId,
+            project_id: selectedProjectId,
+            id: selectedItem.id,
+          }).unwrap();
         }
       }
+      onClose();
     } catch (e) {
       console.log(e);
     }
@@ -117,6 +145,9 @@ export const EditItemProvider = ({ children }: { children: ReactNode }) => {
     setSelectedListId,
     setSelectedProjectId,
     editItem,
+    isOpen,
+    onOpen,
+    onClose,
   };
 
   return (

@@ -70,16 +70,17 @@ const listApi = emptySplitApi.injectEndpoints({
         url: `/list/${listReq.id}`,
         method: "GET",
       }),
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.items.map(({ id }) => ({
-                type: "ListItem" as const,
-                id,
-              })),
-              { type: "List", id: result.id },
-            ]
-          : [{ type: "List", id: "LIST" }],
+      providesTags: ["InboxItem", "List"],
+      // providesTags: (result) =>
+      //   result
+      //     ? [
+      //         ...result.items.map(({ id }) => ({
+      //           type: "ListItem" as const,
+      //           id,
+      //         })),
+      //         { type: "List", id: result.id },
+      //       ]
+      //     : [{ type: "List", id: "LIST" }],
     }),
 
     addListItem: builder.mutation<ListItemType, NewListItem>({
@@ -107,32 +108,34 @@ const listApi = emptySplitApi.injectEndpoints({
         body: request,
       }),
 
-      async onQueryStarted(
-        { id, list_id, new_list_id },
-        { dispatch, queryFulfilled }
-      ) {
-        console.log(new_list_id);
-        if (new_list_id) {
-          const removeFromCurrent = dispatch(
-            listApi.util.updateQueryData(
-              "getList",
-              { id: list_id },
-              (draft) => {
-                const index = draft.items.findIndex((item) => item.id === id);
-                if (index > -1) {
-                  draft.items.splice(index, 1);
-                }
-              }
-            )
-          );
+      // async onQueryStarted(
+      //   { id, list_id, new_list_id },
+      //   { dispatch, queryFulfilled }
+      // ) {
+      //   console.log(new_list_id);
+      //   if (new_list_id) {
+      //     console.log("remove that boi");
+      //     const removeFromCurrent = dispatch(
+      //       listApi.util.updateQueryData(
+      //         "getList",
+      //         { id: list_id },
+      //         (draft) => {
+      //           const index = draft.items.findIndex((item) => item.id === id);
+      //           if (index > -1) {
+      //             draft.items.splice(index, 1);
+      //           }
+      //         }
+      //       )
+      //     );
 
-          try {
-            await queryFulfilled;
-          } catch (err) {
-            removeFromCurrent.undo();
-          }
-        }
-      },
+      //     try {
+      //       await queryFulfilled;
+      //     } catch (err) {
+      //       console.log("oop");
+      //       removeFromCurrent.undo();
+      //     }
+      //   }
+      // },
 
       invalidatesTags: ["List", "Project", "InboxItem"],
     }),

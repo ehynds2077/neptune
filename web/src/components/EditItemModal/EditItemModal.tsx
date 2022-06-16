@@ -8,34 +8,19 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 
-import { EditItemModalProps } from ".";
+import { ProjectListItemType } from "../../features/projects/ProjectType";
+import { useList } from "../../providers/ListProvider";
 import { useEditItem } from "./EditItemProvider";
 import { ListSelectForm } from "./ListSelectForm";
 import { ProjectSelectForm } from "./ProjectSelectForm";
 import { TitleInputForm } from "./TitleInputForm";
 import { TypeSelectForm } from "./TypeSelectForm";
 
-export const EditItemModal = ({ isOpen, onClose }: EditItemModalProps) => {
-  const {
-    selectedType,
-    selectedProjectId,
-    setTitle,
-    setSelectedListId,
-    editItem,
-  } = useEditItem();
-
-  const handleClose = async () => {
-    setTitle("");
-    setSelectedListId("");
-    onClose();
-  };
-
-  const handleEditItem = async () => {
-    editItem();
-    handleClose();
-  };
+export const EditItemModal = () => {
+  const { selectedType, selectedProjectId, editItem, onClose, isOpen } =
+    useEditItem();
 
   const disableSave = (): boolean => {
     if (selectedType === "PROJECT_SUPPORT") {
@@ -47,7 +32,7 @@ export const EditItemModal = ({ isOpen, onClose }: EditItemModalProps) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose}>
+    <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Edit Item</ModalHeader>
@@ -64,11 +49,11 @@ export const EditItemModal = ({ isOpen, onClose }: EditItemModalProps) => {
             disabled={disableSave()}
             colorScheme="blue"
             mr={3}
-            onClick={handleEditItem}
+            onClick={editItem}
           >
             Save
           </Button>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={onClose}>Cancel</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

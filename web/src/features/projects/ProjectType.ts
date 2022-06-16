@@ -8,6 +8,7 @@ export interface ProjectListItemType {
   list_type: List_ListType;
   list_title?: string;
   list_id?: string;
+  project_id?: string;
   project?: {
     title: string;
     id: string;

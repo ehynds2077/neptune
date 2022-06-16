@@ -13,12 +13,3 @@ export const createInboxItem = async function (
     user_id: uid,
   });
 };
-
-export const getUserInbox = async function (uid: string) {
-  return await db
-    .select("title", "is_done", "notes", "id", "list_id")
-    .table("list_item")
-    .where("user_id", uid)
-    .where("list_id", null)
-    .orderBy("created_at");
-};

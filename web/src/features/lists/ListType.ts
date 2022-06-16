@@ -18,6 +18,9 @@ export const listTypeDict: ListTypeDict = {
   PROJECT_SUPPORT: "Project Support",
 };
 
+export const listTypesWithSupport = Object.keys(listTypeDict);
+export type List_ListTypeSupport = typeof listTypesWithSupport[number];
+
 export const listTypes = ["NEXT", "SOMEDAY", "WAITING", "AGENDA", "REFERENCE"];
 export type List_ListType = typeof listTypes[number];
 

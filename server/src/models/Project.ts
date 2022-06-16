@@ -26,12 +26,14 @@ export const getUserProject = async function (uid: string, projectId: string) {
 
   const items = await db
     .select(
+      "list_item.id",
       "list_item.title",
       "list_item.is_done",
       "list_item.notes",
-      "list_item.id",
+      "list.id as list_id",
+      "list.title as list_title",
       "list.list_type as list_type",
-      "list.title as list_title"
+      "list_item.project_id"
     )
     .table("list_item")
     .where("list_item.user_id", uid)

@@ -1,12 +1,10 @@
 import {
-  Button,
   Checkbox,
   Divider,
   Flex,
   Heading,
   HStack,
   IconButton,
-  List,
   ListItem,
   Tab,
   TabList,
@@ -14,31 +12,41 @@ import {
   TabPanels,
   Tabs,
   Text,
+  VStack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import React from "react";
 import { IoMdTrash } from "react-icons/io";
 import { useParams } from "react-router-dom";
 
-import { NeptuneList } from "../../components/NeptuneList";
+import EditItemModal from "../../components/EditItemModal";
+import {
+  EditItemProvider,
+  useEditItem,
+} from "../../components/EditItemModal/EditItemProvider";
+import { ItemDeleteModal } from "../../components/ItemDeleteModal";
 import { ListContainer } from "../../components/ListContainer";
-import { List_ListType, listTypeDict } from "../lists/ListType";
-import { useGetProjectQuery } from "./projectApi";
-import { ProjectListItemType } from "./ProjectType";
+import { NeptuneList } from "../../components/NeptuneList";
+import { ListProvider, useList } from "../../providers/ListProvider";
 import {
   useDeleteListItemMutation,
   useUpdateListItemMutation,
 } from "../lists/listApi";
-import { ItemDeleteModal } from "../../components/ItemDeleteModal";
-import EditItemModal from "../../components/EditItemModal";
+import { List_ListType, listTypeDict } from "../lists/ListType";
+import { useGetProjectQuery } from "./projectApi";
+import { ProjectListItemType } from "./ProjectType";
 
 const ProjectPageContainer = () => {
   const params = useParams();
   if (params.projectId) {
     return (
       <>
-        <Text></Text>
-        <ProjectPage projectId={params.projectId} />
+        <ListProvider>
+          <EditItemProvider>
+            <Text></Text>
+            <ProjectPage projectId={params.projectId} />
+          </EditItemProvider>
+        </ListProvider>
       </>
     );
   } else {
@@ -52,15 +60,15 @@ const ProjectPage = ({ projectId }: { projectId: string }) => {
   const [updateListItem] = useUpdateListItemMutation();
   const [deleteListItem] = useDeleteListItemMutation();
 
-  const [selected, setSelected] = useState<ProjectListItemType | null>(null);
+  const { selectedItem, setSelectedItem } = useList();
 
   const handleDeleteItem = async () => {
     try {
-      if (selected && selected.id) {
+      if (selectedItem && selectedItem.id) {
         if (project) {
           await deleteListItem({
             project_id: project.id,
-            id: selected.id,
+            id: selectedItem.id,
           }).unwrap();
         }
       }
@@ -70,17 +78,13 @@ const ProjectPage = ({ projectId }: { projectId: string }) => {
     setShowDelete(false);
   };
 
-  const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
 
-  const handleClickItem = async (item: ProjectListItemType) => {
-    setShowEdit(true);
-    setSelected(item);
-  };
+  const handleClickItem = async (item: ProjectListItemType) => {};
 
   const handleConfirmDelete = async (item: ProjectListItemType) => {
     setShowDelete(true);
-    setSelected(item);
+    setSelectedItem(item);
   };
   const handleCheckItem = async (item: ProjectListItemType) => {
     try {
@@ -141,19 +145,13 @@ const ProjectPage = ({ projectId }: { projectId: string }) => {
       <ItemDeleteModal
         isOpen={showDelete}
         onDelete={handleDeleteItem}
-        selected={selected}
+        selected={selectedItem}
         onClose={() => {
-          setSelected(null);
+          setSelectedItem(null);
           setShowDelete(false);
         }}
       />
-      {/* <ItemEditModal
-        isOpen={showEdit}
-        onClose={() => {
-          setSelected(null);
-          setShowEdit(false);
-        }}
-      /> */}
+      <EditItemModal />
     </ListContainer>
   );
 };
@@ -161,7 +159,6 @@ const ProjectPage = ({ projectId }: { projectId: string }) => {
 export const ProjectItemRow = ({
   item,
   listType,
-  onClick,
   onCheck,
   onDelete,
 }: {
@@ -171,56 +168,60 @@ export const ProjectItemRow = ({
   onCheck: (item: ProjectListItemType) => Promise<void>;
   onDelete: (item: ProjectListItemType) => Promise<void>;
 }) => {
+  const { onOpen } = useEditItem();
   return (
     <ListItem>
       <Flex
         justifyContent="flex-start"
         rounded="none"
-        variant="ghost"
-        _hover={{ _light: { bg: "gray.400" } }}
-        as={Button}
+        _hover={{
+          _light: { bg: "gray.400" },
+          _dark: { bg: "gray.700" },
+        }}
         w="full"
-        p={0}
+        px={2}
       >
-        {listType !== "REFERENCE" && listType !== "PROJECT_SUPPORT" && (
-          <Checkbox
-            m={3}
-            isChecked={item.is_done}
-            _light={{ borderColor: "gray.600" }}
-            onChange={() => {
-              onCheck(item);
-            }}
-          />
-        )}
-        <Button
-          bg="transparent"
-          justifyContent="flex-start"
-          rounded="none"
-          _hover={{ bg: "transparent" }}
-          _selection={{ bg: "transparent" }}
-          _pressed={{ bg: "transparent" }}
-          onClick={() => onClick(item)}
-          w="full"
-        >
+        <HStack spacing={2} alignItems="stretch" w="full">
+          {listType !== "REFERENCE" && listType !== "PROJECT_SUPPORT" && (
+            <Checkbox
+              m={3}
+              isChecked={item.is_done}
+              _light={{ borderColor: "gray.600" }}
+              onChange={() => {
+                onCheck(item);
+              }}
+            />
+          )}
           <HStack w="full" justifyContent="space-between">
-            <Text>{item.title}</Text>
-            {item.list_title && (
-              <HStack justifySelf="end">
-                <Text color="gray.400">List: </Text>
-                <Text>{item.list_title}</Text>
-              </HStack>
-            )}
+            <VStack
+              p={3}
+              w="full"
+              _hover={{
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                onOpen(item, listType);
+              }}
+              alignItems="start"
+            >
+              <Text>{item.title}</Text>
+              {item.list_title && (
+                <HStack justifySelf="end">
+                  <Text color="gray.400">List: </Text>
+                  <Text>{item.list_title}</Text>
+                </HStack>
+              )}
+            </VStack>
+            <IconButton
+              variant="ghost"
+              onClick={() => {
+                onDelete(item);
+              }}
+              aria-label="Delete Item"
+              icon={<IoMdTrash />}
+            />
           </HStack>
-        </Button>
-
-        <IconButton
-          variant="ghost"
-          onClick={() => {
-            onDelete(item);
-          }}
-          aria-label="Delete Item"
-          icon={<IoMdTrash />}
-        />
+        </HStack>
       </Flex>
       <Divider color="white" />
     </ListItem>

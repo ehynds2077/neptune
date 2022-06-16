@@ -8,6 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { IoMdTrash } from "react-icons/io";
+import { useEditItem } from "../../components/EditItemModal/EditItemProvider";
 
 import { ListItemType } from "./ListItemType";
 import { List_ListType } from "./ListType";
@@ -15,7 +16,6 @@ import { List_ListType } from "./ListType";
 export const ItemRow = ({
   item,
   listType,
-  onClick,
   onCheck,
   onDelete,
 }: {
@@ -25,6 +25,7 @@ export const ItemRow = ({
   onCheck: (item: ListItemType) => Promise<void>;
   onDelete: (item: ListItemType) => Promise<void>;
 }) => {
+  const { onOpen } = useEditItem();
   return (
     <ListItem>
       <Flex
@@ -53,7 +54,7 @@ export const ItemRow = ({
           _hover={{ bg: "transparent" }}
           _selection={{ bg: "transparent" }}
           _pressed={{ bg: "transparent" }}
-          onClick={() => onClick(item)}
+          onClick={() => onOpen(item, listType)}
           w="full"
         >
           {item.title}

@@ -1,5 +1,6 @@
-import { Request, Response, NextFunction } from "express";
-import { createInboxItem, getUserInbox } from "../models/Inbox";
+import { NextFunction, Request, Response } from "express";
+
+import { createInboxItem } from "../models/Inbox";
 
 export const addItem = async function (
   req: Request,
@@ -26,15 +27,4 @@ export const addItem = async function (
     res.status(400);
     next(e);
   }
-};
-
-export const getItems = async function (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  const id = (req as any).user.id;
-
-  const items = await getUserInbox(id);
-  res.json({ title: "Inbox", id: "", items });
 };

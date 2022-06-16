@@ -1,5 +1,6 @@
 import express from "express";
-import { addItem, getItems } from "../controllers/inbox.controller";
+
+import { addItem } from "../controllers/inbox.controller";
 import {
   addListItem,
   deleteItem,

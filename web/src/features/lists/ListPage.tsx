@@ -16,12 +16,15 @@ import {
 import { ListItemType } from "./ListItemType";
 import { ListContainer } from "../../components/ListContainer";
 import { NeptuneList } from "../../components/NeptuneList";
+import { EditItemProvider } from "../../components/EditItemModal/EditItemProvider";
 
 export const ListPage = () => {
   const params = useParams();
   return (
     <ListProvider>
-      <ItemList listId={params.listId || ""} />
+      <EditItemProvider>
+        <ItemList listId={params.listId || ""} />
+      </EditItemProvider>
     </ListProvider>
   );
 };
@@ -139,13 +142,7 @@ const ItemList = ({ listId }: { listId: string }) => {
           setShowDelete(false);
         }}
       />
-      <EditItemModal
-        isOpen={showEdit}
-        onClose={() => {
-          setSelectedItem(null);
-          setShowEdit(false);
-        }}
-      />
+      <EditItemModal />
     </>
   );
 };
