@@ -58,8 +58,9 @@ export const ListsList = ({
       {lists
         .filter((list) => list.list_type === type)
         .map((list, idx) => {
+          const margin = list.depth * 8;
           return (
-            <HStack key={idx}>
+            <HStack ml={margin} key={idx}>
               <Button
                 as={RouterLink}
                 to={`/list/${list.id}`}
@@ -69,20 +70,24 @@ export const ListsList = ({
               >
                 {list.title}
               </Button>
-              <IconButton
-                onClick={() => {
-                  handleShowEdit(list);
-                }}
-                aria-label="Edit List"
-                icon={<IoPencil />}
-              />
-              <IconButton
-                onClick={() => {
-                  handleConfirmDelete(list);
-                }}
-                aria-label="Delete List"
-                icon={<IoMdTrash />}
-              />
+              {list.depth !== 0 && (
+                <>
+                  <IconButton
+                    onClick={() => {
+                      handleShowEdit(list);
+                    }}
+                    aria-label="Edit List"
+                    icon={<IoPencil />}
+                  />
+                  <IconButton
+                    onClick={() => {
+                      handleConfirmDelete(list);
+                    }}
+                    aria-label="Delete List"
+                    icon={<IoMdTrash />}
+                  />
+                </>
+              )}
             </HStack>
           );
         })}

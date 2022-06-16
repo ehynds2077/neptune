@@ -21,10 +21,17 @@ export const ListSelectForm = () => {
               setSelectedListId(event.target.value);
             }}
           >
-            <option value=""></option>
             {lists
               .filter((list) => list.list_type === selectedType)
               .map((list, idx) => {
+                if (list.depth > 0) {
+                  return (
+                    <option key={idx} value={list.id}>
+                      &nbsp;&nbsp;
+                      {list.title}
+                    </option>
+                  );
+                }
                 return (
                   <option key={idx} value={list.id}>
                     {list.title}

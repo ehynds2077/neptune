@@ -45,11 +45,51 @@ export const addUser = async function (
   email: string,
   passwordHash: string
 ) {
-  const result = await db.table("user").insert({
-    name,
-    email,
-    password_hash: passwordHash,
-  });
+  const insertedUsers = await db
+    .table("user")
+    .insert({
+      name,
+      email,
+      password_hash: passwordHash,
+    })
+    .returning("id");
+  const user = insertedUsers[0];
 
-  return result;
+  if (!user) {
+    return false;
+  }
+
+  const addRootLists = await db.table("list").insert([
+    {
+      title: "Next",
+      user_id: user.id,
+      list_type: "NEXT",
+    },
+    {
+      title: "Waiting",
+      user_id: user.id,
+      list_type: "WAITING",
+    },
+    {
+      title: "Someday/Maybe",
+      user_id: user.id,
+      list_type: "SOMEDAY",
+    },
+    {
+      title: "Agenda",
+      user_id: user.id,
+      list_type: "AGENDA",
+    },
+    {
+      title: "Reference",
+      user_id: user.id,
+      list_type: "REFERENCE",
+    },
+  ]);
+
+  if (!addRootLists) {
+    return false;
+  }
+
+  return true;
 };

@@ -36,14 +36,36 @@ export const getUserListsOfType = async function (
 
 export const getUserLists = async function (uid: string) {
   return await db
-    .select("title", "id", "list_type")
-    .table("list")
-    .where("user_id", uid)
+    .withRecursive("children", (qb) => {
+      qb.select("id", "list_parent_id", db.raw("0 as depth"))
+        .from("list")
+        .where("list.list_parent_id", null)
+        .andWhere("list.list_type", "<>", "PROJECT_SUPPORT")
+        .andWhere("list.user_id", uid)
+        .union((qb) => {
+          qb.select("l.id", "l.list_parent_id", db.raw("c.depth+ 1"))
+            .from("list as l")
+            .join("children as c", "l.list_parent_id", "=", "c.id");
+        });
+    })
+    .select("l.id", "l.title", "l.list_type", "depth")
+    .from("children as c")
+    .join("list as l", "c.id", "=", "l.id")
     .orderBy("created_at");
+
+  // return await db
+  //   .select("title", "id", "list_type")
+  //   .table("list")
+  //   .where("user_id", uid)
+  //   .orderBy("created_at");
 };
 
 export const deleteUserList = async function (uid: string, id: string) {
-  return await db("list").where("user_id", uid).andWhere("id", id).del();
+  return await db("list")
+    .where("user_id", uid)
+    .andWhere("id", id)
+    .andWhereNot("list_parent_id", null)
+    .del();
 };
 
 export const getUserList = async function (uid: string, listId: string | null) {
@@ -92,9 +114,18 @@ export const createList = async function (
   title: string,
   type: List_ListType
 ) {
+  const rootLists = await db
+    .select("id")
+    .from("list")
+    .where("user_id", uid)
+    .andWhere("list_parent_id", null)
+    .andWhere("list_type", type);
+
+  const root = rootLists[0];
   return await db.table("list").insert({
     title,
     user_id: uid,
+    list_parent_id: root.id,
     list_type: type,
   });
 };
