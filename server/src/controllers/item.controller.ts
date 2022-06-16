@@ -45,7 +45,7 @@ export const updateItem = async function (
     is_done,
     notes,
     new_list_id,
-    project_id: newProjectId,
+    new_project_id: newProjectId,
     project,
   } = req.body;
 

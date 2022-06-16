@@ -21,7 +21,6 @@ export const ItemRow = ({
 }: {
   item: ListItemType;
   listType: List_ListType;
-  onClick: (item: ListItemType) => Promise<void>;
   onCheck: (item: ListItemType) => Promise<void>;
   onDelete: (item: ListItemType) => Promise<void>;
 }) => {
@@ -59,7 +58,7 @@ export const ItemRow = ({
         >
           {item.title}
         </Button>
-        {item.project && <Text>Project: {item.project?.title}</Text>}
+        {item.project_title && <Text>Project: {item.project_title}</Text>}
         <IconButton
           variant="ghost"
           onClick={() => {

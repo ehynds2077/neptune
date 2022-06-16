@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import {
   useGetListsQuery,
-  useUpdateListItemListMutation,
   useUpdateListItemMutation,
 } from "../../features/lists/listApi";
 import { ListItemType } from "../../features/lists/ListItemType";
@@ -43,7 +42,6 @@ export const EditItemProvider = ({ children }: { children: ReactNode }) => {
   const { listType } = useList();
 
   const [updateListItem] = useUpdateListItemMutation();
-  const [updateList] = useUpdateListItemListMutation();
 
   const { data: projects = [] } = useGetProjectsQuery();
 
@@ -58,10 +56,18 @@ export const EditItemProvider = ({ children }: { children: ReactNode }) => {
 
   const [isOpen, setIsOpen] = useState(false);
 
+  const resetFields = () => {
+    setTitle("");
+    setSelectedType("");
+    setSelectedListId("");
+    setSelectedProjectId("");
+  };
+
   const onOpen = (
     item: ProjectListItemType | ListItemType,
     type: List_ListTypeSupport
   ) => {
+    resetFields();
     setSelectedItem(item);
     console.log(item);
     setTitle(item.title);
@@ -70,9 +76,6 @@ export const EditItemProvider = ({ children }: { children: ReactNode }) => {
       setSelectedListId(item.list_id);
     } else {
       setSelectedType("");
-    }
-    if (item.project) {
-      setSelectedProjectId(item.project.id);
     }
     if (item.project_id) {
       setSelectedProjectId(item.project_id);
@@ -86,33 +89,14 @@ export const EditItemProvider = ({ children }: { children: ReactNode }) => {
     setIsOpen(false);
   };
 
-  const projectId = () => {
-    if (selectedItem && selectedItem.project) {
-      return selectedItem.project.id;
-    } else {
-      return "";
-    }
-  };
-
   const editItem = async () => {
     try {
       if (selectedItem) {
-        if (title !== selectedItem.title || selectedProjectId !== projectId()) {
-          const project = projects.find(
-            (project) => project.id === selectedProjectId
-          );
-          console.log("updating");
-          await updateListItem({
-            list_id: selectedItem.list_id,
-            id: selectedItem.id,
-            project_id: selectedProjectId,
-            project,
-            title,
-          }).unwrap();
-        }
         if (
+          title !== selectedItem.title ||
+          selectedType !== listType ||
           selectedListId !== selectedItem.list_id ||
-          selectedType !== listType
+          selectedProjectId !== selectedItem.project_id
         ) {
           const newListId =
             selectedType !== ""
@@ -120,12 +104,13 @@ export const EditItemProvider = ({ children }: { children: ReactNode }) => {
                 ? selectedListId
                 : "PROJECT_SUPPORT"
               : "";
-          console.log("updating");
-          await updateList({
-            list_id: selectedItem.list_id ? selectedItem.list_id : "",
-            new_list_id: newListId,
-            project_id: selectedProjectId,
+          console.log("updating list item");
+          await updateListItem({
             id: selectedItem.id,
+            list_id: selectedItem.list_id,
+            new_list_id: newListId,
+            new_project_id: selectedProjectId,
+            title,
           }).unwrap();
         }
       }

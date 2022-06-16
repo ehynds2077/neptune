@@ -19,9 +19,13 @@ export interface NewListItem {
 }
 
 export interface UpdateItemRequest {
-  list_id?: string;
   id: string;
+
+  list_id?: string;
   project_id?: string;
+
+  new_list_id?: string;
+  new_project_id?: string;
 }
 
 export interface DeleteItemRequest {
@@ -37,13 +41,6 @@ export interface DeleteListRequest {
 export interface UpdateListRequest {
   id: string;
   title: string;
-}
-
-export interface UpdateItemListRequest {
-  list_id: string;
-  new_list_id?: string;
-  project_id?: string;
-  id: string;
 }
 
 const listApi = emptySplitApi.injectEndpoints({
@@ -99,45 +96,6 @@ const listApi = emptySplitApi.injectEndpoints({
         body: request,
       }),
       invalidatesTags: ["List", "Project"],
-    }),
-
-    updateListItemList: builder.mutation<ListItemType, UpdateItemListRequest>({
-      query: (request) => ({
-        url: `/item/${request.id}`,
-        method: "PUT",
-        body: request,
-      }),
-
-      // async onQueryStarted(
-      //   { id, list_id, new_list_id },
-      //   { dispatch, queryFulfilled }
-      // ) {
-      //   console.log(new_list_id);
-      //   if (new_list_id) {
-      //     console.log("remove that boi");
-      //     const removeFromCurrent = dispatch(
-      //       listApi.util.updateQueryData(
-      //         "getList",
-      //         { id: list_id },
-      //         (draft) => {
-      //           const index = draft.items.findIndex((item) => item.id === id);
-      //           if (index > -1) {
-      //             draft.items.splice(index, 1);
-      //           }
-      //         }
-      //       )
-      //     );
-
-      //     try {
-      //       await queryFulfilled;
-      //     } catch (err) {
-      //       console.log("oop");
-      //       removeFromCurrent.undo();
-      //     }
-      //   }
-      // },
-
-      invalidatesTags: ["List", "Project", "InboxItem"],
     }),
 
     updateListItem: builder.mutation<
@@ -236,7 +194,7 @@ export const {
   useAddListMutation,
   useUpdateListMutation,
   useUpdateListItemMutation,
-  useUpdateListItemListMutation,
+  // useUpdateListItemListMutation,
   useDeleteListItemMutation,
   useDeleteListMutation,
   useGetListQuery,

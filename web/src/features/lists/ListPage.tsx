@@ -1,10 +1,13 @@
-import { Flex, Heading, List, Spinner, Text } from "@chakra-ui/react";
+import { Heading, Spinner, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import React from "react";
 import { useParams } from "react-router-dom";
 
-import { ItemDeleteModal } from "../../components/ItemDeleteModal";
 import EditItemModal from "../../components/EditItemModal";
+import { EditItemProvider } from "../../components/EditItemModal/EditItemProvider";
+import { ItemDeleteModal } from "../../components/ItemDeleteModal";
+import { ListContainer } from "../../components/ListContainer";
+import { NeptuneList } from "../../components/NeptuneList";
 import { ListProvider, useList } from "../../providers/ListProvider";
 import { AddListItemForm } from "./AddListItemForm";
 import { ItemRow } from "./ItemRow";
@@ -14,9 +17,6 @@ import {
   useUpdateListItemMutation,
 } from "./listApi";
 import { ListItemType } from "./ListItemType";
-import { ListContainer } from "../../components/ListContainer";
-import { NeptuneList } from "../../components/NeptuneList";
-import { EditItemProvider } from "../../components/EditItemModal/EditItemProvider";
 
 export const ListPage = () => {
   const params = useParams();
@@ -45,9 +45,8 @@ const ItemList = ({ listId }: { listId: string }) => {
 
   const [selected, setSelected] = useState<ListItemType | null>(null);
 
-  const { setSelectedItem, selectedItem, setListId, setListType } = useList();
+  const { setListId, setListType } = useList();
 
-  const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
 
   useEffect(() => {
@@ -65,14 +64,10 @@ const ItemList = ({ listId }: { listId: string }) => {
     setListId(listId);
   }, [listId, setListId]);
 
-  const handleClickItem = async (item: ListItemType) => {
-    setShowEdit(true);
-    setSelectedItem(item);
-  };
-
   const handleConfirmDelete = async (item: ListItemType) => {
+    console.log(item);
+    setSelected(item);
     setShowDelete(true);
-    setSelectedItem(item);
   };
   const handleCheckItem = async (item: ListItemType) => {
     try {
@@ -113,7 +108,6 @@ const ItemList = ({ listId }: { listId: string }) => {
           <ItemRow
             key={idx}
             listType={list.list_type}
-            onClick={handleClickItem}
             onCheck={handleCheckItem}
             onDelete={handleConfirmDelete}
             item={item}

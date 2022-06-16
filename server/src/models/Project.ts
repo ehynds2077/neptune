@@ -39,7 +39,8 @@ export const getUserProject = async function (uid: string, projectId: string) {
     .where("list_item.user_id", uid)
     .join("list", "list_item.list_id", "=", "list.id")
     .where("list_item.project_id", projectId)
-    .orWhere("list.project_id", projectId);
+    .orWhere("list.project_id", projectId)
+    .orderBy("list_item.created_at");
 
   return { ...project, items };
 };

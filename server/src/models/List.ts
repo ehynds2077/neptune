@@ -68,11 +68,11 @@ export const getUserList = async function (uid: string, listId: string | null) {
         "list_item.title",
         "list_item.is_done",
         "list_item.notes",
-        "list_item.list_id as list_id",
-        "list.list_title as list_title",
         "list.list_type as list_type",
-        "project.title as projectTitle",
-        "project.id as projectId",
+        "list_item.list_id as list_id",
+        "list.title as list_title",
+        "project.id as project_id",
+        "project.title as project_title",
       ]);
   } else {
     list = { title: "Inbox", id: "" };
@@ -83,24 +83,6 @@ export const getUserList = async function (uid: string, listId: string | null) {
       .where("list_id", null)
       .orderBy("created_at");
   }
-
-  items = items.map((item: any) => {
-    const ret = {
-      ...item,
-      project:
-        item.projectId === null
-          ? null
-          : {
-              title: item.projectTitle,
-              id: item.projectId,
-            },
-    };
-
-    delete ret.projectId;
-    delete ret.projectTitle;
-
-    return ret;
-  });
 
   return { ...list, items };
 };
