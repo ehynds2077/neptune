@@ -1,7 +1,7 @@
 import { Flex, Heading, List } from "@chakra-ui/layout";
 import { Text } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";

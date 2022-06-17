@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { createContext, ReactNode, useContext, useState } from "react";
 
 import { useUpdateListItemMutation } from "../../features/lists/listApi";
 import { ListItemType } from "../../features/lists/ListItemType";
@@ -87,7 +81,9 @@ export const EditItemProvider = ({ children }: { children: ReactNode }) => {
                 ? selectedListId
                 : "PROJECT_SUPPORT"
               : "";
-          console.log("updating list item");
+          console.log("heree");
+          console.log(selectedType);
+          console.log(selectedListId);
           await updateListItem({
             id: selectedItem.id,
             list_id: selectedItem.list_id,

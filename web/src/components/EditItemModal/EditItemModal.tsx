@@ -8,7 +8,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React from "react";
 
 import { useEditItem } from "./EditItemProvider";
 import { ListSelectForm } from "./ListSelectForm";

@@ -11,8 +11,6 @@ import { ListType } from "./ListType";
 import { IoPencil } from "react-icons/io5";
 
 import { List } from "@chakra-ui/react";
-import { Text } from "@chakra-ui/react";
-import { useGetListsQuery } from "./listApi";
 import { Button } from "@chakra-ui/react";
 import { DeleteListModal } from "./DeleteListModal";
 import { EditListModal } from "./EditListModal";

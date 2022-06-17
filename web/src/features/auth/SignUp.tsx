@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/button";
 import { Input } from "@chakra-ui/input";
 import { Flex, Heading, Link, Stack, Text } from "@chakra-ui/layout";
-import { FormControl, FormErrorIcon, FormErrorMessage } from "@chakra-ui/react";
+import { FormControl, FormErrorMessage } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link as RouterLink, useNavigate } from "react-router-dom";

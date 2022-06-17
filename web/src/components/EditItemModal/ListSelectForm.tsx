@@ -1,13 +1,20 @@
 import { FormLabel } from "@chakra-ui/react";
 import { Select } from "@chakra-ui/react";
-import { useList } from "../../providers/ListProvider";
 import { useEditItem } from "./EditItemProvider";
 import { useGetListsQuery } from "../../features/lists/listApi";
+import { useEffect } from "react";
 
 export const ListSelectForm = () => {
   const { selectedListId, setSelectedListId, selectedType } = useEditItem();
 
   const { data: lists = [] } = useGetListsQuery();
+
+  useEffect(() => {
+    const list = lists.filter((list) => list.list_type === selectedType)[0];
+    if (list && list.id) {
+      setSelectedListId(list.id);
+    }
+  }, [selectedType, lists, setSelectedListId]);
 
   return (
     <>

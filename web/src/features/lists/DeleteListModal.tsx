@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React, { useRef } from "react";
-import { useDeleteListItemMutation, useDeleteListMutation } from "./listApi";
+import { useDeleteListMutation } from "./listApi";
 
 import { ListType } from "./ListType";
 

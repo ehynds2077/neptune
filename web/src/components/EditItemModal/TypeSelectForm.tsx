@@ -2,9 +2,11 @@ import { FormLabel } from "@chakra-ui/react";
 import { Select } from "@chakra-ui/react";
 import { useEditItem } from "./EditItemProvider";
 import { listTypeDict } from "../../features/lists/ListType";
+import { useEffect } from "react";
 
 export const TypeSelectForm = () => {
   const { selectedType, setSelectedType } = useEditItem();
+  useEffect(() => {}, [selectedType]);
   return (
     <>
       <FormLabel>Type</FormLabel>

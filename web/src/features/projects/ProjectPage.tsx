@@ -7,7 +7,7 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import React from "react";
 import { useParams } from "react-router-dom";
 

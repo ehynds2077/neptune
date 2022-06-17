@@ -33,7 +33,6 @@ const ItemList = ({ listId }: { listId: string }) => {
   const {
     data: list,
     isLoading,
-    isFetching,
     isError,
     error,
     isSuccess,
