@@ -47,7 +47,7 @@ export const updateList = async function (
   next: NextFunction
 ) {
   const { listId } = req.params;
-  const { title } = req.body;
+  const { title, list_parent_id } = req.body;
 
   try {
     const uid = (req as any).user.id;
@@ -55,11 +55,11 @@ export const updateList = async function (
       throw new Error("Must provide list id to update");
     }
 
-    if (!title) {
+    if (!title && !list_parent_id) {
       throw new Error("Must provide parameter to update");
     }
 
-    const result = await updateUserList(uid, listId, title);
+    const result = await updateUserList(uid, listId, title, list_parent_id);
 
     res.send();
   } catch (err) {

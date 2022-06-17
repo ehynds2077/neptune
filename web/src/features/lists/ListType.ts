@@ -30,6 +30,7 @@ export interface ListType {
   list_type: List_ListType;
   created_at: Date;
   depth: number;
+  list_parent_id: string;
 
   items: ListItemType[];
 }

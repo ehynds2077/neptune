@@ -1,4 +1,5 @@
 import { Flex, Heading, List } from "@chakra-ui/layout";
+import { Text } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import React from "react";
@@ -40,6 +41,9 @@ export const Home = () => {
         </Button>
 
         <ProjectsList />
+        <Text fontSize="xl" fontWeight="bold" alignSelf="start">
+          Lists
+        </Text>
         <ListsList lists={lists} title="Next" type="NEXT" />
         <ListsList lists={lists} title="Waiting" type="WAITING" />
         <ListsList lists={lists} title="Someday/Maybe" type="SOMEDAY" />

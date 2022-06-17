@@ -9,10 +9,11 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Select,
 } from "@chakra-ui/react";
 import React from "react";
 import { useEffect, useState } from "react";
-import { useUpdateListMutation } from "./listApi";
+import { useGetListsQuery, useUpdateListMutation } from "./listApi";
 
 import { ListType } from "./ListType";
 
@@ -28,6 +29,9 @@ export const EditListModal = ({
   setSelected: (list: ListType | null) => void;
 }) => {
   const [title, setTitle] = useState("");
+  const [parentId, setParentId] = useState("");
+
+  const { data: lists = [] } = useGetListsQuery();
 
   const [updateList] = useUpdateListMutation();
 
@@ -35,13 +39,18 @@ export const EditListModal = ({
   useEffect(() => {
     if (selected) {
       setTitle(selected.title);
+      setParentId(selected.list_parent_id);
     }
   }, [selected]);
 
   const handleUpdate = async () => {
     try {
       if (selected) {
-        await updateList({ id: selected.id, title }).unwrap();
+        await updateList({
+          id: selected.id,
+          title,
+          list_parent_id: parentId,
+        }).unwrap();
       }
       onClose();
     } catch (e) {
@@ -68,6 +77,36 @@ export const EditListModal = ({
               setTitle(event.target.value);
             }}
           />
+          <FormLabel>Parent list</FormLabel>
+          <Select
+            mb={4}
+            value={parentId}
+            onChange={(event: any) => {
+              setParentId(event.target.value);
+            }}
+          >
+            {lists
+              .filter(
+                (list) =>
+                  list.list_type === selected?.list_type &&
+                  list.id !== selected.id
+              )
+              .map((list, idx) => {
+                if (list.depth > 0) {
+                  return (
+                    <option key={idx} value={list.id}>
+                      &nbsp;&nbsp;
+                      {list.title}
+                    </option>
+                  );
+                }
+                return (
+                  <option key={idx} value={list.id}>
+                    {list.title}
+                  </option>
+                );
+              })}
+          </Select>
         </ModalBody>
 
         <ModalFooter>

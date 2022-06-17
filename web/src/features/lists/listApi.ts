@@ -40,7 +40,8 @@ export interface DeleteListRequest {
 
 export interface UpdateListRequest {
   id: string;
-  title: string;
+  title?: string;
+  list_parent_id?: string;
 }
 
 const listApi = emptySplitApi.injectEndpoints({

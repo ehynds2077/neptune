@@ -52,9 +52,9 @@ export const ListsList = ({
 
   return (
     <List w="full" mb={8} maxW="xl" spacing={3}>
-      <Text fontSize="xl" fontWeight="bold" alignSelf="start">
+      {/* <Text fontSize="xl" fontWeight="bold" alignSelf="start">
         {title}
-      </Text>
+      </Text> */}
       {lists
         .filter((list) => list.list_type === type)
         .map((list, idx) => {

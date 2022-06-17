@@ -37,21 +37,39 @@ export const getUserListsOfType = async function (
 export const getUserLists = async function (uid: string) {
   return await db
     .withRecursive("children", (qb) => {
-      qb.select("id", "list_parent_id", db.raw("0 as depth"))
+      qb.select(
+        "list.id",
+        "list.title",
+        "list.list_type",
+        "list_parent_id",
+        "list.created_at",
+        db.raw("0 as depth"),
+        db.raw("id::text AS path")
+      )
         .from("list")
         .where("list.list_parent_id", null)
         .andWhere("list.list_type", "<>", "PROJECT_SUPPORT")
         .andWhere("list.user_id", uid)
         .union((qb) => {
-          qb.select("l.id", "l.list_parent_id", db.raw("c.depth+ 1"))
+          qb.select(
+            "l.id",
+            "l.title",
+            "l.list_type",
+            "l.list_parent_id",
+            "l.created_at",
+            db.raw("c.depth+ 1"),
+            db.raw("c.path || '-' || l.id::text AS path")
+          )
             .from("list as l")
             .join("children as c", "l.list_parent_id", "=", "c.id");
         });
     })
-    .select("l.id", "l.title", "l.list_type", "depth")
+    .select("c.id", "c.title", "c.list_type", "c.list_parent_id", "depth")
     .from("children as c")
-    .join("list as l", "c.id", "=", "l.id")
-    .orderBy("created_at");
+    .orderBy("path")
+    .orderBy("c.created_at");
+  // .join("list as l", "c.id", "=", "l.id")
+  // .orderBy("created_at");
 
   // return await db
   //   .select("title", "id", "list_type")
@@ -133,10 +151,11 @@ export const createList = async function (
 export const updateUserList = async function (
   uid: string,
   id: string,
-  title: string
+  title: string,
+  parentId: string
 ) {
   return await db("list")
     .where("user_id", uid)
     .andWhere("id", id)
-    .update({ title });
+    .update({ title, list_parent_id: parentId });
 };
