@@ -1,5 +1,5 @@
-import { Button, Flex, Input } from "@chakra-ui/react";
-import { useState } from "react";
+import { Button, Flex, FormControl, Input } from "@chakra-ui/react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { useAddListItemMutation } from "./listApi";
@@ -9,6 +9,11 @@ export const AddListItemForm = () => {
   const [addListItem] = useAddListItemMutation();
 
   const params = useParams();
+
+  const handleFormSubmit = async (event: React.FormEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    handleAddListItem();
+  };
 
   const handleAddListItem = async () => {
     try {
@@ -23,7 +28,13 @@ export const AddListItemForm = () => {
   };
 
   return (
-    <Flex direction="row" w="full" gap={2}>
+    <FormControl
+      flexDirection="row"
+      display="flex"
+      gap={2}
+      as="form"
+      onSubmit={handleFormSubmit}
+    >
       <Input
         _light={{ borderColor: "gray.500" }}
         value={newItemTitle}
@@ -33,6 +44,6 @@ export const AddListItemForm = () => {
       <Button px={10} onClick={handleAddListItem}>
         Add new item
       </Button>
-    </Flex>
+    </FormControl>
   );
 };
