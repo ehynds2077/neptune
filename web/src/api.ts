@@ -12,6 +12,7 @@ export const baseQuery = fetchBaseQuery({
   credentials: "include",
 });
 
+
 const baseQueryReauth: BaseQueryFn<
   string | FetchArgs,
   unknown,
