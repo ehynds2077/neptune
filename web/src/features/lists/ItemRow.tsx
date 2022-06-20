@@ -65,7 +65,7 @@ export const ItemRow = ({
               }}
               alignItems="start"
             >
-              <Text>{item.title}</Text>
+              <Text overflowWrap="anywhere">{item.title}</Text>
               {showList && item.list_title && (
                 <HStack justifySelf="end">
                   <Text _light={{ color: "gray.600" }} color="gray.400">
