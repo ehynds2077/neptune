@@ -137,7 +137,7 @@ const ProjectPage = ({ projectId }: { projectId: string }) => {
                           />
                         );
                       })}
-                    <AddItemRow type={itemType} projectId={project.id} />
+                    <AddItemRow listId={itemType} projectId={project.id} />
                   </TabPanel>
                 );
               })}

@@ -53,8 +53,8 @@ export const DeleteListModal = ({
             <AlertDialogBody>
               {selected && selected.title}
               <Text>
-                Are you sure you want to delete this list? You can't undo this
-                action.
+                Are you sure you want to delete this list? This will also delete
+                all sublists. You can't undo this action.
               </Text>
             </AlertDialogBody>
             <AlertDialogFooter>

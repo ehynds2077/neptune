@@ -114,6 +114,10 @@ export const getUserList = async function (uid: string, listId: string | null) {
         "project.id as project_id",
         "project.title as project_title",
       ]);
+
+    // subLists = await db.withRecursive("children", qb => {
+    //   qb.select("")
+    // });
   } else {
     list = { title: "Inbox", id: "" };
     items = await db

@@ -23,7 +23,11 @@ export async function up(knex: Knex): Promise<void> {
     table.datetime("created_at").notNullable().defaultTo(knex.fn.now());
     table.uuid("user_id").notNullable().references("id").inTable("user");
 
-    table.uuid("list_parent_id").references("id").inTable("list");
+    table
+      .uuid("list_parent_id")
+      .references("id")
+      .inTable("list")
+      .onDelete("CASCADE");
     table
       .enu("list_type", [
         "NEXT",
@@ -94,6 +98,12 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
+  await knex.schema.table("list_item", (table) => {
+    table.dropColumn("project_id");
+  });
+  await knex.schema.table("list", (table) => {
+    table.dropColumn("project_id");
+  });
   await knex.schema.dropTableIfExists("project");
   await knex.schema.dropTableIfExists("refresh_token");
   await knex.schema.dropTableIfExists("list_item");

@@ -7,17 +7,17 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Flex } from "@chakra-ui/react";
 import { IoMdAddCircle } from "react-icons/io";
 import { useAddListItemMutation } from "./listApi";
 
 export const AddItemRow = ({
-  type,
+  listId,
   projectId,
 }: {
-  type: string;
-  projectId: string;
+  listId?: string;
+  projectId?: string;
 }) => {
   const [expand, setExpand] = useState(false);
   const [title, setTitle] = useState("");
@@ -28,12 +28,20 @@ export const AddItemRow = ({
     setTitle("");
   };
 
-  const handleDone = async () => {
+  const handleFormSubmit = (event: React.FormEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    handleAdd();
+  };
+
+  const handleAdd = async () => {
     try {
-      await addItem({ title, list_id: type, project_id: projectId }).unwrap();
+      await addItem({
+        title,
+        list_id: listId ?? "",
+        project_id: projectId,
+      }).unwrap();
     } catch (e) {
     } finally {
-      setExpand(false);
       setTitle("");
     }
   };
@@ -42,12 +50,10 @@ export const AddItemRow = ({
     return (
       <ListItem>
         <Flex
+          as="form"
+          onSubmit={handleFormSubmit}
           justifyContent="flex-start"
           rounded="md"
-          _hover={{
-            _light: { bg: "gray.200" },
-            _dark: { bg: "gray.700" },
-          }}
           _light={{ bg: "gray.200" }}
           _dark={{ bg: "gray.700" }}
           w="full"
@@ -84,8 +90,8 @@ export const AddItemRow = ({
               <Button onClick={handleCancel} colorScheme="red">
                 Cancel
               </Button>
-              <Button onClick={handleDone} colorScheme="blue">
-                Done
+              <Button onClick={handleAdd} colorScheme="blue">
+                Add Item
               </Button>
             </HStack>
           </HStack>

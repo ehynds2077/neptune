@@ -19,6 +19,7 @@ import {
 import { ListItemType } from "./ListItemType";
 import { ItemRow } from "./ItemRow";
 import { ArrowBackIcon } from "@chakra-ui/icons";
+import { AddItemRow } from "./AddItemRow";
 
 export const ListPage = () => {
   const params = useParams();
@@ -70,6 +71,7 @@ const ItemList = ({ listId }: { listId: string }) => {
     setSelected(item);
     setShowDelete(true);
   };
+
   const handleCheckItem = async (item: ListItemType) => {
     try {
       await updateListItem({
@@ -116,6 +118,7 @@ const ItemList = ({ listId }: { listId: string }) => {
             item={item}
           />
         ))}
+        <AddItemRow />
       </NeptuneList>
     );
   } else if (isError) {
@@ -135,7 +138,6 @@ const ItemList = ({ listId }: { listId: string }) => {
           Back
         </Button>
         <Heading>{list && list.title}</Heading>
-        <AddListItemForm />
         {content}
       </ListContainer>
       <ItemDeleteModal
