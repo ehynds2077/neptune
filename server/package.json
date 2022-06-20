@@ -9,7 +9,7 @@
     "migrate:latest": "docker-compose run server yarn knex migrate:latest",
     "migrate:rollback": "docker-compose run server yarn knex migrate:rollback"
   },
-  "license": "MIT",
+  "license": "AGPL-3.0-only",
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.3",

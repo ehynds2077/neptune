@@ -1,4 +1,5 @@
 import {
+  Button,
   Heading,
   Tab,
   TabList,
@@ -11,6 +12,7 @@ import { useState } from "react";
 import React from "react";
 import { useParams } from "react-router-dom";
 
+import { Link as RouterLink } from "react-router-dom";
 import EditItemModal from "../../components/EditItemModal";
 import { EditItemProvider } from "../../components/EditItemModal/EditItemProvider";
 import { ItemDeleteModal } from "../../components/ItemDeleteModal";
@@ -26,6 +28,7 @@ import { ListItemType } from "../lists/ListItemType";
 import { listTypeDict } from "../lists/ListType";
 import { useGetProjectQuery } from "./projectApi";
 import { AddItemRow } from "../lists/AddItemRow";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 
 const ProjectPageContainer = () => {
   const params = useParams();
@@ -91,6 +94,14 @@ const ProjectPage = ({ projectId }: { projectId: string }) => {
 
   return (
     <ListContainer>
+      <Button
+        as={RouterLink}
+        to="/app"
+        leftIcon={<ArrowBackIcon />}
+        alignSelf="start"
+      >
+        Back
+      </Button>
       <Heading>{project && project.title}</Heading>
       <NeptuneList>
         <Tabs m={5}>

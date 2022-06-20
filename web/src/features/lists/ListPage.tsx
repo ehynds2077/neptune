@@ -1,9 +1,10 @@
-import { Heading, Spinner, Text } from "@chakra-ui/react";
+import { Button, Heading, Spinner, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import React from "react";
 import { useParams } from "react-router-dom";
 
 import EditItemModal from "../../components/EditItemModal";
+import { Link as RouterLink } from "react-router-dom";
 import { EditItemProvider } from "../../components/EditItemModal/EditItemProvider";
 import { ItemDeleteModal } from "../../components/ItemDeleteModal";
 import { ListContainer } from "../../components/ListContainer";
@@ -17,6 +18,7 @@ import {
 } from "./listApi";
 import { ListItemType } from "./ListItemType";
 import { ItemRow } from "./ItemRow";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 
 export const ListPage = () => {
   const params = useParams();
@@ -124,6 +126,14 @@ const ItemList = ({ listId }: { listId: string }) => {
   return (
     <>
       <ListContainer>
+        <Button
+          as={RouterLink}
+          to="/app"
+          leftIcon={<ArrowBackIcon />}
+          alignSelf="start"
+        >
+          Back
+        </Button>
         <Heading>{list && list.title}</Heading>
         <AddListItemForm />
         {content}
