@@ -12,7 +12,7 @@ export const addListItem = async function (
   next: NextFunction
 ) {
   const { listId } = req.params;
-  const { title } = req.body;
+  const { title, project_id } = req.body;
 
   try {
     if (!listId) {
@@ -25,7 +25,14 @@ export const addListItem = async function (
 
     const uid = (req as any).user.id;
 
-    const result = await createListItem(uid, listId, title, false, undefined);
+    const result = await createListItem(
+      uid,
+      listId,
+      title,
+      false,
+      undefined,
+      project_id
+    );
 
     res.json(result);
   } catch (e) {

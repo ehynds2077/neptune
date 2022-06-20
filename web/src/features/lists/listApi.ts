@@ -16,6 +16,7 @@ export interface ListRequest {
 export interface NewListItem {
   title: string;
   list_id: string;
+  project_id?: string;
 }
 
 export interface UpdateItemRequest {
@@ -87,7 +88,7 @@ const listApi = emptySplitApi.injectEndpoints({
         method: "POST",
         body: item,
       }),
-      invalidatesTags: ["List"],
+      invalidatesTags: ["List", "Project"],
     }),
 
     updateList: builder.mutation<void, UpdateListRequest>({

@@ -42,7 +42,7 @@ declare module "knex/types/tables" {
         Pick<ListItem, "user_id"> &
         Pick<ListItem, "created_at"> &
         Pick<ListItem, "id"> &
-        Partial<Pick<ListItem, "notes">>,
+        Partial<ListItem>,
       // Update
       Partial<
         Omit<ListItem, "user_id"> &

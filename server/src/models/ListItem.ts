@@ -15,14 +15,43 @@ export const createListItem = async function (
   listId: string,
   title = "",
   isDone = false,
-  notes: string | undefined
+  notes: string | undefined,
+  projectId: string
 ) {
+  if (
+    listId === "NEXT" ||
+    listId === "SOMEDAY" ||
+    listId === "WAITING" ||
+    listId === "AGENDA" ||
+    listId === "REFERENCE"
+  ) {
+    const lists = await db
+      .select("id")
+      .from("list")
+      .where("list_parent_id", null)
+      .andWhere("user_id", uid)
+      .andWhere("list_type", listId);
+
+    const list = lists[0];
+    listId = list.id;
+  } else if (listId === "PROJECT_SUPPORT") {
+    const lists = await db
+      .select("id")
+      .from("list")
+      .where("list_type", listId)
+      .andWhere("project_id", projectId)
+      .andWhere("user_id", uid);
+
+    const list = lists[0];
+    listId = list.id;
+  }
   return await db("list_item").insert({
     title,
     is_done: isDone,
     notes,
     user_id: uid,
     list_id: listId,
+    project_id: projectId,
   });
 };
 
