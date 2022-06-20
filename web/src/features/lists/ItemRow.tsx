@@ -30,6 +30,25 @@ export const ItemRow = ({
   onDelete: (item: ListItemType) => Promise<void>;
 }) => {
   const { onOpen } = useEditItem();
+
+  const ListDetail = () => (
+    <HStack justifySelf="end">
+      <Text _light={{ color: "gray.600" }} color="gray.400">
+        List:{" "}
+      </Text>
+      <Text>{item.list_title}</Text>
+    </HStack>
+  );
+
+  const ProjectDetail = () => (
+    <HStack justifySelf="end">
+      <Text _light={{ color: "gray.600" }} color="gray.400">
+        Project:{" "}
+      </Text>
+      <Text>{item.project_title}</Text>
+    </HStack>
+  );
+
   return (
     <ListItem>
       <Flex
@@ -66,22 +85,8 @@ export const ItemRow = ({
               alignItems="start"
             >
               <Text overflowWrap="anywhere">{item.title}</Text>
-              {showList && item.list_title && (
-                <HStack justifySelf="end">
-                  <Text _light={{ color: "gray.600" }} color="gray.400">
-                    List:{" "}
-                  </Text>
-                  <Text>{item.list_title}</Text>
-                </HStack>
-              )}
-              {showProject && item.project_title && (
-                <HStack justifySelf="end">
-                  <Text _light={{ color: "gray.600" }} color="gray.400">
-                    Project:{" "}
-                  </Text>
-                  <Text>{item.project_title}</Text>
-                </HStack>
-              )}
+              {showList && item.list_title && <ListDetail />}
+              {showProject && item.project_title && <ProjectDetail />}
             </VStack>
             <IconButton
               variant="ghost"
