@@ -18,12 +18,7 @@ const origin = "https//neptunegtd.com";
 //   next();
 // });
 
-app.use(
-  cors<Request>({
-    credentials: true,
-    origin,
-  })
-);
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
