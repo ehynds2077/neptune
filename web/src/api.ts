@@ -8,7 +8,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setUser, logoutUser } from "./features/auth/authSlice";
 
 export const baseQuery = fetchBaseQuery({
-  baseUrl: "//api.neptunegtd.com:8080",
+  baseUrl: "//api.neptunegtd.com",
   credentials: "include",
 });
 
