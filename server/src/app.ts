@@ -18,21 +18,21 @@ const origin = "https://neptunegtd.com";
 //   next();
 // });
 
-// app.use(
-//   cors<Request>({
-//     credentials: true,
-//     origin,
-//   })
-// );
 app.use(
-  cors({
-    allowedHeaders: ["authorization", "Content-Type"], // you can change the headers
-    exposedHeaders: ["authorization"], // you can change the headers
-    origin: "*",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    preflightContinue: false,
+  cors<Request>({
+    credentials: true,
+    origin,
   })
 );
+// app.use(
+//   cors({
+//     allowedHeaders: ["authorization", "Content-Type"], // you can change the headers
+//     exposedHeaders: ["authorization"], // you can change the headers
+//     origin: "*",
+//     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//     preflightContinue: false,
+//   })
+// );
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
