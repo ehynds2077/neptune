@@ -39,12 +39,13 @@ export const AddListModal = ({
     try {
       if (listType) {
         await addList({ title: title, list_type: listType }).unwrap();
-        handleClose();
       } else {
         throw new Error("Problem finding list type to add");
       }
     } catch (e) {
       console.log(e);
+    } finally {
+      handleClose();
     }
   };
 
