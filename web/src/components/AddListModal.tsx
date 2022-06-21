@@ -1,5 +1,5 @@
 import { List_ListType } from "../features/lists/ListType";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -28,6 +28,13 @@ export const AddListModal = ({
 
   const [addList] = useAddListMutation();
 
+  const handleSubmitForm = async function (
+    event: React.FormEvent<HTMLDivElement>
+  ) {
+    event.preventDefault();
+    handleAddList();
+  };
+
   const handleAddList = async function () {
     try {
       if (listType) {
@@ -53,9 +60,10 @@ export const AddListModal = ({
         <ModalHeader>Add list</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
-          <FormControl>
+          <FormControl as="form" onSubmit={handleSubmitForm}>
             <FormLabel>Title</FormLabel>
             <Input
+              autoFocus
               value={title}
               onChange={(event: any) => {
                 setTitle(event.target.value);

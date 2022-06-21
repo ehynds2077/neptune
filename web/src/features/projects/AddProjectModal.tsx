@@ -26,6 +26,13 @@ export const AddProjectModal = ({
 
   const [addProject] = useAddProjectMutation();
 
+  const handleSubmitForm = async function (
+    event: React.FormEvent<HTMLDivElement>
+  ) {
+    event.preventDefault();
+    handleAddProject();
+  };
+
   const handleAddProject = async () => {
     try {
       await addProject({ title }).unwrap();
@@ -48,9 +55,10 @@ export const AddProjectModal = ({
         <ModalHeader>Add project</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
-          <FormControl>
+          <FormControl as="form" onSubmit={handleSubmitForm}>
             <FormLabel>Title</FormLabel>
             <Input
+              autoFocus
               value={title}
               onChange={(event: any) => {
                 setTitle(event.target.value);
