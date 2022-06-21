@@ -7,7 +7,9 @@
     "dev": "nodemon ./src/server.ts",
     "migrate:make": "yarn knex migrate:make",
     "migrate:latest": "docker-compose run server yarn knex migrate:latest",
-    "migrate:rollback": "docker-compose run server yarn knex migrate:rollback"
+    "migrate:rollback": "docker-compose run server yarn knex migrate:rollback",
+    "docker-dev": "docker-compose -f docker-compose.dev.yml up",
+    "docker-prod": "docker-compose -f docker-compose.prod.yml up"
   },
   "license": "AGPL-3.0-only",
   "devDependencies": {

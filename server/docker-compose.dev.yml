@@ -1,0 +1,37 @@
+# Development configuration
+version: "3"
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+
+  adminer:
+    depends_on:
+      - db
+    image: adminer
+    restart: always
+    ports:
+      - 8090:8080
+
+  server:
+    build: .
+    volumes:
+      - ./src:/usr/src/app/src
+
+      # Prevent overwrites
+      - /usr/src/app/node_modules
+      - /usr/src/app/pgdata
+    ports:
+      - "4000:4000"
+    env_file:
+      - .env
+      - .server.env
+    depends_on:
+      - db
+    restart: "always"
+    command: ["yarn", "dev"]
