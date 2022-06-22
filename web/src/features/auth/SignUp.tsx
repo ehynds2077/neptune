@@ -5,6 +5,7 @@ import { FormControl, FormErrorMessage } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { showToast } from "../..";
 import { validateEmail } from "../../utils/validateEmail";
 
 import { useLoginMutation, useSignUpMutation } from "./authApi";
@@ -35,6 +36,19 @@ export const SignUp = () => {
       navigate("/app", { replace: true });
     } catch (e) {
       console.log(e);
+      let description =
+        "Problem communicating with server. Please try again later.";
+      if ((e as any).status === 409 || (e as any).status === 400) {
+        description = (e as any).data.error;
+      } else if ((e as any).originalStatus === 400) {
+        description = "Unknown error. Please try again later.";
+      }
+      showToast({
+        title: "Error",
+        description,
+        status: "error",
+        position: "top",
+      });
     }
   };
 

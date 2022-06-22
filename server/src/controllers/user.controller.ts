@@ -56,26 +56,27 @@ export const login = async function (
   try {
     // Check for credentials
     if (!email || !password) {
-      throw new Error("Credentials not provided");
+      res.status(400).json({ error: "Credentials not provided" });
     }
 
     // Check for valid email
     if (!validateEmail(email)) {
-      throw new Error("Invalid email address provided");
+      res.status(400).json({ error: "Invalid email address provided" });
     }
 
-    const errMsg = "Email or password is incorrect or user does not exist";
+    const incorrectCredsMsg =
+      "Email or password is incorrect or user does not exist";
 
     // Check user exists
     const user = await getUserByEmail(email);
     if (!user) {
-      throw new Error(errMsg);
+      res.status(403).json({ error: incorrectCredsMsg });
     }
 
     // Check pass
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) {
-      throw new Error(errMsg);
+      res.status(403).json({ error: incorrectCredsMsg });
     }
 
     // Gen tokens
@@ -89,7 +90,7 @@ export const login = async function (
 
     res.status(200).send({ name: user.name, email: user.email, uid: user.id });
   } catch (e) {
-    res.status(401);
+    res.status(400);
     next(e);
   }
 };
@@ -105,23 +106,25 @@ export const register = async function (
   try {
     // Check for credentials
     if (!(name && email && password)) {
-      throw new Error("Credentials not provided");
+      res.status(400).json({ error: "Credentials not provided" });
     }
 
     // Check for valid email
     if (!validateEmail(email)) {
-      throw new Error("Invalid email address provided");
+      res.status(400).json({ error: "Invalid email address provided" });
     }
 
     // Check user exists
     const existing = await getUserByEmail(email);
     if (existing) {
-      throw new Error("User with email already exists");
+      res.status(409).json({ error: "User with email already exists" });
     }
 
     // Check password length
     if ((password as string).length > 72) {
-      throw new Error("Password must be at most 72 characters long");
+      res
+        .status(400)
+        .json({ error: "Password must be at most 72 characters long" });
     }
 
     const hashedPass = await hashPass(password);

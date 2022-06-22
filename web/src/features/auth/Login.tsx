@@ -12,6 +12,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { showToast } from "../..";
 import { validateEmail } from "../../utils/validateEmail";
 
 import { Credentials, useLoginMutation } from "./authApi";
@@ -23,7 +24,6 @@ export const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isAuthError, setIsAuthError] = useState(false);
 
   // const { isOpen, onClose, onOpen } = useDisclosure();
 
@@ -31,7 +31,7 @@ export const Login = () => {
   const handlePasswordChange = (event: any) => setPassword(event.target.value);
 
   const user = useSelector(selectUser);
-  const [apiLogin, { isError }] = useLoginMutation();
+  const [apiLogin] = useLoginMutation();
 
   useEffect(() => {
     if (user) {
@@ -41,30 +41,27 @@ export const Login = () => {
 
   const handleLogin = async () => {
     try {
-      setIsAuthError(false);
       const credentials: Credentials = { email, password };
       const user = await apiLogin(credentials).unwrap();
       dispatch(setUser(user));
       navigate("/app", { replace: true });
     } catch (e) {
-      if ((e as any).originalStatus === 401) {
-        setIsAuthError(true);
-      }
       console.log(e);
+      let description =
+        "Problem communicating with server. Please try again later.";
+      if ((e as any).status === 400 || (e as any).status === 403) {
+        description = (e as any).data.error;
+      } else if ((e as any).originalStatus === 400) {
+        description = "Unknown error. Please try again later.";
+      }
+      showToast({
+        title: "Error",
+        description,
+        status: "error",
+        position: "top",
+      });
     }
   };
-
-  const loginAlert = (
-    <Alert status="error">
-      <AlertIcon />
-      <AlertTitle>There was an error logging in</AlertTitle>
-      <AlertDescription>
-        {isAuthError
-          ? "The account doesn't exist or the email/password is incorrect"
-          : "Unknown error"}
-      </AlertDescription>
-    </Alert>
-  );
 
   return (
     <Flex direction="column" alignItems="center">
@@ -78,7 +75,6 @@ export const Login = () => {
         maxW="xl"
         w="full"
       >
-        {isError && loginAlert}
         <FormControl isInvalid={!email || !validateEmail(email)}>
           <Input
             placeholder="Email"

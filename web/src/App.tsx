@@ -1,4 +1,9 @@
-import { ChakraProvider, Flex, theme } from "@chakra-ui/react";
+import {
+  ChakraProvider,
+  createStandaloneToast,
+  Flex,
+  theme,
+} from "@chakra-ui/react";
 import * as React from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -16,6 +21,7 @@ import { Welcome } from "./pages/Welcome";
 import { store } from "./store";
 
 let persistor = persistStore(store);
+
 
 export const App = () => (
   <ChakraProvider theme={theme}>
