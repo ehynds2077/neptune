@@ -52,11 +52,11 @@ export const updateList = async function (
   try {
     const uid = (req as any).user.id;
     if (!listId) {
-      throw new Error("Must provide list id to update");
+      res.status(400).json({ error: "Must provide list id" });
     }
 
     if (!title && !list_parent_id) {
-      throw new Error("Must provide parameter to update");
+      res.status(400).json({ error: "Must provide parameter to update" });
     }
 
     const result = await updateUserList(uid, listId, title, list_parent_id);
@@ -78,7 +78,7 @@ export const deleteList = async function (
   try {
     const uid = (req as any).user.id;
     if (!listId) {
-      throw new Error("Must provice list id to delete");
+      res.status(400).json({ error: "Must provide list id" });
     }
 
     const result = await deleteUserList(uid, listId);
