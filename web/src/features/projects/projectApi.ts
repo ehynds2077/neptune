@@ -60,6 +60,19 @@ export const projectApi = emptySplitApi.injectEndpoints({
         body: project,
       }),
       invalidatesTags: ["Project"],
+      async onQueryStarted({ title }, { dispatch, queryFulfilled }) {
+        const result = dispatch(
+          projectApi.util.updateQueryData("getProjects", undefined, (draft) => {
+            draft.push({ id: "temp", title, items: [] });
+          })
+        );
+
+        try {
+          await queryFulfilled;
+        } catch (err) {
+          result.undo();
+        }
+      },
     }),
   }),
 });
