@@ -12,8 +12,8 @@
     "dev-migrate:rollback": "docker-compose -f docker-compose.dev.yml run server yarn knex migrate:rollback",
     "prod-migrate:latest": "docker-compose -f docker-compose.prod.yml run server yarn knex migrate:latest",
     "prod-migrate:rollback": "docker-compose -f docker-compose.prod.yml run server yarn knex migrate:rollback",
-    "docker-dev": "docker-compose -f docker-compose.dev.yml up",
-    "docker-prod": "docker-compose -f docker-compose.prod.yml up"
+    "docker-dev": "docker-compose -f docker-compose.dev.yml",
+    "docker-prod": "docker-compose -f docker-compose.prod.yml"
   },
   "license": "AGPL-3.0-only",
   "devDependencies": {
