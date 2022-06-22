@@ -1,0 +1,32 @@
+# Builder stage
+FROM node:lts-alpine AS builder
+
+WORKDIR /usr/src/app
+
+COPY ./package.json ./
+COPY ./yarn.lock ./
+COPY ./tsconfig.json ./
+COPY ./knexfile.ts ./
+RUN yarn install
+
+COPY ./src ./src
+
+RUN yarn build
+
+# Runner stage
+FROM node:lts-alpine
+WORKDIR /usr/src/app
+
+COPY ./package.json ./
+COPY ./yarn.lock ./
+COPY ./tsconfig.json ./
+COPY ./knexfile.ts ./
+RUN yarn install
+
+COPY --from=builder ./usr/src/app/build ./build
+
+COPY ./wait-for.sh ./
+COPY ./docker-entry.sh ./
+RUN chmod +x ./wait-for.sh ./docker-entry.sh
+
+ENTRYPOINT [ "./docker-entry.sh" ] 
