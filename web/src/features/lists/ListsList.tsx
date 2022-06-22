@@ -26,6 +26,9 @@ export const ListsList = ({
 }) => {
   const [selectedList, setSelectedList] = useState<ListType | null>(null);
 
+  const filteredLists = lists.filter((list) => list.list_type === type);
+  const root = filteredLists.find((list) => !list.list_parent_id);
+
   const { isOpen, onClose, onOpen } = useDisclosure();
   const {
     isOpen: editIsOpen,
@@ -48,47 +51,55 @@ export const ListsList = ({
     editOnOpen();
   };
 
+  const SubLists = ({ parentId }: { parentId: string | null }) => {
+    return (
+      <>
+        {filteredLists
+          .filter((list) => list.list_parent_id === parentId)
+          .map((list, idx) => {
+            const margin = list.depth * 8;
+            return (
+              <>
+                <HStack ml={margin} key={idx}>
+                  <Button
+                    as={RouterLink}
+                    to={`/list/${list.id}`}
+                    justifyContent="start"
+                    w="full"
+                    key={list.id}
+                  >
+                    {list.title}
+                  </Button>
+                  {list.depth !== 0 && (
+                    <>
+                      <IconButton
+                        onClick={() => {
+                          handleShowEdit(list);
+                        }}
+                        aria-label="Edit List"
+                        icon={<IoPencil />}
+                      />
+                      <IconButton
+                        onClick={() => {
+                          handleConfirmDelete(list);
+                        }}
+                        aria-label="Delete List"
+                        icon={<IoMdTrash />}
+                      />
+                    </>
+                  )}
+                </HStack>
+                <SubLists parentId={list.id} />
+              </>
+            );
+          })}
+      </>
+    );
+  };
+
   return (
     <List w="full" mb={8} maxW="xl" spacing={3}>
-      {/* <Text fontSize="xl" fontWeight="bold" alignSelf="start">
-        {title}
-      </Text> */}
-      {lists
-        .filter((list) => list.list_type === type)
-        .map((list, idx) => {
-          const margin = list.depth * 8;
-          return (
-            <HStack ml={margin} key={idx}>
-              <Button
-                as={RouterLink}
-                to={`/list/${list.id}`}
-                justifyContent="start"
-                w="full"
-                key={list.id}
-              >
-                {list.title}
-              </Button>
-              {list.depth !== 0 && (
-                <>
-                  <IconButton
-                    onClick={() => {
-                      handleShowEdit(list);
-                    }}
-                    aria-label="Edit List"
-                    icon={<IoPencil />}
-                  />
-                  <IconButton
-                    onClick={() => {
-                      handleConfirmDelete(list);
-                    }}
-                    aria-label="Delete List"
-                    icon={<IoMdTrash />}
-                  />
-                </>
-              )}
-            </HStack>
-          );
-        })}
+      {root && <SubLists parentId={null} />}
       <Button
         onClick={() => {
           onOpen();
