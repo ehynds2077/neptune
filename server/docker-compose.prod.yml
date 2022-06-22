@@ -45,7 +45,5 @@ services:
     env_file:
       - .env
       - .server.env
-    depends_on:
-      - db
     restart: "always"
     command: ["yarn", "start"]
