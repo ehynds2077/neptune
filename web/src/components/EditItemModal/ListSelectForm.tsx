@@ -10,11 +10,13 @@ export const ListSelectForm = () => {
   const { data: lists = [] } = useGetListsQuery();
 
   useEffect(() => {
-    const list = lists.filter((list) => list.list_type === selectedType)[0];
-    if (list && list.id) {
-      setSelectedListId(list.id);
+    if (!selectedListId) {
+      const list = lists.filter((list) => list.list_type === selectedType)[0];
+      if (list && list.id) {
+        setSelectedListId(list.id);
+      }
     }
-  }, [selectedType, lists, setSelectedListId]);
+  }, [selectedType, lists, setSelectedListId, selectedListId]);
 
   return (
     <>

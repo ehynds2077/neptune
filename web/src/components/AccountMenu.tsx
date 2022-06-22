@@ -47,11 +47,12 @@ const UserMenuItems = () => {
   const handleLogout = async () => {
     try {
       await apiLogout().unwrap();
+    } catch (e) {
+      console.log(e);
+    } finally {
       dispatch(logoutUser());
 
       navigate("/", { replace: true });
-    } catch (e) {
-      console.log(e);
     }
   };
   return (

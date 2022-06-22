@@ -118,7 +118,7 @@ const ItemList = ({ listId }: { listId: string }) => {
             item={item}
           />
         ))}
-        <AddItemRow />
+        <AddItemRow listId={list.id} />
       </NeptuneList>
     );
   } else if (isError) {

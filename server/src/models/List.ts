@@ -44,7 +44,7 @@ export const getUserLists = async function (uid: string) {
         "list_parent_id",
         "list.created_at",
         db.raw("0 as depth"),
-        db.raw("id::text AS path")
+        db.raw("'1'::text AS path")
       )
         .from("list")
         .where("list.list_parent_id", null)
@@ -58,7 +58,7 @@ export const getUserLists = async function (uid: string) {
             "l.list_parent_id",
             "l.created_at",
             db.raw("c.depth+ 1"),
-            db.raw("c.path || '-' || l.id::text AS path")
+            db.raw("c.path || '-' || '1'::text AS path")
           )
             .from("list as l")
             .join("children as c", "l.list_parent_id", "=", "c.id");
