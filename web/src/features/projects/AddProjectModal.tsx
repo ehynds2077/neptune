@@ -35,11 +35,13 @@ export const AddProjectModal = ({
 
   const handleAddProject = async () => {
     try {
-      await addProject({ title }).unwrap();
+      addProject({ title }).unwrap();
+      handleClose();
     } catch (err) {
       console.log(err);
-    } finally {
+      // TODO: alert user problem adding project
       handleClose();
+    } finally {
     }
   };
 
