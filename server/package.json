@@ -13,7 +13,8 @@
     "prod-migrate:latest": "docker-compose -f docker-compose.prod.yml run server yarn knex migrate:latest",
     "prod-migrate:rollback": "docker-compose -f docker-compose.prod.yml run server yarn knex migrate:rollback",
     "docker-dev": "docker-compose -f docker-compose.dev.yml",
-    "docker-prod": "docker-compose -f docker-compose.prod.yml"
+    "docker-prod-cert": "docker-compose -f docker-compose.prod.yml",
+    "docker-prod": "docker-compose -f docker-compose.prod.yml -f docker-compose.override.yml"
   },
   "license": "AGPL-3.0-only",
   "devDependencies": {

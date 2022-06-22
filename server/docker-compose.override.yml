@@ -1,0 +1,4 @@
+version: "3"
+services:
+  certbot:
+    entrypoint: ["echo", "Certbot disabled"]
