@@ -56,12 +56,12 @@ export const login = async function (
   try {
     // Check for credentials
     if (!email || !password) {
-      res.status(400).json({ error: "Credentials not provided" });
+      return res.status(400).json({ error: "Credentials not provided" });
     }
 
     // Check for valid email
     if (!validateEmail(email)) {
-      res.status(400).json({ error: "Invalid email address provided" });
+      return res.status(400).json({ error: "Invalid email address provided" });
     }
 
     const incorrectCredsMsg =
@@ -70,13 +70,13 @@ export const login = async function (
     // Check user exists
     const user = await getUserByEmail(email);
     if (!user) {
-      res.status(403).json({ error: incorrectCredsMsg });
+      return res.status(403).json({ error: incorrectCredsMsg });
     }
 
     // Check pass
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) {
-      res.status(403).json({ error: incorrectCredsMsg });
+      return res.status(403).json({ error: incorrectCredsMsg });
     }
 
     // Gen tokens
@@ -106,23 +106,23 @@ export const register = async function (
   try {
     // Check for credentials
     if (!(name && email && password)) {
-      res.status(400).json({ error: "Credentials not provided" });
+      return res.status(400).json({ error: "Credentials not provided" });
     }
 
     // Check for valid email
     if (!validateEmail(email)) {
-      res.status(400).json({ error: "Invalid email address provided" });
+      return res.status(400).json({ error: "Invalid email address provided" });
     }
 
     // Check user exists
     const existing = await getUserByEmail(email);
     if (existing) {
-      res.status(409).json({ error: "User with email already exists" });
+      return res.status(409).json({ error: "User with email already exists" });
     }
 
     // Check password length
     if ((password as string).length > 72) {
-      res
+      return res
         .status(400)
         .json({ error: "Password must be at most 72 characters long" });
     }
