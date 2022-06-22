@@ -61,6 +61,7 @@ export const createProject = async function (uid: string, title: string) {
     project_id: projectId,
     list_type: "PROJECT_SUPPORT",
     title: "",
+    order: 1,
     user_id: uid,
   });
 
