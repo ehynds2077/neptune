@@ -95,7 +95,7 @@ export const addList = async function (
   res: Response,
   next: NextFunction
 ) {
-  const { title, list_type } = req.body;
+  const { title, list_type, parent_id } = req.body;
 
   try {
     if (!title || !list_type) {
@@ -104,7 +104,7 @@ export const addList = async function (
 
     const id = (req as any).user.id;
 
-    const result = await createList(id, title, list_type);
+    const result = await createList(id, title, list_type, parent_id);
     if (!(result as any).rowCount) {
       throw new Error("Encountered a problem adding list");
     }

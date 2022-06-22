@@ -45,6 +45,7 @@ export const addUser = async function (
   email: string,
   passwordHash: string
 ) {
+  // TODO: convert this into unified transaction
   const insertedUsers = await db
     .table("user")
     .insert({
@@ -64,26 +65,31 @@ export const addUser = async function (
       title: "Next",
       user_id: user.id,
       list_type: "NEXT",
+      order: 1,
     },
     {
       title: "Waiting",
       user_id: user.id,
       list_type: "WAITING",
+      order: 1,
     },
     {
       title: "Someday/Maybe",
       user_id: user.id,
       list_type: "SOMEDAY",
+      order: 1,
     },
     {
       title: "Agenda",
       user_id: user.id,
       list_type: "AGENDA",
+      order: 1,
     },
     {
       title: "Reference",
       user_id: user.id,
       list_type: "REFERENCE",
+      order: 1,
     },
   ]);
 

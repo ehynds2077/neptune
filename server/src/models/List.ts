@@ -1,3 +1,4 @@
+import internal from "stream";
 import db from "../services/db";
 
 export interface List {
@@ -11,6 +12,7 @@ export interface List {
 
   title?: string;
   list_type: string;
+  order: number;
 }
 
 enum List_ListType {
@@ -43,8 +45,9 @@ export const getUserLists = async function (uid: string) {
         "list.list_type",
         "list_parent_id",
         "list.created_at",
+        "list.order",
         db.raw("0 as depth"),
-        db.raw("'1'::text AS path")
+        db.raw("list.order::text AS path")
       )
         .from("list")
         .where("list.list_parent_id", null)
@@ -57,17 +60,25 @@ export const getUserLists = async function (uid: string) {
             "l.list_type",
             "l.list_parent_id",
             "l.created_at",
+            "l.order",
             db.raw("c.depth+ 1"),
-            db.raw("c.path || '-' || '1'::text AS path")
+            db.raw("c.path || '-' || l.order::text AS path")
           )
             .from("list as l")
             .join("children as c", "l.list_parent_id", "=", "c.id");
         });
     })
-    .select("c.id", "c.title", "c.list_type", "c.list_parent_id", "depth")
+    .select(
+      "c.id",
+      "c.title",
+      "c.list_type",
+      "c.list_parent_id",
+      "depth",
+      "path"
+    )
     .from("children as c")
-    .orderBy("path")
-    .orderBy("c.created_at");
+    .orderBy("order");
+  // .orderBy([{ column: "path::bytea" }, { column: "c.order" }]);
   // .join("list as l", "c.id", "=", "l.id")
   // .orderBy("created_at");
 
@@ -134,21 +145,33 @@ export const getUserList = async function (uid: string, listId: string | null) {
 export const createList = async function (
   uid: string,
   title: string,
-  type: List_ListType
+  type: List_ListType,
+  parentId: string | undefined
 ) {
-  const rootLists = await db
-    .select("id")
-    .from("list")
-    .where("user_id", uid)
-    .andWhere("list_parent_id", null)
-    .andWhere("list_type", type);
+  let rootId = parentId;
+  if (!parentId) {
+    const rootLists = await db
+      .select("id")
+      .from("list")
+      .where("user_id", uid)
+      .andWhere("list_parent_id", null)
+      .andWhere("list_type", type);
 
-  const root = rootLists[0];
+    rootId = rootLists[0].id;
+  }
+
+  const maxOrders = await db("list")
+    .where("user_id", uid)
+    .andWhere("list_parent_id", rootId)
+    .max("order");
+  const maxOrder = maxOrders[0].max;
+
   return await db.table("list").insert({
     title,
     user_id: uid,
-    list_parent_id: root.id,
+    list_parent_id: rootId,
     list_type: type,
+    order: maxOrder + 1,
   });
 };
 

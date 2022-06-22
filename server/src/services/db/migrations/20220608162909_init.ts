@@ -21,6 +21,7 @@ export async function up(knex: Knex): Promise<void> {
 
     table.string("title");
     table.datetime("created_at").notNullable().defaultTo(knex.fn.now());
+    table.integer("order").notNullable();
     table.uuid("user_id").notNullable().references("id").inTable("user");
 
     table
