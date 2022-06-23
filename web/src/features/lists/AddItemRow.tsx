@@ -53,29 +53,25 @@ export const AddItemRow = ({
           as="form"
           onSubmit={handleFormSubmit}
           justifyContent="flex-start"
-          rounded="md"
-          _light={{ bg: "gray.200" }}
-          _dark={{ bg: "gray.700" }}
           w="full"
           p={2}
-          pr={4}
-          my={2}
+          py={4}
+          // p={2}
+          // mr={4}
+          // my={2}
         >
           <HStack
             spacing={2}
+            rounded="md"
+            px={2}
+            _light={{ bg: "gray.200" }}
+            _dark={{ bg: "gray.700" }}
             alignItems="center"
             w="full"
             _hover={{
               cursor: "pointer",
             }}
           >
-            <IconButton
-              variant="ghost"
-              aria-label="Add new item"
-              _hover={{ bg: "transparent" }}
-              icon={<IoMdAddCircle />}
-            />
-
             <HStack w="full" alignItems="center" justifyContent="space-between">
               <VStack p={3} w="full" alignItems="start">
                 <Input
@@ -107,22 +103,16 @@ export const AddItemRow = ({
           _hover={{
             _light: { bg: "gray.200" },
             _dark: { bg: "gray.700" },
+            cursor: "pointer",
           }}
           w="full"
           p={2}
-          my={2}
+          py={4}
+          onClick={() => {
+            setExpand(true);
+          }}
         >
-          <HStack
-            spacing={2}
-            alignItems="center"
-            w="full"
-            _hover={{
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              setExpand(true);
-            }}
-          >
+          <HStack px={2} spacing={2} alignItems="center" w="full">
             <IconButton
               variant="ghost"
               aria-label="Add new item"
