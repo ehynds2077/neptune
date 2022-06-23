@@ -1,22 +1,14 @@
-import { Button } from "@chakra-ui/button";
 import { Input } from "@chakra-ui/input";
-import { Flex, Heading, Link, Stack, Text } from "@chakra-ui/layout";
-import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
-  FormControl,
-  FormErrorMessage,
-} from "@chakra-ui/react";
+import { Heading, Link, Text } from "@chakra-ui/layout";
+import { FormControl, FormErrorMessage } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+
 import { showToast } from "../..";
 import { AuthButton } from "../../components/AuthButton";
 import { AuthFormContainer } from "../../components/AuthFormContainer";
 import { validateEmail } from "../../utils/validateEmail";
-
 import { Credentials, useLoginMutation } from "./authApi";
 import { selectUser, setUser } from "./authSlice";
 

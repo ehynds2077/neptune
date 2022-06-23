@@ -15,7 +15,7 @@ export const LinkRow = ({
           _dark: { bg: "whiteAlpha.300" },
           _light: { bg: "gray.200" },
         }}
-        rounded="lg"
+        rounded="md"
         _light={{ bg: "gray.100" }}
         _dark={{ bg: "whiteAlpha.200" }}
         {...rest}

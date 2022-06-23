@@ -8,9 +8,9 @@ export const AuthButton = ({
 }) => (
   <Button
     colorScheme="blue"
-    bg="blue.600"
+    bg="blue.400"
     color="white"
-    _hover={{ bg: "blue.400" }}
+    _hover={{ bg: "blue.600" }}
     {...rest}
   >
     {children}
