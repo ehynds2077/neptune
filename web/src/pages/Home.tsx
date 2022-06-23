@@ -1,4 +1,5 @@
 import { Flex, Heading, List } from "@chakra-ui/layout";
+import { Box } from "@chakra-ui/layout";
 import { Text } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
 import { useEffect } from "react";
@@ -11,6 +12,7 @@ import { selectUser } from "../features/auth/authSlice";
 import { ListsList } from "../features/lists/ListsList";
 import { ProjectsList } from "../features/projects/ProjectsList";
 import { useGetListsQuery } from "../features/lists/listApi";
+import { LinkRow } from "../components/LinkRow";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -30,15 +32,18 @@ export const Home = () => {
         Home
       </Heading>
       <List w="full" maxW="xl" spacing={3}>
-        <Button
-          mb={4}
-          justifyContent="start"
-          w="full"
-          as={RouterLink}
-          to="/inbox"
-        >
-          Inbox
-        </Button>
+        <LinkRow mb={4}>
+          <Box
+            as={RouterLink}
+            to={"/inbox"}
+            p={4}
+            px={4}
+            justifyContent="start"
+            w="full"
+          >
+            <Text fontWeight="bold">Inbox</Text>
+          </Box>
+        </LinkRow>
 
         <ProjectsList />
         <Text fontSize="xl" fontWeight="bold" alignSelf="start">

@@ -1,5 +1,7 @@
 import { List_ListType } from "./ListType";
-import { useState } from "react";
+import { Text } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { LinkRow } from "../../components/LinkRow";
 import { Box, filter, useDisclosure } from "@chakra-ui/react";
 import { AddListModal } from "../../components/AddListModal";
 import { HStack } from "@chakra-ui/react";
@@ -58,17 +60,7 @@ export const ListsList = ({
 
     return (
       <>
-        <HStack
-          px={1}
-          _hover={{
-            _dark: { bg: "whiteAlpha.300" },
-            _light: { bg: "gray.200" },
-          }}
-          rounded="lg"
-          _light={{ bg: "gray.100" }}
-          _dark={{ bg: "whiteAlpha.200" }}
-          ml={margin}
-        >
+        <LinkRow ml={margin}>
           {hasChildren && (
             <IconButton
               variant="ghost"
@@ -87,7 +79,7 @@ export const ListsList = ({
             w="full"
             key={list.id}
           >
-            {list.title}
+            <Text fontWeight="bold">{list.title}</Text>
           </Box>
           {list.depth !== 0 && (
             <>
@@ -109,7 +101,7 @@ export const ListsList = ({
               />
             </>
           )}
-        </HStack>
+        </LinkRow>
         {expand && <SubLists parentId={list.id} />}
       </>
     );
