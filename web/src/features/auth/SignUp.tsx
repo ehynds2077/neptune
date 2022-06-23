@@ -7,6 +7,8 @@ import { useDispatch } from "react-redux";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 import { showToast } from "../..";
+import { AuthButton } from "../../components/AuthButton";
+import { AuthFormContainer } from "../../components/AuthFormContainer";
 import { MessageSpinner } from "../../components/MessageSpinner";
 import { validateEmail } from "../../utils/validateEmail";
 import { useLoginMutation, useSignUpMutation } from "./authApi";
@@ -54,83 +56,71 @@ export const SignUp = () => {
   };
 
   return (
-    <Flex direction="column" w="full" alignItems="center">
-      <Stack
-        _dark={{ bg: "blue.900" }}
-        bg="gray.100"
-        p={5}
-        rounded="xl"
-        m={5}
-        w="full"
-        maxW="xl"
-      >
-        {signUpLoading && <MessageSpinner title="Signing Up" />}
-        {loginLoading && <MessageSpinner title="Logging In" />}
-        {!signUpLoading && !loginLoading && (
-          <>
-            <Heading mb={4} alignSelf="start">
-              Sign Up
-            </Heading>
-            <FormControl isInvalid={!name}>
-              <Input
-                variant="outline"
-                borderColor="gray.400"
-                borderWidth={2}
-                placeholder="Name"
-                _invalid={{ borderColor: "gray.400" }}
-                value={name}
-                onChange={handleNameChange}
-              />
-              <FormErrorMessage>Name Required</FormErrorMessage>
-            </FormControl>
-            <FormControl isInvalid={!email || !validateEmail(email)}>
-              <Input
-                placeholder="Email"
-                variant="outline"
-                borderColor="gray.400"
-                borderWidth={2}
-                _invalid={{ borderColor: "gray.400" }}
-                value={email}
-                onChange={handleEmailChange}
-              />
-              <FormErrorMessage>
-                {!email ? "Email Required" : "Invalid email"}
-              </FormErrorMessage>
-            </FormControl>
-            <FormControl isInvalid={!password || password.length > 72}>
-              <Input
-                type="password"
-                variant="outline"
-                borderColor="gray.400"
-                borderWidth={2}
-                placeholder="Password"
-                _invalid={{ borderColor: "gray.400" }}
-                value={password}
-                onChange={handlePasswordChange}
-              />
-              <FormErrorMessage>
-                {!password
-                  ? "Password Required"
-                  : "Password must be less than 72 characters"}
-              </FormErrorMessage>
-            </FormControl>
-            <Button colorScheme="blue" onClick={handleSignUp}>
-              Sign Up
-            </Button>
-            <Text p={2} color="gray.500">
-              Already have an account?{" "}
-              <Link
-                _dark={{ color: "white" }}
-                color="blue.700"
-                to="/login"
-                as={RouterLink}
-              >
-                Login here
-              </Link>
-            </Text>
-          </>
-        )}
-      </Stack>
-    </Flex>
+    <AuthFormContainer>
+      {signUpLoading && <MessageSpinner title="Signing Up" />}
+      {loginLoading && <MessageSpinner title="Logging In" />}
+      {!signUpLoading && !loginLoading && (
+        <>
+          <Heading mb={4} alignSelf="start">
+            Sign Up
+          </Heading>
+          <FormControl isInvalid={!name}>
+            <Input
+              variant="outline"
+              borderColor="gray.400"
+              borderWidth={2}
+              placeholder="Name"
+              _invalid={{ borderColor: "gray.400" }}
+              value={name}
+              onChange={handleNameChange}
+            />
+            <FormErrorMessage>Name Required</FormErrorMessage>
+          </FormControl>
+          <FormControl isInvalid={!email || !validateEmail(email)}>
+            <Input
+              placeholder="Email"
+              variant="outline"
+              borderColor="gray.400"
+              borderWidth={2}
+              _invalid={{ borderColor: "gray.400" }}
+              value={email}
+              onChange={handleEmailChange}
+            />
+            <FormErrorMessage>
+              {!email ? "Email Required" : "Invalid email"}
+            </FormErrorMessage>
+          </FormControl>
+          <FormControl isInvalid={!password || password.length > 72}>
+            <Input
+              type="password"
+              variant="outline"
+              borderColor="gray.400"
+              borderWidth={2}
+              placeholder="Password"
+              _invalid={{ borderColor: "gray.400" }}
+              value={password}
+              onChange={handlePasswordChange}
+            />
+            <FormErrorMessage>
+              {!password
+                ? "Password Required"
+                : "Password must be less than 72 characters"}
+            </FormErrorMessage>
+          </FormControl>
+          <AuthButton onClick={handleSignUp}>Sign Up</AuthButton>
+          <Text p={2} color="gray.500">
+            Already have an account?{" "}
+            <Link
+              _dark={{ color: "white" }}
+              color="blue.700"
+              to="/login"
+              as={RouterLink}
+            >
+              Login here
+            </Link>
+          </Text>
+        </>
+      )}
+    </AuthFormContainer>
   );
 };

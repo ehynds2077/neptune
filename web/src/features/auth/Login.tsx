@@ -13,6 +13,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { showToast } from "../..";
+import { AuthButton } from "../../components/AuthButton";
+import { AuthFormContainer } from "../../components/AuthFormContainer";
 import { validateEmail } from "../../utils/validateEmail";
 
 import { Credentials, useLoginMutation } from "./authApi";
@@ -64,63 +66,51 @@ export const Login = () => {
   };
 
   return (
-    <Flex direction="column" alignItems="center">
-      <Heading>Login</Heading>
-      <Stack
-        _dark={{ bg: "blue.900" }}
-        bg="gray.100"
-        p={5}
-        rounded="xl"
-        m={5}
-        maxW="xl"
-        w="full"
-      >
-        <FormControl isInvalid={!email || !validateEmail(email)}>
-          <Input
-            placeholder="Email"
-            variant="outline"
-            borderColor="gray.400"
-            borderWidth={2}
-            value={email}
-            _invalid={{ borderColor: "gray.400" }}
-            onChange={handleEmailChange}
-          />
-          <FormErrorMessage>
-            {!email ? "Email Required" : "Invalid email"}
-          </FormErrorMessage>
-        </FormControl>
-        <FormControl isInvalid={!password || password.length > 72}>
-          <Input
-            variant="outline"
-            borderColor="gray.400"
-            borderWidth={2}
-            type="password"
-            placeholder="Password"
-            value={password}
-            _invalid={{ borderColor: "gray.400" }}
-            onChange={handlePasswordChange}
-          />
-          <FormErrorMessage>
-            {!password
-              ? "Password Required"
-              : "Password must be less than 72 characters"}
-          </FormErrorMessage>
-        </FormControl>
-        <Button colorScheme="blue" onClick={handleLogin}>
-          Login
-        </Button>
-        <Text p={2} color="gray.500">
-          Need an account?{" "}
-          <Link
-            color="blue.700"
-            _dark={{ color: "white" }}
-            to="/signup"
-            as={RouterLink}
-          >
-            Sign up here
-          </Link>
-        </Text>
-      </Stack>
-    </Flex>
+    <AuthFormContainer>
+      <Heading mb={4}>Login</Heading>
+      <FormControl isInvalid={!email || !validateEmail(email)}>
+        <Input
+          placeholder="Email"
+          variant="outline"
+          borderColor="gray.400"
+          borderWidth={2}
+          value={email}
+          _invalid={{ borderColor: "gray.400" }}
+          onChange={handleEmailChange}
+        />
+        <FormErrorMessage>
+          {!email ? "Email Required" : "Invalid email"}
+        </FormErrorMessage>
+      </FormControl>
+      <FormControl isInvalid={!password || password.length > 72}>
+        <Input
+          variant="outline"
+          borderColor="gray.400"
+          borderWidth={2}
+          type="password"
+          placeholder="Password"
+          value={password}
+          _invalid={{ borderColor: "gray.400" }}
+          onChange={handlePasswordChange}
+        />
+        <FormErrorMessage>
+          {!password
+            ? "Password Required"
+            : "Password must be less than 72 characters"}
+        </FormErrorMessage>
+      </FormControl>
+      <AuthButton onClick={handleLogin}>Login</AuthButton>
+      <Text p={2} color="gray.500">
+        Need an account?{" "}
+        <Link
+          color="blue.700"
+          _dark={{ color: "white" }}
+          to="/signup"
+          as={RouterLink}
+        >
+          Sign up here
+        </Link>
+      </Text>
+    </AuthFormContainer>
   );
 };
