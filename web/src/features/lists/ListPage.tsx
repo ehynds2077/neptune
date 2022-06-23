@@ -1,4 +1,11 @@
-import { Button, Heading, Spinner, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Divider,
+  Heading,
+  Spacer,
+  Spinner,
+  Text,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import React from "react";
 import { useParams } from "react-router-dom";
@@ -107,6 +114,8 @@ const ItemList = ({ listId }: { listId: string }) => {
   } else if (isSuccess) {
     content = (
       <NeptuneList>
+        <Heading p={4}>{list && list.title}</Heading>
+        <Divider size="xl" />
         {list.items.map((item, idx) => (
           <ItemRow
             key={idx}
@@ -137,7 +146,6 @@ const ItemList = ({ listId }: { listId: string }) => {
         >
           Back
         </Button>
-        <Heading>{list && list.title}</Heading>
         {content}
       </ListContainer>
       <ItemDeleteModal

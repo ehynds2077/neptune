@@ -122,7 +122,7 @@ export const AddItemRow = ({
 
             <HStack w="full" alignItems="center" justifyContent="space-between">
               <VStack p={3} w="full" alignItems="start">
-                <Text>Add new Item</Text>
+                <Text fontWeight="bold">Add new item</Text>
               </VStack>
             </HStack>
           </HStack>

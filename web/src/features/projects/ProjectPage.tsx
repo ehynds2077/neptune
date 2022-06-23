@@ -1,5 +1,7 @@
+import { ArrowBackIcon } from "@chakra-ui/icons";
 import {
   Button,
+  Divider,
   Heading,
   Tab,
   TabList,
@@ -10,15 +12,15 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 
-import { Link as RouterLink } from "react-router-dom";
 import EditItemModal from "../../components/EditItemModal";
 import { EditItemProvider } from "../../components/EditItemModal/EditItemProvider";
 import { ItemDeleteModal } from "../../components/ItemDeleteModal";
 import { ListContainer } from "../../components/ListContainer";
 import { NeptuneList } from "../../components/NeptuneList";
 import { ListProvider, useList } from "../../providers/ListProvider";
+import { AddItemRow } from "../lists/AddItemRow";
 import { ItemRow } from "../lists/ItemRow";
 import {
   useDeleteListItemMutation,
@@ -27,8 +29,6 @@ import {
 import { ListItemType } from "../lists/ListItemType";
 import { listTypeDict } from "../lists/ListType";
 import { useGetProjectQuery } from "./projectApi";
-import { AddItemRow } from "../lists/AddItemRow";
-import { ArrowBackIcon } from "@chakra-ui/icons";
 
 const ProjectPageContainer = () => {
   const params = useParams();
@@ -102,9 +102,9 @@ const ProjectPage = ({ projectId }: { projectId: string }) => {
       >
         Back
       </Button>
-      <Heading>{project && project.title}</Heading>
-      <NeptuneList>
-        <Tabs m={5}>
+      <NeptuneList >
+        <Heading p={4}>{project && project.title}</Heading>
+        <Tabs>
           <TabList>
             {project &&
               project.items &&
