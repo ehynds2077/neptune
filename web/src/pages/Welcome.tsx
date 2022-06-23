@@ -1,10 +1,8 @@
-import { Flex, Heading, Link } from "@chakra-ui/layout";
-import { Box } from "@chakra-ui/layout";
-import { VStack } from "@chakra-ui/layout";
-import { Text } from "@chakra-ui/layout";
-import { List } from "@chakra-ui/layout";
+import { Box, Heading, HStack, Link, Text, VStack } from "@chakra-ui/layout";
+import { Flex } from "@chakra-ui/layout";
+import { Button, Icon } from "@chakra-ui/react";
 import React from "react";
-import { Link as RouteLink } from "react-router-dom";
+import { IoLogoGithub } from "react-icons/io";
 
 export const Welcome = () => {
   return (
@@ -17,13 +15,35 @@ export const Welcome = () => {
         </Text>
       </WelcomeBox>
       <WelcomeBox>
-        <Heading>Built for Getting Things Done</Heading>
+        <Heading>
+          Built for{" "}
+          <Link
+            color="blue.500"
+            isExternal
+            href="https://gettingthingsdone.com"
+          >
+            Getting Things Done<Text display="inline">®</Text>
+          </Link>{" "}
+        </Heading>
         <Text>
           We're building the ultimate solution for the GTD methodology
         </Text>
       </WelcomeBox>
       <WelcomeBox>
-        <Heading>Free and Open Source</Heading>
+        <Flex gap={2} mb={2} flexWrap="wrap" justify="space-between">
+          <Heading>Free and Open Source</Heading>
+          <Button
+            as={Link}
+            alignItems="center"
+            leftIcon={<Icon boxSize={7} as={IoLogoGithub} />}
+            colorScheme="blue"
+            fontWeight="bold"
+            isExternal
+            href="https://github.com/ehynds2077/neptune"
+          >
+            Visit us on GitHub
+          </Button>
+        </Flex>
         <Text>Own your own data</Text>
         <Text>Freedom to self host</Text>
       </WelcomeBox>
