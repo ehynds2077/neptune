@@ -1,5 +1,5 @@
 import { List_ListType } from "./ListType";
-import { Text } from "@chakra-ui/react";
+import { Collapse, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { LinkRow } from "../../components/LinkRow";
 import { Box, filter, useDisclosure } from "@chakra-ui/react";
@@ -60,7 +60,7 @@ export const ListsList = ({
 
     return (
       <>
-        <LinkRow ml={margin}>
+        <LinkRow mb={3} ml={margin}>
           {hasChildren && (
             <IconButton
               variant="ghost"
@@ -102,7 +102,9 @@ export const ListsList = ({
             </>
           )}
         </LinkRow>
-        {expand && <SubLists parentId={list.id} />}
+        <Collapse in={expand}>
+          <SubLists parentId={list.id} />
+        </Collapse>
       </>
     );
   };
