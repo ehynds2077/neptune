@@ -2,10 +2,13 @@ import { Flex, Heading, Link } from "@chakra-ui/layout";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { AccountMenu } from "./AccountMenu";
 import { ColorModeSwitcher } from "../ColorModeSwitcher";
-import { IconButton } from "@chakra-ui/react";
+import { Button, IconButton } from "@chakra-ui/react";
 import { IoMdHome } from "react-icons/io";
+import { useSelector } from "react-redux";
+import { selectUser } from "../features/auth/authSlice";
 
 export const NavBar = () => {
+  const user = useSelector(selectUser);
   return (
     <Flex
       direction="row"
@@ -22,17 +25,30 @@ export const NavBar = () => {
       </Heading>
       <Flex gap={5} direction="row">
         <ColorModeSwitcher />
-        <IconButton
-          _light={{ _hover: { color: "black" } }}
-          as={RouterLink}
-          to="/app"
-          variant="ghost"
-          size="md"
-          fontSize="xl"
-          aria-label="Home"
-          icon={<IoMdHome />}
-        />
-        <AccountMenu />
+        {user ? (
+          <>
+            <IconButton
+              _light={{ _hover: { color: "black" } }}
+              as={RouterLink}
+              to="/app"
+              variant="ghost"
+              size="md"
+              fontSize="xl"
+              aria-label="Home"
+              icon={<IoMdHome />}
+            />
+            <AccountMenu />
+          </>
+        ) : (
+          <>
+            <Button colorScheme="blue" as={RouterLink} to="/login">
+              Log In
+            </Button>
+            <Button colorScheme="blue" as={RouterLink} to="/signup">
+              Sign Up{" "}
+            </Button>
+          </>
+        )}
       </Flex>
     </Flex>
   );

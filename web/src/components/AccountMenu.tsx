@@ -10,7 +10,6 @@ import { useLogoutMutation } from "../features/auth/authApi";
 import { logoutUser, selectUser } from "../features/auth/authSlice";
 
 export const AccountMenu = () => {
-  const user = useSelector(selectUser);
   return (
     <Menu>
       <MenuButton
@@ -22,18 +21,9 @@ export const AccountMenu = () => {
         variant="ghost"
       />
       <MenuList _light={{ color: "black" }}>
-        {user ? <UserMenuItems /> : <PublicMenuItems />}
-        {/* <CommonMenuItems /> */}
+        <UserMenuItems />
       </MenuList>
     </Menu>
-  );
-};
-
-const PublicMenuItems = () => {
-  return (
-    <MenuItem to="/login" as={RouterLink}>
-      Login
-    </MenuItem>
   );
 };
 
