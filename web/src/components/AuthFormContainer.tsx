@@ -15,6 +15,7 @@ export const AuthFormContainer = ({
       m={5}
       w="full"
       maxW="xl"
+      spacing={3}
     >
       {children}
     </Stack>

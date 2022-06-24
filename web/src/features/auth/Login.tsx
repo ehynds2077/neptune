@@ -1,3 +1,4 @@
+import { FormLabel } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/input";
 import { Heading, Link, Text } from "@chakra-ui/layout";
 import { FormControl, FormErrorMessage } from "@chakra-ui/react";
@@ -61,6 +62,7 @@ export const Login = () => {
     <AuthFormContainer>
       <Heading mb={4}>Login</Heading>
       <FormControl isInvalid={!email || !validateEmail(email)}>
+        <FormLabel>Email</FormLabel>
         <Input
           placeholder="Email"
           variant="outline"
@@ -75,6 +77,7 @@ export const Login = () => {
         </FormErrorMessage>
       </FormControl>
       <FormControl isInvalid={!password || password.length > 72}>
+        <FormLabel>Password</FormLabel>
         <Input
           variant="outline"
           borderColor="gray.400"

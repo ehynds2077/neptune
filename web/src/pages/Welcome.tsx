@@ -18,7 +18,9 @@ export const Welcome = () => {
         <Heading>
           Built for{" "}
           <Link
-            color="blue.500"
+            color="blue.200"
+            _light={{ color: "blue.500" }}
+            // colorScheme="blue"
             isExternal
             href="https://gettingthingsdone.com"
           >
@@ -26,7 +28,7 @@ export const Welcome = () => {
           </Link>{" "}
         </Heading>
         <Text>
-          We're building the ultimate solution for the GTD methodology
+          We're building the ultimate software solution for the GTD methodology
         </Text>
       </WelcomeBox>
       <WelcomeBox>
