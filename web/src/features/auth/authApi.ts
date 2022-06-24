@@ -6,10 +6,11 @@ export interface User {
   uid: string;
 }
 
-export interface SignUpCredentials {
+export interface SignUpRequest {
   name: string;
   email: string;
   password: string;
+  demo: boolean;
 }
 
 export interface Credentials {
@@ -26,11 +27,11 @@ const authApi = emptySplitApi.injectEndpoints({
         body: credentials,
       }),
     }),
-    signUp: builder.mutation<void, SignUpCredentials>({
-      query: (credentials) => ({
+    signUp: builder.mutation<void, SignUpRequest>({
+      query: (request) => ({
         url: "register",
         method: "POST",
-        body: credentials,
+        body: request,
       }),
     }),
     logout: builder.mutation<void, void>({

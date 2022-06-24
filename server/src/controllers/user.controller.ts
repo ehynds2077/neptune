@@ -100,7 +100,7 @@ export const register = async function (
   res: Response,
   next: NextFunction
 ) {
-  const { email, password, name } = req.body;
+  const { email, password, name, demo } = req.body;
   console.log(email, password);
 
   try {
@@ -129,7 +129,7 @@ export const register = async function (
 
     const hashedPass = await hashPass(password);
 
-    const result = await addUser(name, email, hashedPass);
+    const result = await addUser(name, email, hashedPass, demo);
     console.log(result);
 
     res.status(200).send();

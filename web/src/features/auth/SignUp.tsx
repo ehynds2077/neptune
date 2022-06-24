@@ -1,6 +1,14 @@
 import { Input } from "@chakra-ui/input";
+import { Box } from "@chakra-ui/layout";
+import { HStack } from "@chakra-ui/layout";
 import { Heading, Link, Text } from "@chakra-ui/layout";
-import { FormControl, FormErrorMessage } from "@chakra-ui/react";
+import {
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  useRadio,
+  useRadioGroup,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
@@ -19,6 +27,20 @@ export const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const accountOptions = ["Demo/Tutorial", "Empty"];
+
+  const {
+    getRootProps,
+    getRadioProps,
+    value: accountStart,
+  } = useRadioGroup({
+    name: "accountStart",
+    defaultValue: "Demo/Tutorial",
+    onChange: console.log,
+  });
+
+  const group = getRootProps();
+
   const handleNameChange = (event: any) => setName(event.target.value);
   const handleEmailChange = (event: any) => setEmail(event.target.value);
   const handlePasswordChange = (event: any) => setPassword(event.target.value);
@@ -29,10 +51,10 @@ export const SignUp = () => {
   const [apiLogin, { isLoading: loginLoading }] = useLoginMutation();
 
   const handleSignUp = async () => {
+    const demo = accountStart !== "Empty";
+    const loginCreds = { email, password };
     try {
-      const loginCreds = { email, password };
-      const signUpCreds = { name, ...loginCreds };
-      await apiSignUp(signUpCreds).unwrap();
+      await apiSignUp({ ...loginCreds, name, demo }).unwrap();
       const user = await apiLogin(loginCreds).unwrap();
       dispatch(setUser(user));
       navigate("/app", { replace: true });
@@ -64,6 +86,7 @@ export const SignUp = () => {
             Sign Up
           </Heading>
           <FormControl isInvalid={!name}>
+            <FormLabel>Name</FormLabel>
             <Input
               variant="outline"
               borderColor="gray.400"
@@ -76,6 +99,7 @@ export const SignUp = () => {
             <FormErrorMessage>Name Required</FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={!email || !validateEmail(email)}>
+            <FormLabel>Email</FormLabel>
             <Input
               placeholder="Email"
               variant="outline"
@@ -90,6 +114,7 @@ export const SignUp = () => {
             </FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={!password || password.length > 72}>
+            <FormLabel>Password</FormLabel>
             <Input
               type="password"
               variant="outline"
@@ -106,6 +131,19 @@ export const SignUp = () => {
                 : "Password must be less than 72 characters"}
             </FormErrorMessage>
           </FormControl>
+          <Box pb={4}>
+            <FormLabel>Account startup</FormLabel>
+            <HStack w="full" {...group}>
+              {accountOptions.map((value) => {
+                const radio = getRadioProps({ value });
+                return (
+                  <TabRadio key={value} {...radio}>
+                    {value}
+                  </TabRadio>
+                );
+              })}
+            </HStack>
+          </Box>
           <AuthButton onClick={handleSignUp}>Sign Up</AuthButton>
           <Text p={2} color="gray.500">
             Already have an account?{" "}
@@ -121,5 +159,40 @@ export const SignUp = () => {
         </>
       )}
     </AuthFormContainer>
+  );
+};
+
+const TabRadio = (props: { [x: string]: any }) => {
+  const { getInputProps, getCheckboxProps } = useRadio(props);
+  const input = getInputProps();
+  const checkbox = getCheckboxProps();
+
+  return (
+    <Box as="label" w="full">
+      <input {...input} />
+      <Box
+        textAlign="center"
+        {...checkbox}
+        cursor="pointer"
+        // borderWidth="1px"
+        borderRadius="md"
+        // boxShadow="md"
+        bg="whiteAlpha.100"
+        _light={{ bg: "gray.300" }}
+        _checked={{
+          bg: "blue.800",
+          _light: { bg: "blue.700" },
+          color: "white",
+          borderColor: "teal.600",
+        }}
+        _focus={{
+          boxShadow: "none",
+        }}
+        px={5}
+        py={3}
+      >
+        {props.children}
+      </Box>
+    </Box>
   );
 };

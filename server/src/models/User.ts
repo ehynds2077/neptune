@@ -43,7 +43,8 @@ export const getUserByEmail = async function (email: string) {
 export const addUser = async function (
   name: string,
   email: string,
-  passwordHash: string
+  passwordHash: string,
+  demo: boolean | undefined
 ) {
   // TODO: convert this into unified transaction
   const insertedUsers = await db
@@ -93,9 +94,47 @@ export const addUser = async function (
     },
   ]);
 
+  if (demo) {
+    await addDemoData(user.id);
+  }
+
   if (!addRootLists) {
     return false;
   }
 
   return true;
+};
+
+export const addDemoData = async function (uid: string) {
+  await db.table("list_item").insert([
+    {
+      title: "Welcome to Neptune!",
+      user_id: uid,
+    },
+    {
+      title:
+        "This is the Inbox, the place to capture everything.  New thoughts, actions, ideas, etc, all start here.",
+      user_id: uid,
+    },
+    {
+      title:
+        "Try deleting this item.  Click on the trash bin icon on the right end of this row.",
+      user_id: uid,
+    },
+    {
+      title:
+        "Try editing this item. Click on the middle of the row to bring up the edit form.",
+      user_id: uid,
+    },
+    {
+      title:
+        "Try completing this item.  Click the checkbox on the left end of this row. Click again to revert. ",
+      user_id: uid,
+    },
+    {
+      title:
+        "Try creating a new item. Click the add new item button below this row.",
+      user_id: uid,
+    },
+  ]);
 };

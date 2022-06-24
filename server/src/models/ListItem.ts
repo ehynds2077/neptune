@@ -6,6 +6,8 @@ export interface ListItem {
   notes?: string;
   created_at: Date;
 
+  list_id?: string;
+
   id: string;
   user_id: string;
 }
