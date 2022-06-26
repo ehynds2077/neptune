@@ -1,4 +1,5 @@
 import { Box, Heading, HStack, Link, Text, VStack } from "@chakra-ui/layout";
+import { UnorderedList, ListItem } from "@chakra-ui/layout";
 import { Flex } from "@chakra-ui/layout";
 import { Button, Icon } from "@chakra-ui/react";
 import React from "react";
@@ -46,8 +47,17 @@ export const Welcome = () => {
             Visit us on GitHub
           </Button>
         </Flex>
-        <Text>Own your own data</Text>
-        <Text>Freedom to self host</Text>
+        <UnorderedList>
+          <ListItem>
+            <Text>Complete transparency - read the code</Text>
+          </ListItem>
+          <ListItem>
+            <Text>Self hosting support coming soon</Text>
+          </ListItem>
+          <ListItem>
+            <Text>Endlessly customizable - create your own fork</Text>
+          </ListItem>
+        </UnorderedList>
       </WelcomeBox>
     </VStack>
   );
