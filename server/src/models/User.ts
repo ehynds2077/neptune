@@ -1,6 +1,7 @@
 import { Knex } from "knex";
 import db from "../services/db";
 import { createList, List, List_ListType } from "./List";
+import { createListItem } from "./ListItem";
 
 export interface User {
   name: string;
@@ -209,6 +210,9 @@ export const addDemoData = async function (uid: string) {
     createList(uid, title, type, undefined);
   });
 
-  await db.table("list_item").insert(items);
+  items.forEach((item) => {
+    createListItem(uid, "", item.title, undefined, undefined, "");
+  });
+
   await db.table("project").insert(projects);
 };
