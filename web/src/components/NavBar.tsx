@@ -34,20 +34,21 @@ export const NavBar = ({ onClickMenu }: { onClickMenu: () => void }) => {
       direction="row"
       justifyContent="space-between"
       width="full"
+      flexWrap="wrap"
       p={5}
       bg="blue.700"
       color="white"
     >
-      <HStack spacing={4}>
+      <HStack justify="space-between" flex={1} spacing={4}>
         {user && menuButton}
         <Heading justifySelf="center">
           <Link to={user ? "/inbox" : "/"} as={RouterLink}>
             Neptune
           </Link>
         </Heading>
-      </HStack>
-      <Flex gap={5} direction="row">
         <ColorModeSwitcher />
+      </HStack>
+      <Flex gap={5} ml="auto" justify="center" direction="row">
         {user ? (
           <>
             {/* <IconButton
