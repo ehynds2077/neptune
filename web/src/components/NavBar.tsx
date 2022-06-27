@@ -19,12 +19,14 @@ export const NavBar = ({ onClickMenu }: { onClickMenu: () => void }) => {
       bg="blue.700"
       color="white"
     >
-      <IconButton
-        icon={<HamburgerIcon />}
-        variant="ghost"
-        onClick={onClickMenu}
-        aria-label="open menu"
-      />
+      {user && (
+        <IconButton
+          icon={<HamburgerIcon />}
+          variant="ghost"
+          onClick={onClickMenu}
+          aria-label="open menu"
+        />
+      )}
       <Heading justifySelf="center">
         <Link to="/" as={RouterLink}>
           Neptune
