@@ -77,7 +77,9 @@ export const ProjectsList = () => {
                   w="full"
                   key={project.id}
                 >
-                  <Text fontWeight="bold">{project.title}</Text>
+                  <Text fontSize="sm" fontWeight="bold">
+                    {project.title}
+                  </Text>
                 </Box>
                 <IconButton
                   variant="ghost"

@@ -25,7 +25,7 @@ export const ExpandRow = ({
     >
       <Icon m={3} as={isExpanded ? ChevronDownIcon : ChevronRightIcon} />
 
-      <Text fontSize="xl" fontWeight="bold">
+      <Text fontSize="md" fontWeight="bold">
         {title}
       </Text>
     </HStack>

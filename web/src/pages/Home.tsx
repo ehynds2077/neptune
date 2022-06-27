@@ -23,9 +23,6 @@ export const Home = () => {
 
   return (
     <Flex w="full" maxW="xl" alignItems="center" gap={3} direction="column">
-      <Heading size="lg" alignSelf="start">
-        Home
-      </Heading>
       <List w="full" maxW="xl" spacing={3}>
         <LinkRow mb={4}>
           <Box
@@ -36,7 +33,9 @@ export const Home = () => {
             justifyContent="start"
             w="full"
           >
-            <Text fontWeight="bold">Inbox</Text>
+            <Text fontSize="sm" fontWeight="bold">
+              Inbox
+            </Text>
           </Box>
         </LinkRow>
 

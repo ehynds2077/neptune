@@ -107,7 +107,9 @@ const ListSection = ({
             w="full"
             key={list.id}
           >
-            <Text fontWeight="bold">{list.title}</Text>
+            <Text fontSize="sm" fontWeight="bold">
+              {list.title}
+            </Text>
           </Box>
           {list.depth !== 0 && (
             <>
