@@ -64,8 +64,14 @@ const Sidebar = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
+  const drawerSize = useBreakpointValue({ base: "xs", md: "md" });
   return (
-    <Drawer size="md" isOpen={isOpen} onClose={onClose} placement="left">
+    <Drawer
+      size={drawerSize}
+      isOpen={isOpen}
+      onClose={onClose}
+      placement="left"
+    >
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
