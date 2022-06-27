@@ -33,12 +33,21 @@ export const ItemDeleteModal = ({
       >
         <AlertDialogOverlay>
           <AlertDialogContent>
-            <AlertDialogHeader>Delete inbox item</AlertDialogHeader>
+            <AlertDialogHeader>Delete item</AlertDialogHeader>
             <AlertDialogBody>
-              {selected && selected.title}
               <Text>
                 Are you sure you want to delete this item? You can't undo this
                 action.
+              </Text>
+              <Text
+                _light={{ bg: "gray.200" }}
+                bg="whiteAlpha.100"
+                my={2}
+                p={3}
+                rounded="md"
+                fontWeight="bold"
+              >
+                {selected && selected.title}
               </Text>
             </AlertDialogBody>
             <AlertDialogFooter>
