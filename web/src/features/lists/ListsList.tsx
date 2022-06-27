@@ -1,23 +1,52 @@
-import { List_ListType } from "./ListType";
-import { Collapse, Text } from "@chakra-ui/react";
+import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import {
+  Box,
+  Collapse,
+  IconButton,
+  List,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
-import { LinkRow } from "../../components/LinkRow";
-import { Box, filter, useDisclosure } from "@chakra-ui/react";
-import { AddListModal } from "../../components/AddListModal";
-import { HStack } from "@chakra-ui/react";
-import { AddIcon, ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { IconButton } from "@chakra-ui/react";
 import { IoMdTrash } from "react-icons/io";
-import { Link as RouterLink } from "react-router-dom";
-import { ListType } from "./ListType";
 import { IoPencil } from "react-icons/io5";
+import { Link as RouterLink } from "react-router-dom";
 
-import { List } from "@chakra-ui/react";
-import { Button } from "@chakra-ui/react";
+import { AddListModal } from "../../components/AddListModal";
+import { ExpandRow } from "../../components/ExpandRow";
+import { LinkRow } from "../../components/LinkRow";
 import { DeleteListModal } from "./DeleteListModal";
 import { EditListModal } from "./EditListModal";
+import { useGetListsQuery } from "./listApi";
+import { List_ListType, ListType } from "./ListType";
 
-export const ListsList = ({
+export const ListsList = () => {
+  const { data: lists = [] } = useGetListsQuery();
+  const [expand, setExpand] = useState(true);
+  const [addOpen, setAddOpen] = useState(false);
+
+  return (
+    <>
+      <ExpandRow
+        title="Lists"
+        buttonTitle="List"
+        isExpanded={expand}
+        setExpand={setExpand}
+        onClick={() => setAddOpen(true)}
+      />
+      <Collapse in={expand}>
+        <ListSection lists={lists} title="Next" type="NEXT" />
+        <ListSection lists={lists} title="Waiting" type="WAITING" />
+        <ListSection lists={lists} title="Someday/Maybe" type="SOMEDAY" />
+        <ListSection lists={lists} title="Agendas" type="AGENDA" />
+        <ListSection lists={lists} title="Reference" type="REFERENCE" />
+      </Collapse>
+      <AddListModal isOpen={addOpen} onClose={() => setAddOpen(false)} />
+    </>
+  );
+};
+
+const ListSection = ({
   type,
   title,
   lists,
@@ -31,7 +60,6 @@ export const ListsList = ({
   const filteredLists = lists.filter((list) => list.list_type === type);
   const root = filteredLists.find((list) => !list.list_parent_id);
 
-  const { isOpen, onClose, onOpen } = useDisclosure();
   const {
     isOpen: editIsOpen,
     onClose: editOnClose,
@@ -122,17 +150,6 @@ export const ListsList = ({
   return (
     <List w="full" mb={8} maxW="xl" spacing={0}>
       {root && <SubLists parentId={null} />}
-      <Box ml={12}>
-        <Button
-          onClick={() => {
-            onOpen();
-          }}
-          w="full"
-        >
-          <AddIcon />
-        </Button>
-      </Box>
-      <AddListModal isOpen={isOpen} onClose={onClose} listType={type} />
       <EditListModal
         isOpen={editIsOpen}
         onClose={editOnClose}

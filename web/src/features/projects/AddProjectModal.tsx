@@ -65,7 +65,7 @@ export const AddProjectModal = ({
               onChange={(event: any) => {
                 setTitle(event.target.value);
               }}
-              placeholder="List title"
+              placeholder="Project title..."
             />
           </FormControl>
         </ModalBody>

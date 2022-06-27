@@ -1,5 +1,5 @@
 import { AddIcon } from "@chakra-ui/icons";
-import { Box } from "@chakra-ui/react";
+import { Box, Collapse } from "@chakra-ui/react";
 import {
   Button,
   HStack,
@@ -20,8 +20,10 @@ import { ProjectType } from "./ProjectType";
 import { IoPencil } from "react-icons/io5";
 import { EditProjectModal } from "./EditProjectModal";
 import { LinkRow } from "../../components/LinkRow";
+import { ExpandRow } from "../../components/ExpandRow";
 
 export const ProjectsList = () => {
+  const [expand, setExpand] = useState(true);
   const { data: projects = [] } = useGetProjectsQuery();
   const [selectedProject, setSelectedProject] = useState<ProjectType | null>(
     null
@@ -53,56 +55,64 @@ export const ProjectsList = () => {
   };
 
   return (
-    <List w="full" mb={8} maxW="xl" spacing={3}>
-      {projects.map((project, idx) => {
-        return (
-          <LinkRow>
-            <Box
-              as={RouterLink}
-              to={`/project/${project.id}`}
-              p={4}
-              px={4}
-              justifyContent="start"
-              w="full"
-              key={project.id}
-            >
-              <Text fontWeight="bold">{project.title}</Text>
-            </Box>
-            <IconButton
-              variant="ghost"
-              onClick={() => {
-                handleShowEdit(project);
-              }}
-              aria-label="Edit project"
-              icon={<IoPencil />}
-            />
-            <IconButton
-              variant="ghost"
-              onClick={() => {
-                handleConfirmDelete(project);
-              }}
-              aria-label="Delete project"
-              icon={<IoMdTrash />}
-            />
-          </LinkRow>
-        );
-      })}
-      <Button onClick={addOnOpen} w="full">
-        <AddIcon />
-      </Button>
-      <AddProjectModal isOpen={addIsOpen} onClose={addOnClose} />
-      <EditProjectModal
-        isOpen={editIsOpen}
-        onClose={editOnClose}
-        selected={selectedProject}
-        setSelected={setSelectedProject}
+    <>
+      <ExpandRow
+        title="Projects"
+        buttonTitle="Project"
+        onClick={addOnOpen}
+        isExpanded={expand}
+        setExpand={setExpand}
       />
-      <DeleteProjectModal
-        isOpen={deleteIsOpen}
-        onClose={deleteOnClose}
-        selected={selectedProject}
-        setSelected={setSelectedProject}
-      />
-    </List>
+      <Collapse in={expand}>
+        <List w="full" mb={8} maxW="xl" spacing={3}>
+          {projects.map((project, idx) => {
+            return (
+              <LinkRow>
+                <Box
+                  as={RouterLink}
+                  to={`/project/${project.id}`}
+                  p={4}
+                  px={4}
+                  justifyContent="start"
+                  w="full"
+                  key={project.id}
+                >
+                  <Text fontWeight="bold">{project.title}</Text>
+                </Box>
+                <IconButton
+                  variant="ghost"
+                  onClick={() => {
+                    handleShowEdit(project);
+                  }}
+                  aria-label="Edit project"
+                  icon={<IoPencil />}
+                />
+                <IconButton
+                  variant="ghost"
+                  onClick={() => {
+                    handleConfirmDelete(project);
+                  }}
+                  aria-label="Delete project"
+                  icon={<IoMdTrash />}
+                />
+              </LinkRow>
+            );
+          })}
+          <AddProjectModal isOpen={addIsOpen} onClose={addOnClose} />
+          <EditProjectModal
+            isOpen={editIsOpen}
+            onClose={editOnClose}
+            selected={selectedProject}
+            setSelected={setSelectedProject}
+          />
+          <DeleteProjectModal
+            isOpen={deleteIsOpen}
+            onClose={deleteOnClose}
+            selected={selectedProject}
+            setSelected={setSelectedProject}
+          />
+        </List>
+      </Collapse>
+    </>
   );
 };

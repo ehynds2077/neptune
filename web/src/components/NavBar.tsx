@@ -7,7 +7,7 @@ import { IoMdHome } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/auth/authSlice";
 
-export const NavBar = () => {
+export const NavBar = ({ onClickMenu }: { onClickMenu: () => void }) => {
   const user = useSelector(selectUser);
   return (
     <Flex
@@ -18,6 +18,7 @@ export const NavBar = () => {
       bg="blue.700"
       color="white"
     >
+      <Button onClick={onClickMenu}>Open Menu</Button>
       <Heading justifySelf="center">
         <Link to="/" as={RouterLink}>
           Neptune

@@ -1,4 +1,8 @@
-import { List_ListType } from "../features/lists/ListType";
+import {
+  listTypeDict,
+  listTypes,
+  List_ListType,
+} from "../features/lists/ListType";
 import React, { useState } from "react";
 import {
   Modal,
@@ -12,19 +16,19 @@ import {
   ModalFooter,
   Button,
   ModalCloseButton,
+  Select,
 } from "@chakra-ui/react";
 import { useAddListMutation } from "../features/lists/listApi";
 
 export const AddListModal = ({
   isOpen,
   onClose,
-  listType,
 }: {
   isOpen: boolean;
   onClose: () => void;
-  listType: List_ListType | null;
 }) => {
   const [title, setTitle] = useState("");
+  const [listType, setListType] = useState("NEXT");
 
   const [addList] = useAddListMutation();
 
@@ -62,6 +66,20 @@ export const AddListModal = ({
         <ModalCloseButton />
         <ModalBody pb={6}>
           <FormControl as="form" onSubmit={handleSubmitForm}>
+            <FormLabel>Type</FormLabel>
+            <Select
+              mb={4}
+              value={listType}
+              onChange={(event: any) => {
+                setListType(event.target.value);
+              }}
+            >
+              {listTypes.map((key, idx) => (
+                <option key={idx} value={key}>
+                  {listTypeDict[key]}
+                </option>
+              ))}
+            </Select>
             <FormLabel>Title</FormLabel>
             <Input
               autoFocus

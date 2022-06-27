@@ -1,12 +1,25 @@
 import {
   ChakraProvider,
   createStandaloneToast,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
   Flex,
   theme,
+  useBreakpointValue,
+  useDisclosure,
 } from "@chakra-ui/react";
 import * as React from "react";
 import { Provider } from "react-redux";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Outlet,
+  Route,
+  Routes,
+} from "react-router-dom";
 import persistStore from "redux-persist/es/persistStore";
 import { PersistGate } from "redux-persist/integration/react";
 
@@ -22,62 +35,45 @@ import { store } from "./store";
 
 let persistor = persistStore(store);
 
+export const App = () => {
+  // const drawer = useBreakpointValue({ base: <Drawer /> });
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-export const App = () => (
-  <ChakraProvider theme={theme}>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <Router>
-          <NavBar />
+  return (
+    <>
+      <NavBar onClickMenu={onOpen} />
+      <Flex
+        minH="100vh"
+        justifyContent="center"
+        alignItems="flex-start"
+        bg="gray.300"
+        _dark={{ bg: "gray.900" }}
+        p={5}
+      >
+        <Outlet />
+        <Sidebar isOpen={isOpen} onClose={onClose} />
+      </Flex>
+    </>
+  );
+};
 
-          <Flex
-            minH="100vh"
-            justifyContent="center"
-            alignItems="flex-start"
-            bg="gray.300"
-            _dark={{ bg: "gray.900" }}
-            p={5}
-          >
-            <Routes>
-              <Route path="/" element={<Welcome />} />
-              <Route
-                path="/app"
-                element={
-                  <RequireAuth>
-                    <Home />
-                  </RequireAuth>
-                }
-              />
-              <Route
-                path="/inbox"
-                element={
-                  <RequireAuth>
-                    <ListPage />
-                  </RequireAuth>
-                }
-              />
-              <Route
-                path="/list/:listId"
-                element={
-                  <RequireAuth>
-                    <ListPage />
-                  </RequireAuth>
-                }
-              />
-              <Route
-                path="/project/:projectId"
-                element={
-                  <RequireAuth>
-                    <ProjectPage />
-                  </RequireAuth>
-                }
-              />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<SignUp />} />
-            </Routes>
-          </Flex>
-        </Router>
-      </PersistGate>
-    </Provider>
-  </ChakraProvider>
-);
+const Sidebar = ({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) => {
+  return (
+    <Drawer size="md" isOpen={isOpen} onClose={onClose} placement="left">
+      <DrawerOverlay />
+      <DrawerContent>
+        <DrawerCloseButton />
+        <DrawerHeader>Menu</DrawerHeader>
+        <DrawerBody>
+          <Home />
+        </DrawerBody>
+      </DrawerContent>
+    </Drawer>
+  );
+};
