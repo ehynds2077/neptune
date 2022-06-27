@@ -120,16 +120,18 @@ export const ListsList = ({
   );
 
   return (
-    <List w="full" mb={8} maxW="xl" spacing={3}>
+    <List w="full" mb={8} maxW="xl" spacing={0}>
       {root && <SubLists parentId={null} />}
-      <Button
-        onClick={() => {
-          onOpen();
-        }}
-        w="full"
-      >
-        <AddIcon />
-      </Button>
+      <Box ml={12}>
+        <Button
+          onClick={() => {
+            onOpen();
+          }}
+          w="full"
+        >
+          <AddIcon />
+        </Button>
+      </Box>
       <AddListModal isOpen={isOpen} onClose={onClose} listType={type} />
       <EditListModal
         isOpen={editIsOpen}

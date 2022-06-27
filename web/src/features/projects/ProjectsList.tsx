@@ -54,9 +54,6 @@ export const ProjectsList = () => {
 
   return (
     <List w="full" mb={8} maxW="xl" spacing={3}>
-      <Text fontSize="xl" fontWeight="bold" alignSelf="start">
-        Projects
-      </Text>
       {projects.map((project, idx) => {
         return (
           <LinkRow>
