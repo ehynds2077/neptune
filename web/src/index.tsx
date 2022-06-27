@@ -1,8 +1,8 @@
 import {
+  Center,
   ChakraProvider,
   ColorModeScript,
   createStandaloneToast,
-  Flex,
   theme,
 } from "@chakra-ui/react";
 import * as React from "react";
@@ -14,7 +14,6 @@ import { PersistGate } from "redux-persist/integration/react";
 
 import { App } from "./App";
 import { MessageSpinner } from "./components/MessageSpinner";
-import { NavBar } from "./components/NavBar";
 import { RequireAuth } from "./components/RequireAuth";
 import { Login } from "./features/auth/Login";
 import { SignUp } from "./features/auth/SignUp";
@@ -41,7 +40,11 @@ root.render(
     <ChakraProvider theme={theme}>
       <Provider store={store}>
         <PersistGate
-          loading={<MessageSpinner title="Loading from local store" />}
+          loading={
+            <Center w="100vw" h="100vh">
+              <MessageSpinner title="Loading from local store" />
+            </Center>
+          }
           persistor={persistor}
         >
           <Router>
