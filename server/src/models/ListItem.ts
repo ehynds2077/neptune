@@ -52,8 +52,8 @@ export const createListItem = async function (
     is_done: isDone,
     notes,
     user_id: uid,
-    list_id: listId,
-    project_id: projectId,
+    list_id: listId ?? null,
+    project_id: projectId ?? null,
   });
 };
 
