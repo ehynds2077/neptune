@@ -50,7 +50,7 @@ export const App = () => {
         minH="100vh"
         justifyContent="center"
         alignItems="flex-start"
-        bg="gray.300"
+        bg="gray.200"
         _dark={{ bg: "gray.900" }}
       >
         {SideBar}
@@ -64,7 +64,7 @@ export const App = () => {
 
 const PinnedSidebar = ({}) => {
   return (
-    <Box h="100vh" p={5} bg="gray.800" w="md">
+    <Box h="100vh" p={5} bg="gray.800" _light={{ bg: "gray.300" }} w="md">
       <Home />
     </Box>
   );
