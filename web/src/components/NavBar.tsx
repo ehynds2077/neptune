@@ -48,6 +48,7 @@ export const NavBar = ({ onClickMenu }: { onClickMenu: () => void }) => {
             <Button colorScheme="blue" as={RouterLink} to="/signup">
               Sign Up{" "}
             </Button>
+
           </>
         )}
       </Flex>
