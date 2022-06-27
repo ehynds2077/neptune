@@ -1,6 +1,5 @@
 import { HamburgerIcon } from "@chakra-ui/icons";
-import { HStack } from "@chakra-ui/layout";
-import { Box, Flex, Heading, Link } from "@chakra-ui/layout";
+import { Flex, Heading, HStack, Link } from "@chakra-ui/layout";
 import { Button, IconButton, useBreakpointValue } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
@@ -14,9 +13,13 @@ export const NavBar = ({ onClickMenu }: { onClickMenu: () => void }) => {
 
   const menuIconButton = (
     <IconButton
+      _light={{ _hover: { color: "black" }, _active: { color: "black" } }}
       fontSize="3xl"
       icon={<HamburgerIcon />}
       variant="ghost"
+      _focus={{
+        boxShadow: "none",
+      }}
       onClick={onClickMenu}
       aria-label="open menu"
     />
@@ -59,7 +62,7 @@ export const NavBar = ({ onClickMenu }: { onClickMenu: () => void }) => {
               Log In
             </Button>
             <Button colorScheme="blue" as={RouterLink} to="/signup">
-              Sign Up{" "}
+              Sign Up
             </Button>
           </>
         )}

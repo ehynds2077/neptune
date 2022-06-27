@@ -1,10 +1,9 @@
 import { IconButton } from "@chakra-ui/button";
 import Icon from "@chakra-ui/icon";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
-import React, { useEffect } from "react";
 import { MdAccountCircle } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { useLogoutMutation } from "../features/auth/authApi";
 import { logoutUser, selectUser } from "../features/auth/authSlice";
@@ -16,6 +15,9 @@ export const AccountMenu = () => {
         _light={{ _hover: { color: "black" }, _active: { color: "black" } }}
         as={IconButton}
         aria-label="Account"
+        _focus={{
+          boxShadow: "none",
+        }}
         fontSize="xl"
         icon={<Icon as={MdAccountCircle} />}
         variant="ghost"

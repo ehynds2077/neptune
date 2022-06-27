@@ -1,7 +1,4 @@
-import { ArrowBackIcon } from "@chakra-ui/icons";
 import {
-  Button,
-  Divider,
   Heading,
   Tab,
   TabList,
@@ -12,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import React from "react";
-import { Link as RouterLink, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import EditItemModal from "../../components/EditItemModal";
 import { EditItemProvider } from "../../components/EditItemModal/EditItemProvider";

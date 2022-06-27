@@ -18,9 +18,11 @@ export const ColorModeSwitcher: React.FC<ColorModeSwitcherProps> = (props) => {
     <IconButton
       size="md"
       _light={{ _hover: { color: "black" } }}
-      // fontSize="lg"
       variant="ghost"
       color="current"
+      _focus={{
+        boxShadow: "none",
+      }}
       marginLeft="2"
       onClick={toggleColorMode}
       icon={<SwitchIcon />}

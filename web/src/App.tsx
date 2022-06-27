@@ -10,13 +10,12 @@ import {
   useBreakpointValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import * as React from "react";
 import { useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 
 import { NavBar } from "./components/NavBar";
-import { selectUser } from "./features/auth/authSlice";
 import { NavMenu } from "./components/NavMenu";
+import { selectUser } from "./features/auth/authSlice";
 
 export const App = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -44,12 +43,20 @@ export const App = () => {
   );
 };
 
-const PinnedSidebar = ({}) => {
+const PinnedSidebar = () => {
   const user = useSelector(selectUser);
   return (
     <>
       {user && (
-        <Box h="100vh" p={5} bg="gray.800" _light={{ bg: "gray.300" }} w="md">
+        <Box
+          h="100vh"
+          p={5}
+          px={10}
+          bg="gray.800"
+          _light={{ bg: "gray.300" }}
+          w="50%"
+          maxW="xl"
+        >
           <NavMenu onClose={() => {}} />
         </Box>
       )}

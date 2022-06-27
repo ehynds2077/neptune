@@ -2,7 +2,6 @@ import {
   Button,
   Divider,
   Heading,
-  Spacer,
   Spinner,
   Text,
   VStack,
@@ -12,23 +11,20 @@ import React from "react";
 import { useParams } from "react-router-dom";
 
 import EditItemModal from "../../components/EditItemModal";
-import { Link as RouterLink } from "react-router-dom";
 import { EditItemProvider } from "../../components/EditItemModal/EditItemProvider";
 import { ItemDeleteModal } from "../../components/ItemDeleteModal";
 import { ListContainer } from "../../components/ListContainer";
+import { MessageSpinner } from "../../components/MessageSpinner";
 import { NeptuneList } from "../../components/NeptuneList";
 import { ListProvider, useList } from "../../providers/ListProvider";
-import { AddListItemForm } from "./AddListItemForm";
+import { AddItemRow } from "./AddItemRow";
+import { ItemRow } from "./ItemRow";
 import {
   useDeleteListItemMutation,
   useGetListQuery,
   useUpdateListItemMutation,
 } from "./listApi";
 import { ListItemType } from "./ListItemType";
-import { ItemRow } from "./ItemRow";
-import { ArrowBackIcon } from "@chakra-ui/icons";
-import { AddItemRow } from "./AddItemRow";
-import { MessageSpinner } from "../../components/MessageSpinner";
 
 export const ListPage = () => {
   const params = useParams();

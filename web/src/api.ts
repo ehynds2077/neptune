@@ -4,9 +4,9 @@ import {
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/dist/query";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { showToast } from ".";
 
-import { setUser, logoutUser } from "./features/auth/authSlice";
+import { showToast } from ".";
+import { logoutUser } from "./features/auth/authSlice";
 
 export const baseQuery = fetchBaseQuery({
   baseUrl: process.env.REACT_APP_API_URL,

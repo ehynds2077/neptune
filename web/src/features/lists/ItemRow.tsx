@@ -1,8 +1,6 @@
 import { CheckIcon } from "@chakra-ui/icons";
 import {
-  Box,
   Center,
-  Checkbox,
   Divider,
   Flex,
   HStack,
@@ -67,14 +65,6 @@ export const ItemRow = ({
       >
         <HStack spacing={0} alignItems="stretch" w="full">
           {listType !== "REFERENCE" && listType !== "PROJECT_SUPPORT" && (
-            // <Checkbox
-            //   m={3}
-            //   isChecked={item.is_done}
-            //   _light={{ borderColor: "gray.600" }}
-            //   onChange={() => {
-            //     onCheck(item);
-            //   }}
-            // />
             <NeptuneCheckbox
               onCheck={() => {
                 onCheck(item);
