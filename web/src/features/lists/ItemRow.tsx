@@ -65,7 +65,7 @@ export const ItemRow = ({
         w="full"
         px={2}
       >
-        <HStack spacing={2} alignItems="stretch" w="full">
+        <HStack spacing={0} alignItems="stretch" w="full">
           {listType !== "REFERENCE" && listType !== "PROJECT_SUPPORT" && (
             // <Checkbox
             //   m={3}
@@ -123,18 +123,20 @@ const NeptuneCheckbox = ({
 }) => {
   return (
     <Center
+      alignSelf="center"
       as={motion.div}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 1.2 }}
       transition=" 0.1s ease"
-      m={3}
+      m={2}
+      mt={3}
       borderWidth={2}
       borderColor="gray.200"
       _light={{ borderColor: "gray.800", color: "white" }}
       rounded="full"
       bg={isChecked ? "blue.600" : "transparent"}
       h="8"
-      w="8"
+      minW="8"
       cursor="pointer"
       onClick={onCheck}
     >

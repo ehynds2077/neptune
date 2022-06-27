@@ -5,6 +5,7 @@ import {
   Spacer,
   Spinner,
   Text,
+  VStack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import React from "react";
@@ -27,6 +28,7 @@ import { ListItemType } from "./ListItemType";
 import { ItemRow } from "./ItemRow";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { AddItemRow } from "./AddItemRow";
+import { MessageSpinner } from "../../components/MessageSpinner";
 
 export const ListPage = () => {
   const params = useParams();
@@ -44,6 +46,7 @@ const ItemList = ({ listId }: { listId: string }) => {
     data: list,
     isLoading,
     isError,
+    isFetching,
     error,
     isSuccess,
     refetch,
@@ -59,15 +62,11 @@ const ItemList = ({ listId }: { listId: string }) => {
   const [showDelete, setShowDelete] = useState(false);
 
   useEffect(() => {
-    if (isError) {
-      setTimeout(refetch, 1000);
-    } else {
-      if (list) {
-        setListType(list.list_type);
-        console.log(list.list_type);
-      }
+    if (list) {
+      setListType(list.list_type);
+      console.log(list.list_type);
     }
-  }, [isError, refetch, list, setListType]);
+  }, [list, setListType]);
 
   useEffect(() => {
     setListId(listId);
@@ -133,7 +132,19 @@ const ItemList = ({ listId }: { listId: string }) => {
     );
   } else if (isError) {
     console.log(error);
-    content = <Text>{error.toString()}</Text>;
+    if (isFetching) {
+      content = (
+        <VStack>
+          <MessageSpinner title="Fetching data" />
+        </VStack>
+      );
+    }
+    content = (
+      <VStack>
+        <Heading>Network error</Heading>
+        <Button onClick={refetch}>Click to retry</Button>
+      </VStack>
+    );
   }
 
   return (

@@ -4,6 +4,7 @@ import {
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/dist/query";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { showToast } from ".";
 
 import { setUser, logoutUser } from "./features/auth/authSlice";
 
@@ -29,6 +30,13 @@ const baseQueryReauth: BaseQueryFn<
     } else {
       api.dispatch(logoutUser());
     }
+  } else if (result.error) {
+    showToast({
+      title: "Network error",
+      description: "Error communicating with server",
+      position: "top",
+      status: "error",
+    });
   }
 
   return result;
