@@ -6,7 +6,11 @@ import cors from "cors";
 
 export const app = express();
 
-const origin = ["https://www.neptunegtd.com", "http://localhost:3000"];
+const origin = [
+  "https://www.neptunegtd.com",
+  "https://dev.neptunegtd.com",
+  "http://localhost:3000",
+];
 
 // app.use(function (req, res, next) {
 //   res.header("Access-Control-Allow-Origin", origin);
