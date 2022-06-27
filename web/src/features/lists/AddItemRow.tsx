@@ -72,8 +72,19 @@ export const AddItemRow = ({
               cursor: "pointer",
             }}
           >
-            <HStack w="full" alignItems="center" justifyContent="space-between">
-              <VStack p={3} w="full" alignItems="start">
+            <Flex
+              w="full"
+              wrap="wrap"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <VStack
+                p={3}
+                flex={1}
+                flexGrow={1}
+                minW="max-content"
+                alignItems="end"
+              >
                 <Input
                   autoFocus
                   value={title}
@@ -83,13 +94,15 @@ export const AddItemRow = ({
                   }}
                 />
               </VStack>
-              <Button onClick={handleCancel} colorScheme="red">
-                Cancel
-              </Button>
-              <Button onClick={handleAdd} colorScheme="blue">
-                Add Item
-              </Button>
-            </HStack>
+              <HStack flex={1} flexGrow={0} p={3}>
+                <Button onClick={handleCancel} colorScheme="red">
+                  Cancel
+                </Button>
+                <Button onClick={handleAdd} colorScheme="blue">
+                  Add Item
+                </Button>
+              </HStack>
+            </Flex>
           </HStack>
         </Flex>
       </ListItem>
