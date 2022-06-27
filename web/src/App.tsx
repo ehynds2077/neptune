@@ -1,4 +1,5 @@
 import {
+  Box,
   ChakraProvider,
   createStandaloneToast,
   Drawer,
@@ -36,8 +37,11 @@ import { store } from "./store";
 let persistor = persistStore(store);
 
 export const App = () => {
-  // const drawer = useBreakpointValue({ base: <Drawer /> });
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const SideBar = useBreakpointValue({
+    base: <DrawerSidebar isOpen={isOpen} onClose={onClose} />,
+    lg: <PinnedSidebar />,
+  });
 
   return (
     <>
@@ -48,16 +52,25 @@ export const App = () => {
         alignItems="flex-start"
         bg="gray.300"
         _dark={{ bg: "gray.900" }}
-        p={5}
       >
-        <Outlet />
-        <Sidebar isOpen={isOpen} onClose={onClose} />
+        {SideBar}
+        <Flex p={5} alignItems="center" flexDirection="column" w="full">
+          <Outlet />
+        </Flex>
       </Flex>
     </>
   );
 };
 
-const Sidebar = ({
+const PinnedSidebar = ({}) => {
+  return (
+    <Box h="100vh" p={5} bg="gray.800" w="md">
+      <Home />
+    </Box>
+  );
+};
+
+const DrawerSidebar = ({
   isOpen,
   onClose,
 }: {

@@ -1,15 +1,34 @@
-import { Flex, Heading, Link } from "@chakra-ui/layout";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { AccountMenu } from "./AccountMenu";
-import { ColorModeSwitcher } from "../ColorModeSwitcher";
-import { Button, IconButton } from "@chakra-ui/react";
-import { IoMdHome } from "react-icons/io";
-import { useSelector } from "react-redux";
-import { selectUser } from "../features/auth/authSlice";
 import { HamburgerIcon } from "@chakra-ui/icons";
+import { HStack } from "@chakra-ui/layout";
+import { Box, Flex, Heading, Link } from "@chakra-ui/layout";
+import { Button, IconButton, useBreakpointValue } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
+import { Link as RouterLink } from "react-router-dom";
+
+import { ColorModeSwitcher } from "../ColorModeSwitcher";
+import { selectUser } from "../features/auth/authSlice";
+import { AccountMenu } from "./AccountMenu";
 
 export const NavBar = ({ onClickMenu }: { onClickMenu: () => void }) => {
   const user = useSelector(selectUser);
+
+  const menuIconButton = (
+    <IconButton
+      fontSize="3xl"
+      icon={<HamburgerIcon />}
+      variant="ghost"
+      onClick={onClickMenu}
+      aria-label="open menu"
+    />
+  );
+
+  const menuButton = useBreakpointValue({
+    sm: menuIconButton,
+    md: menuIconButton,
+    lg: undefined,
+    xl: undefined,
+    "2xl": undefined,
+  });
   return (
     <Flex
       direction="row"
@@ -19,19 +38,14 @@ export const NavBar = ({ onClickMenu }: { onClickMenu: () => void }) => {
       bg="blue.700"
       color="white"
     >
-      {user && (
-        <IconButton
-          icon={<HamburgerIcon />}
-          variant="ghost"
-          onClick={onClickMenu}
-          aria-label="open menu"
-        />
-      )}
-      <Heading justifySelf="center">
-        <Link to="/" as={RouterLink}>
-          Neptune
-        </Link>
-      </Heading>
+      <HStack spacing={4}>
+        {user && menuButton}
+        <Heading justifySelf="center">
+          <Link to="/" as={RouterLink}>
+            Neptune
+          </Link>
+        </Heading>
+      </HStack>
       <Flex gap={5} direction="row">
         <ColorModeSwitcher />
         {user ? (
