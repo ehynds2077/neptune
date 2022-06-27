@@ -26,6 +26,7 @@ export const NavBar = ({ onClickMenu }: { onClickMenu: () => void }) => {
   );
 
   const menuButton = useBreakpointValue({
+    base: menuIconButton,
     sm: menuIconButton,
     md: menuIconButton,
     lg: undefined,
