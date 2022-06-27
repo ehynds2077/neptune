@@ -11,7 +11,7 @@ import {
 import React, { useRef } from "react";
 import { ListItemType } from "../features/lists/ListItemType";
 
-export const ItemDeleteModal = ({
+export const DeleteItemModal = ({
   isOpen,
   onClose,
   onDelete,

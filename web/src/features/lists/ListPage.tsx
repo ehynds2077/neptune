@@ -12,7 +12,7 @@ import { useParams } from "react-router-dom";
 
 import EditItemModal from "../../components/EditItemModal";
 import { EditItemProvider } from "../../components/EditItemModal/EditItemProvider";
-import { ItemDeleteModal } from "../../components/ItemDeleteModal";
+import { DeleteItemModal } from "../../components/DeleteItemModal";
 import { ListContainer } from "../../components/ListContainer";
 import { MessageSpinner } from "../../components/MessageSpinner";
 import { NeptuneList } from "../../components/NeptuneList";
@@ -145,18 +145,8 @@ const ItemList = ({ listId }: { listId: string }) => {
 
   return (
     <>
-      <ListContainer>
-        {/* <Button
-          as={RouterLink}
-          to="/app"
-          leftIcon={<ArrowBackIcon />}
-          alignSelf="start"
-        >
-          Back
-        </Button> */}
-        {content}
-      </ListContainer>
-      <ItemDeleteModal
+      <ListContainer>{content}</ListContainer>
+      <DeleteItemModal
         isOpen={showDelete}
         onDelete={handleDeleteItem}
         selected={selected}

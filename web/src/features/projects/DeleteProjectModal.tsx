@@ -50,10 +50,19 @@ export const DeleteProjectModal = ({
           <AlertDialogContent>
             <AlertDialogHeader>Delete Project</AlertDialogHeader>
             <AlertDialogBody>
-              {selected && selected.title}
               <Text>
                 Are you sure you want to delete this project? You can't undo
                 this action.
+              </Text>
+              <Text
+                _light={{ bg: "gray.200" }}
+                bg="whiteAlpha.100"
+                my={2}
+                p={3}
+                rounded="md"
+                fontWeight="bold"
+              >
+                {selected && selected.title}
               </Text>
             </AlertDialogBody>
             <AlertDialogFooter>

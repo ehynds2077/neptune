@@ -13,7 +13,7 @@ import { useParams } from "react-router-dom";
 
 import EditItemModal from "../../components/EditItemModal";
 import { EditItemProvider } from "../../components/EditItemModal/EditItemProvider";
-import { ItemDeleteModal } from "../../components/ItemDeleteModal";
+import { DeleteItemModal } from "../../components/DeleteItemModal";
 import { ListContainer } from "../../components/ListContainer";
 import { NeptuneList } from "../../components/NeptuneList";
 import { ListProvider, useList } from "../../providers/ListProvider";
@@ -141,7 +141,7 @@ const ProjectPage = ({ projectId }: { projectId: string }) => {
           </TabPanels>
         </Tabs>
       </NeptuneList>
-      <ItemDeleteModal
+      <DeleteItemModal
         isOpen={showDelete}
         onDelete={handleDeleteItem}
         selected={selectedItem}
