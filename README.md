@@ -6,13 +6,10 @@ A free and open source task manager based on the GTD methodology
 
 ### Prerequisites
 
-- Docker (Tested on version 20.10.13)
-- Docker-compose (Tested on version 1.29.2)
-- Yarn (Tested on version 1.22.18)
+- [Docker](https://docs.docker.com/get-docker/) (Tested on Docker version 20.10.13, Docker-compose version 1.29.2)
+- [Yarn](https://yarnpkg.com/getting-started/install) (Tested on version 1.22.18)
 
-### Steps
-
-#### Setup
+### Setup
 
 1. Clone this repo and enter into directory
 
@@ -29,18 +26,20 @@ cp ./server/.env.example ./server/.env
 cp ./web/.env.example ./web/.env
 ```
 
-#### To run the server:
+---
 
-(From the root directory)
+### To run the server:
+
+(Run from the root directory)
 
 ```sh
 cd server
 yarn docker-dev up
 ```
 
-#### To run the web client
+### To run the web client
 
-(From the root directory)
+(Run from the root directory)
 
 ```sh
 cd web
