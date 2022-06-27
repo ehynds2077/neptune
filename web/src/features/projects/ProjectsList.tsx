@@ -1,8 +1,6 @@
-import { AddIcon } from "@chakra-ui/icons";
-import { Box, Collapse } from "@chakra-ui/react";
 import {
-  Button,
-  HStack,
+  Box,
+  Collapse,
   IconButton,
   List,
   Text,
@@ -10,19 +8,18 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { IoMdTrash } from "react-icons/io";
+import { IoPencil } from "react-icons/io5";
 import { Link as RouterLink } from "react-router-dom";
 
+import { ExpandRow } from "../../components/ExpandRow";
+import { LinkRow } from "../../components/LinkRow";
 import { AddProjectModal } from "./AddProjectModal";
 import { DeleteProjectModal } from "./DeleteProjectModal";
+import { EditProjectModal } from "./EditProjectModal";
 import { useGetProjectsQuery } from "./projectApi";
 import { ProjectType } from "./ProjectType";
 
-import { IoPencil } from "react-icons/io5";
-import { EditProjectModal } from "./EditProjectModal";
-import { LinkRow } from "../../components/LinkRow";
-import { ExpandRow } from "../../components/ExpandRow";
-
-export const ProjectsList = () => {
+export const ProjectsList = ({ onClose }: { onClose: () => void }) => {
   const [expand, setExpand] = useState(true);
   const { data: projects = [] } = useGetProjectsQuery();
   const [selectedProject, setSelectedProject] = useState<ProjectType | null>(
@@ -69,6 +66,7 @@ export const ProjectsList = () => {
             return (
               <LinkRow>
                 <Box
+                  onClick={onClose}
                   as={RouterLink}
                   to={`/project/${project.id}`}
                   p={4}

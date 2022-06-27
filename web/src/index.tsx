@@ -51,14 +51,14 @@ root.render(
             <Routes>
               <Route path="/" element={<App />}>
                 <Route path="/" element={<Welcome />} />
-                <Route
+                {/* <Route
                   path="/app"
                   element={
                     <RequireAuth>
                       <Home />
                     </RequireAuth>
                   }
-                />
+                /> */}
                 <Route
                   path="/inbox"
                   element={

@@ -1,17 +1,13 @@
-import { Box, Flex, Heading, List } from "@chakra-ui/layout";
+import { Box, Flex, List } from "@chakra-ui/layout";
 import { Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
 import React from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router";
 import { Link as RouterLink } from "react-router-dom";
 
 import { LinkRow } from "../components/LinkRow";
-import { selectUser } from "../features/auth/authSlice";
 import { ListsList } from "../features/lists/ListsList";
 import { ProjectsList } from "../features/projects/ProjectsList";
 
-export const Home = () => {
+export const Home = ({ onClose }: { onClose: () => void }) => {
   // const navigate = useNavigate();
   // const user = useSelector(selectUser);
 
@@ -27,6 +23,7 @@ export const Home = () => {
         <LinkRow mb={4}>
           <Box
             as={RouterLink}
+            onClick={onClose}
             to={"/inbox"}
             p={4}
             px={4}
@@ -39,8 +36,8 @@ export const Home = () => {
           </Box>
         </LinkRow>
 
-        <ProjectsList />
-        <ListsList />
+        <ProjectsList onClose={onClose} />
+        <ListsList onClose={onClose} />
       </List>
     </Flex>
   );

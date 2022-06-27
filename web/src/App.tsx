@@ -50,7 +50,7 @@ const PinnedSidebar = ({}) => {
     <>
       {user && (
         <Box h="100vh" p={5} bg="gray.800" _light={{ bg: "gray.300" }} w="md">
-          <Home />
+          <Home onClose={() => {}} />
         </Box>
       )}
     </>
@@ -77,7 +77,7 @@ const DrawerSidebar = ({
         <DrawerCloseButton />
         <DrawerHeader>Menu</DrawerHeader>
         <DrawerBody>
-          <Home />
+          <Home onClose={onClose} />
         </DrawerBody>
       </DrawerContent>
     </Drawer>
