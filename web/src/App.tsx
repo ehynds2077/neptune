@@ -38,6 +38,7 @@ export const App = () => {
         {SideBar}
         <Flex
           h="full"
+          minH="100vh"
           p={5}
           alignItems="center"
           flexDirection="column"
