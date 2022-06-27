@@ -47,24 +47,13 @@ export const NavBar = ({ onClickMenu }: { onClickMenu: () => void }) => {
             Neptune
           </Link>
         </Heading>
-        <ColorModeSwitcher />
+        <HStack spacing={2}>
+          <ColorModeSwitcher />
+          {user && <AccountMenu />}
+        </HStack>
       </HStack>
       <Flex gap={5} ml="auto" justify="center" direction="row">
-        {user ? (
-          <>
-            {/* <IconButton
-              _light={{ _hover: { color: "black" } }}
-              as={RouterLink}
-              to="/app"
-              variant="ghost"
-              size="md"
-              fontSize="xl"
-              aria-label="Home"
-              icon={<IoMdHome />}
-            /> */}
-            <AccountMenu />
-          </>
-        ) : (
+        {!user && (
           <>
             <Button colorScheme="blue" as={RouterLink} to="/login">
               Log In
