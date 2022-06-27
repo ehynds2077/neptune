@@ -16,7 +16,7 @@ import { Outlet } from "react-router-dom";
 
 import { NavBar } from "./components/NavBar";
 import { selectUser } from "./features/auth/authSlice";
-import { Home } from "./pages/Home";
+import { NavMenu } from "./components/NavMenu";
 
 export const App = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -50,7 +50,7 @@ const PinnedSidebar = ({}) => {
     <>
       {user && (
         <Box h="100vh" p={5} bg="gray.800" _light={{ bg: "gray.300" }} w="md">
-          <Home onClose={() => {}} />
+          <NavMenu onClose={() => {}} />
         </Box>
       )}
     </>
@@ -77,7 +77,7 @@ const DrawerSidebar = ({
         <DrawerCloseButton />
         <DrawerHeader>Menu</DrawerHeader>
         <DrawerBody>
-          <Home onClose={onClose} />
+          <NavMenu onClose={onClose} />
         </DrawerBody>
       </DrawerContent>
     </Drawer>

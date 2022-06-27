@@ -3,11 +3,11 @@ import { Text } from "@chakra-ui/react";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 
-import { LinkRow } from "../components/LinkRow";
+import { LinkRow } from "./LinkRow";
 import { ListsList } from "../features/lists/ListsList";
 import { ProjectsList } from "../features/projects/ProjectsList";
 
-export const Home = ({ onClose }: { onClose: () => void }) => {
+export const NavMenu = ({ onClose }: { onClose: () => void }) => {
   // const navigate = useNavigate();
   // const user = useSelector(selectUser);
 
