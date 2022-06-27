@@ -145,7 +145,7 @@ const ItemList = ({ listId }: { listId: string }) => {
   }
 
   return (
-    <Box minH="100%">
+    <>
       <ListContainer>{content}</ListContainer>
       <DeleteItemModal
         isOpen={showDelete}
@@ -157,6 +157,6 @@ const ItemList = ({ listId }: { listId: string }) => {
         }}
       />
       <EditItemModal />
-    </Box>
+    </>
   );
 };
