@@ -80,6 +80,7 @@ const ItemList = ({ listId }: { listId: string }) => {
   };
 
   const handleCheckItem = async (item: ListItemType) => {
+    console.log(item);
     try {
       await updateListItem({
         list_id: listId,

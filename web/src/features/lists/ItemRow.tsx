@@ -1,4 +1,7 @@
+import { CheckIcon } from "@chakra-ui/icons";
 import {
+  Box,
+  Center,
   Checkbox,
   Divider,
   Flex,
@@ -8,6 +11,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import { IoMdTrash } from "react-icons/io";
 
 import { useEditItem } from "../../components/EditItemModal/EditItemProvider";
@@ -63,13 +67,19 @@ export const ItemRow = ({
       >
         <HStack spacing={2} alignItems="stretch" w="full">
           {listType !== "REFERENCE" && listType !== "PROJECT_SUPPORT" && (
-            <Checkbox
-              m={3}
-              isChecked={item.is_done}
-              _light={{ borderColor: "gray.600" }}
-              onChange={() => {
+            // <Checkbox
+            //   m={3}
+            //   isChecked={item.is_done}
+            //   _light={{ borderColor: "gray.600" }}
+            //   onChange={() => {
+            //     onCheck(item);
+            //   }}
+            // />
+            <NeptuneCheckbox
+              onCheck={() => {
                 onCheck(item);
               }}
+              isChecked={item.is_done}
             />
           )}
           <HStack w="full" justifyContent="space-between">
@@ -101,5 +111,33 @@ export const ItemRow = ({
       </Flex>
       <Divider color="white" />
     </ListItem>
+  );
+};
+
+const NeptuneCheckbox = ({
+  onCheck,
+  isChecked,
+}: {
+  onCheck: () => void;
+  isChecked: boolean;
+}) => {
+  return (
+    <Center
+      as={motion.div}
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 1.2 }}
+      transition=" 0.1s ease"
+      m={3}
+      borderWidth={2}
+      borderColor="gray.200"
+      rounded="full"
+      bg={isChecked ? "blue.900" : "transparent"}
+      h="8"
+      w="8"
+      cursor="pointer"
+      onClick={onCheck}
+    >
+      {isChecked && <CheckIcon />}
+    </Center>
   );
 };
