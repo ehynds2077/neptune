@@ -1,5 +1,13 @@
 import { Reducer } from "redux";
-import { PersistConfig } from "redux-persist";
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  PersistConfig,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from "redux-persist";
 
 import {
   combineReducers,
@@ -28,6 +36,7 @@ const rootReducer: Reducer = (state: RootState, action) => {
 const persistConfig: PersistConfig<any> = {
   key: "root",
   storage,
+  whitelist: ["auth"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -35,7 +44,11 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(emptySplitApi.middleware),
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }).concat(emptySplitApi.middleware),
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

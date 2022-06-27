@@ -41,7 +41,7 @@ export const NavBar = ({ onClickMenu }: { onClickMenu: () => void }) => {
       <HStack spacing={4}>
         {user && menuButton}
         <Heading justifySelf="center">
-          <Link to="/" as={RouterLink}>
+          <Link to={user ? "/inbox" : "/"} as={RouterLink}>
             Neptune
           </Link>
         </Heading>

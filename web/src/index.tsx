@@ -13,6 +13,7 @@ import persistStore from "redux-persist/es/persistStore";
 import { PersistGate } from "redux-persist/integration/react";
 
 import { App } from "./App";
+import { MessageSpinner } from "./components/MessageSpinner";
 import { NavBar } from "./components/NavBar";
 import { RequireAuth } from "./components/RequireAuth";
 import { Login } from "./features/auth/Login";
@@ -39,7 +40,10 @@ root.render(
     <ColorModeScript />
     <ChakraProvider theme={theme}>
       <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
+        <PersistGate
+          loading={<MessageSpinner title="Loading from local store" />}
+          persistor={persistor}
+        >
           <Router>
             <Routes>
               <Route path="/" element={<App />}>

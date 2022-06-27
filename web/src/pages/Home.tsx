@@ -12,14 +12,14 @@ import { ListsList } from "../features/lists/ListsList";
 import { ProjectsList } from "../features/projects/ProjectsList";
 
 export const Home = () => {
-  const navigate = useNavigate();
-  const user = useSelector(selectUser);
+  // const navigate = useNavigate();
+  // const user = useSelector(selectUser);
 
-  useEffect(() => {
-    if (!user) {
-      navigate("/login", { replace: true });
-    }
-  }, [user, navigate]);
+  // useEffect(() => {
+  //   if (!user) {
+  //     navigate("/login", { replace: true });
+  //   }
+  // }, [user, navigate]);
 
   return (
     <Flex w="full" maxW="xl" alignItems="center" gap={3} direction="column">
