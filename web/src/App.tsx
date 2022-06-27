@@ -28,14 +28,21 @@ export const App = () => {
     <>
       <NavBar onClickMenu={onOpen} />
       <Flex
-        minH="100vh"
+        flex={1}
         justifyContent="center"
-        alignItems="flex-start"
+        alignItems="stretch"
         bg="gray.200"
+        // h="full"
         _dark={{ bg: "gray.900" }}
       >
         {SideBar}
-        <Flex p={5} alignItems="center" flexDirection="column" w="full">
+        <Flex
+          h="full"
+          p={5}
+          alignItems="center"
+          flexDirection="column"
+          w="full"
+        >
           <Outlet />
         </Flex>
       </Flex>
@@ -49,7 +56,7 @@ const PinnedSidebar = () => {
     <>
       {user && (
         <Box
-          h="100vh"
+          h="full"
           p={5}
           px={10}
           bg="gray.800"

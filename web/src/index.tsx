@@ -30,6 +30,7 @@ const { ToastContainer, toast } = createStandaloneToast();
 export const showToast = toast;
 
 const container = document.getElementById("root");
+// container?.style.setProperty("height", "100vh");
 if (!container) throw new Error("Failed to find the root element");
 const root = ReactDOM.createRoot(container);
 
