@@ -1,5 +1,6 @@
 import { Knex } from "knex";
 import db from "../services/db";
+import { createList, List, List_ListType } from "./List";
 
 export interface User {
   name: string;
@@ -106,35 +107,108 @@ export const addUser = async function (
 };
 
 export const addDemoData = async function (uid: string) {
-  await db.table("list_item").insert([
+  let items = [
     {
       title: "Welcome to Neptune!",
-      user_id: uid,
     },
     {
       title:
         "This is the Inbox, the place to capture everything.  New thoughts, actions, ideas, etc, all start here.",
-      user_id: uid,
     },
     {
       title:
         "Try deleting this item.  Click on the trash bin icon on the right end of this row.",
-      user_id: uid,
     },
     {
       title:
         "Try editing this item. Click on the middle of the row to bring up the edit form.",
-      user_id: uid,
     },
     {
       title:
         "Try completing this item.  Click the checkbox on the left end of this row. Click again to revert. ",
-      user_id: uid,
     },
     {
       title:
         "Try creating a new item. Click the add new item button below this row.",
+    },
+  ];
+
+  items = items.map((item) => {
+    return { ...item, user_id: uid };
+  });
+
+  let projects = [
+    {
+      title: "Explore Neptune App",
       user_id: uid,
     },
-  ]);
+  ];
+
+  let lists: Pick<List, "title"> & Partial<List>[] = [
+    {
+      title: "Home",
+      list_type: "NEXT",
+    },
+    {
+      title: "Work",
+      list_type: "NEXT",
+    },
+    {
+      title: "Errands",
+      list_type: "NEXT",
+    },
+    {
+      title: "Jim Smith",
+      list_type: "AGENDA",
+    },
+    {
+      title: "Tracy",
+      list_type: "AGENDA",
+    },
+    {
+      title: "Bob Jones",
+      list_type: "AGENDA",
+    },
+    {
+      title: "Accountant",
+      list_type: "WAITING",
+    },
+    {
+      title: "Jim Smith",
+      list_type: "WAITING",
+    },
+    {
+      title: "Jim Smith",
+      list_type: "WAITING",
+    },
+    {
+      title: "Restaurants to eat at",
+      list_type: "REFERENCE",
+    },
+    {
+      title: "Books to read",
+      list_type: "REFERENCE",
+    },
+    {
+      title: "Music to listen to",
+      list_type: "REFERENCE",
+    },
+    {
+      title: "Wishlist",
+      list_type: "REFERENCE",
+    },
+  ];
+
+  lists = lists.map((list) => {
+    return { ...list, user_id: uid };
+  });
+
+  lists.forEach((list) => {
+    const title = list.title ?? "";
+    const type = (list.list_type as List_ListType) ?? List_ListType.Next;
+    createList(uid, title, type, undefined);
+  });
+
+  await db.table("list_item").insert(items);
+  await db.table("project").insert(projects);
 };

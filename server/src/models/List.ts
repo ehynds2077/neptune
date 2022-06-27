@@ -15,7 +15,7 @@ export interface List {
   order: number;
 }
 
-enum List_ListType {
+export enum List_ListType {
   Next = "NEXT",
   Someday = "SOMEDAY",
   Waiting = "WAITING",
