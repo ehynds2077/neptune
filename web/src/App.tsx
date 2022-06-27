@@ -13,14 +13,10 @@ import {
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
-import persistStore from "redux-persist/es/persistStore";
 
 import { NavBar } from "./components/NavBar";
 import { selectUser } from "./features/auth/authSlice";
 import { Home } from "./pages/Home";
-import { store } from "./store";
-
-let persistor = persistStore(store);
 
 export const App = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
