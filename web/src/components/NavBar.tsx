@@ -6,6 +6,7 @@ import { Button, IconButton } from "@chakra-ui/react";
 import { IoMdHome } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/auth/authSlice";
+import { HamburgerIcon } from "@chakra-ui/icons";
 
 export const NavBar = ({ onClickMenu }: { onClickMenu: () => void }) => {
   const user = useSelector(selectUser);
@@ -18,7 +19,12 @@ export const NavBar = ({ onClickMenu }: { onClickMenu: () => void }) => {
       bg="blue.700"
       color="white"
     >
-      <Button onClick={onClickMenu}>Open Menu</Button>
+      <IconButton
+        icon={<HamburgerIcon />}
+        variant="ghost"
+        onClick={onClickMenu}
+        aria-label="open menu"
+      />
       <Heading justifySelf="center">
         <Link to="/" as={RouterLink}>
           Neptune
@@ -28,7 +34,7 @@ export const NavBar = ({ onClickMenu }: { onClickMenu: () => void }) => {
         <ColorModeSwitcher />
         {user ? (
           <>
-            <IconButton
+            {/* <IconButton
               _light={{ _hover: { color: "black" } }}
               as={RouterLink}
               to="/app"
@@ -37,7 +43,7 @@ export const NavBar = ({ onClickMenu }: { onClickMenu: () => void }) => {
               fontSize="xl"
               aria-label="Home"
               icon={<IoMdHome />}
-            />
+            /> */}
             <AccountMenu />
           </>
         ) : (
@@ -48,7 +54,6 @@ export const NavBar = ({ onClickMenu }: { onClickMenu: () => void }) => {
             <Button colorScheme="blue" as={RouterLink} to="/signup">
               Sign Up{" "}
             </Button>
-
           </>
         )}
       </Flex>

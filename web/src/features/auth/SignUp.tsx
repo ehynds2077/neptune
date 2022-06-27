@@ -57,7 +57,7 @@ export const SignUp = () => {
       await apiSignUp({ ...loginCreds, name, demo }).unwrap();
       const user = await apiLogin(loginCreds).unwrap();
       dispatch(setUser(user));
-      navigate("/app", { replace: true });
+      navigate("/inbox", { replace: true });
     } catch (e) {
       console.log(e);
       let description =

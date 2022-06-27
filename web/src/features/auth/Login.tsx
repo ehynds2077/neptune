@@ -30,7 +30,7 @@ export const Login = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/app", { replace: true });
+      navigate("/inbox", { replace: true });
     }
   }, [user, navigate]);
 
@@ -39,7 +39,7 @@ export const Login = () => {
       const credentials: Credentials = { email, password };
       const user = await apiLogin(credentials).unwrap();
       dispatch(setUser(user));
-      navigate("/app", { replace: true });
+      navigate("/inbox", { replace: true });
     } catch (e) {
       console.log(e);
       let description =

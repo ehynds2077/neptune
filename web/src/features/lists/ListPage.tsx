@@ -138,14 +138,14 @@ const ItemList = ({ listId }: { listId: string }) => {
   return (
     <>
       <ListContainer>
-        <Button
+        {/* <Button
           as={RouterLink}
           to="/app"
           leftIcon={<ArrowBackIcon />}
           alignSelf="start"
         >
           Back
-        </Button>
+        </Button> */}
         {content}
       </ListContainer>
       <ItemDeleteModal

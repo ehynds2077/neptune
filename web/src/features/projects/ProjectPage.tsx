@@ -94,15 +94,15 @@ const ProjectPage = ({ projectId }: { projectId: string }) => {
 
   return (
     <ListContainer>
-      <Button
+      {/* <Button
         as={RouterLink}
         to="/app"
         leftIcon={<ArrowBackIcon />}
         alignSelf="start"
       >
         Back
-      </Button>
-      <NeptuneList >
+      </Button> */}
+      <NeptuneList>
         <Heading p={4}>{project && project.title}</Heading>
         <Tabs>
           <TabList>
