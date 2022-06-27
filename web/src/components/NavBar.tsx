@@ -38,6 +38,7 @@ export const NavBar = ({ onClickMenu }: { onClickMenu: () => void }) => {
       p={5}
       bg="blue.700"
       color="white"
+      rowGap={4}
     >
       <HStack justify="space-between" flex={1} spacing={4}>
         {user && menuButton}
