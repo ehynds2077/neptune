@@ -24,6 +24,8 @@ COPY ./knexfile.ts ./
 COPY ./app.json ./
 RUN yarn install
 
+ENV NODE_ENV=production
+
 COPY --from=builder ./usr/src/app/build ./build
 
 # COPY ./wait-for.sh ./
