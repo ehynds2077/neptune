@@ -1,5 +1,6 @@
 {
   "name": "neptune dev",
+  "description": "Neptune dev api",
   "scripts": {
     "dokku": {
       "predeploy": "yarn knex migrate:latest"
