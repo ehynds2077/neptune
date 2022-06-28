@@ -28,3 +28,4 @@ COPY --from=builder ./usr/src/app/build ./build
 # COPY ./wait-for.sh ./
 # COPY ./docker-entry.sh ./
 # RUN chmod +x ./wait-for.sh ./docker-entry.sh
+CMD ["yarn", "start"]
