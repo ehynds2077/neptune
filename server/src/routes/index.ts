@@ -16,6 +16,7 @@ router.get("", (req, res) => {
   res.send("test working");
 });
 
+
 router.post("/register", register);
 router.post("/login", login);
 router.post("/logout", logout);
