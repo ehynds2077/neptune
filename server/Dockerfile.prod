@@ -21,7 +21,6 @@ COPY ./package.json ./
 COPY ./yarn.lock ./
 COPY ./tsconfig.json ./
 COPY ./knexfile.ts ./
-COPY ./app.json ./
 RUN yarn install
 
 ENV NODE_ENV=production
