@@ -7,7 +7,6 @@ COPY ./package.json ./
 COPY ./yarn.lock ./
 COPY ./tsconfig.json ./
 COPY ./knexfile.ts ./
-COPY ./app.json ./
 RUN yarn install
 
 COPY ./src ./src
@@ -22,6 +21,7 @@ COPY ./package.json ./
 COPY ./yarn.lock ./
 COPY ./tsconfig.json ./
 COPY ./knexfile.ts ./
+COPY ./app.json ./
 RUN yarn install
 
 COPY --from=builder ./usr/src/app/build ./build
