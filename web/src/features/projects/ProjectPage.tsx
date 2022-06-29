@@ -72,9 +72,7 @@ const ProjectPage = ({ projectId }: { projectId: string }) => {
 
   const [showDelete, setShowDelete] = useState(false);
   const tabVariant = useBreakpointValue({
-    base: "line",
-    // xs: "solid-rounded",
-    sm: "solid-rounded",
+    base: "solid-rounded",
     md: "line",
     lg: "line",
     xl: "line",
