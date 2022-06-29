@@ -1,5 +1,5 @@
 ---
-name: "dev-deploy-new"
+name: "dev-deploy"
 
 on:
   push:
