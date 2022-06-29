@@ -4,7 +4,7 @@ name: "deploy"
 on:
   push:
     branches:
-      - main
+      - dokku-config
 
 jobs:
   deploy:
@@ -18,5 +18,5 @@ jobs:
       - name: Push to dokku
         uses: dokku/github-action@master
         with:
-          git_remote_url: "ssh://dokku@api.neptunegtd.com:22/prod"
+          git_remote_url: "ssh://dokku@api.neptunegtd.com:22/dev"
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}

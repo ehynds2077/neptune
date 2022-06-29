@@ -1,10 +1,11 @@
+import { configuration } from "./src/config";
 import * as path from "path";
 
 const BASE_PATH = path.join(__dirname, "src", "services", "db");
 
 export const development = {
   client: "pg",
-  connection: process.env.DATABASE_URL,
+  connection: configuration.DATABASE_URL,
 
   // connection: {
   //   host: configuration.DB_HOST,
