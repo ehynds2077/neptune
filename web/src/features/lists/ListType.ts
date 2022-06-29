@@ -12,7 +12,7 @@ export interface ListTypeDict {
 export const listTypeDict: ListTypeDict = {
   NEXT: "Next",
   WAITING: "Waiting",
-  SOMEDAY: "Someday / Maybe",
+  SOMEDAY: "Someday/Maybe",
   AGENDA: "Agenda",
   REFERENCE: "Reference",
   PROJECT_SUPPORT: "Project Support",

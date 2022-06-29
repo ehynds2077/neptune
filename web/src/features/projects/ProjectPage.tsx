@@ -6,6 +6,7 @@ import {
   TabPanels,
   Tabs,
   Text,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import React from "react";
@@ -70,6 +71,14 @@ const ProjectPage = ({ projectId }: { projectId: string }) => {
   };
 
   const [showDelete, setShowDelete] = useState(false);
+  const tabVariant = useBreakpointValue({
+    base: "line",
+    // xs: "solid-rounded",
+    sm: "solid-rounded",
+    md: "line",
+    lg: "line",
+    xl: "line",
+  });
 
   const handleConfirmDelete = async (item: ListItemType) => {
     setShowDelete(true);
@@ -101,8 +110,8 @@ const ProjectPage = ({ projectId }: { projectId: string }) => {
       </Button> */}
       <NeptuneList>
         <Heading p={4}>{project && project.title}</Heading>
-        <Tabs>
-          <TabList>
+        <Tabs align="center" variant={tabVariant}>
+          <TabList flexWrap="wrap">
             {project &&
               project.items &&
               Object.keys(listTypeDict).map((itemType, idx) => {
