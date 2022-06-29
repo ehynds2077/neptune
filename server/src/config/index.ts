@@ -13,4 +13,5 @@ export const configuration = {
   REDIS_PORT: parseInt(process.env.REDIS_PORT as string) || 6379,
 
   PROD: process.env.PROD || false,
+  DATABASE_URL: process.env.DATABASE_URL || "",
 };
