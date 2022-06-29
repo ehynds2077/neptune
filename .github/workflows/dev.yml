@@ -4,7 +4,7 @@ name: "dev-deploy"
 on:
   push:
     branches:
-      - dokku-config
+      - dev
 
 jobs:
   deploy:
