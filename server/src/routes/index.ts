@@ -13,9 +13,8 @@ import { apiRouter } from "./api.router";
 export const router = express.Router();
 
 router.get("", (req, res) => {
-  res.send("test working.  Nice!! This should be updated");
+  res.send("New test!! nice!");
 });
-
 
 router.post("/register", register);
 router.post("/login", login);
