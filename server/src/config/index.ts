@@ -9,9 +9,7 @@ export const configuration = {
   POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD || "",
   POSTGRES_DB: process.env.POSTGRES_DB || "",
 
-  REDIS_HOST: process.env.REDIS_HOST || "",
-  REDIS_PORT: parseInt(process.env.REDIS_PORT as string) || 6379,
-
   PROD: process.env.PROD || false,
   DATABASE_URL: process.env.DATABASE_URL || "",
+  NODE_ENV: process.env.NODE_ENV || "development",
 };

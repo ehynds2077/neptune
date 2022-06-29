@@ -1,11 +1,14 @@
 import knex from "knex";
 
-import { development } from "../../../knexfile";
+import { development, production } from "../../../knexfile";
+import { configuration } from "../../config";
 import { getAllUsers } from "../../models/User";
 
 const schemaName = "public";
 
-const db = knex(development);
+const db = knex(
+  configuration.NODE_ENV === "production" ? production : development
+);
 
 const testConn = async function () {
   try {
