@@ -13,7 +13,7 @@ import { apiRouter } from "./api.router";
 export const router = express.Router();
 
 router.get("", (req, res) => {
-  res.send("New test!! nice!");
+  res.send("Test working!");
 });
 
 router.post("/register", register);
