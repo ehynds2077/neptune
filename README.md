@@ -46,3 +46,7 @@ cd web
 yarn install
 yarn start
 ```
+
+### Generating secure JWT secrets
+
+`node -e "console.log(require('crypto').randomBytes(256).toString('base64'));"`
