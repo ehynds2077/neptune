@@ -4,7 +4,7 @@ import { Button, IconButton, useBreakpointValue } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 
-import { ColorModeSwitcher } from "../ColorModeSwitcher";
+import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { selectUser } from "../features/auth/authSlice";
 import { AccountMenu } from "./AccountMenu";
 
@@ -47,7 +47,7 @@ export const NavBar = ({ onClickMenu }: { onClickMenu: () => void }) => {
       <HStack justify="space-between" flex={1} spacing={4}>
         {user && menuButton}
         <Heading justifySelf="center">
-          <Link to={user ? "/inbox" : "/"} as={RouterLink}>
+          <Link to={user ? "/app/inbox" : "/"} as={RouterLink}>
             Neptune
           </Link>
         </Heading>

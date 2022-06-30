@@ -64,11 +64,11 @@ export const ProjectsList = ({ onClose }: { onClose: () => void }) => {
         <List w="full" mb={8} maxW="xl" spacing={3}>
           {projects.map((project, idx) => {
             return (
-              <LinkRow>
+              <LinkRow key={idx}>
                 <Box
                   onClick={onClose}
                   as={RouterLink}
-                  to={`/project/${project.id}`}
+                  to={`/app/project/${project.id}`}
                   p={4}
                   px={4}
                   justifyContent="start"

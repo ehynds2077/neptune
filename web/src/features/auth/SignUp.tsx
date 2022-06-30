@@ -1,7 +1,5 @@
 import { Input } from "@chakra-ui/input";
-import { Box } from "@chakra-ui/layout";
-import { HStack } from "@chakra-ui/layout";
-import { Heading, Link, Text } from "@chakra-ui/layout";
+import { Box, Heading, HStack, Link, Text } from "@chakra-ui/layout";
 import {
   FormControl,
   FormErrorMessage,
@@ -57,7 +55,7 @@ export const SignUp = () => {
       await apiSignUp({ ...loginCreds, name, demo }).unwrap();
       const user = await apiLogin(loginCreds).unwrap();
       dispatch(setUser(user));
-      navigate("/inbox", { replace: true });
+      navigate("/app/inbox", { replace: true });
     } catch (e) {
       console.log(e);
       let description =

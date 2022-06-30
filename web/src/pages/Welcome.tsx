@@ -1,8 +1,15 @@
-import { Box, Heading, HStack, Link, Text, VStack } from "@chakra-ui/layout";
-import { UnorderedList, ListItem } from "@chakra-ui/layout";
-import { Flex } from "@chakra-ui/layout";
+import {
+  Box,
+  Flex,
+  Heading,
+  Link,
+  ListItem,
+  Text,
+  UnorderedList,
+  VStack,
+} from "@chakra-ui/layout";
 import { Button, Icon } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { IoLogoGithub } from "react-icons/io";
 
 export const Welcome = () => {

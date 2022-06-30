@@ -82,7 +82,7 @@ export const ListsList = ({ onClose }: { onClose: () => void }) => {
             <Box
               onClick={onClose}
               as={RouterLink}
-              to={`/list/${list.id}`}
+              to={`/app/list/${list.id}`}
               p={4}
               px={hasChildren ? 0 : 4}
               justifyContent="start"

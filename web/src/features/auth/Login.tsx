@@ -1,9 +1,8 @@
-import { FormLabel } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/input";
 import { Heading, Link, Text } from "@chakra-ui/layout";
-import { FormControl, FormErrorMessage } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 import { showToast } from "../..";
@@ -11,7 +10,7 @@ import { AuthButton } from "../../components/AuthButton";
 import { AuthFormContainer } from "../../components/AuthFormContainer";
 import { validateEmail } from "../../utils/validateEmail";
 import { Credentials, useLoginMutation } from "./authApi";
-import { selectUser, setUser } from "./authSlice";
+import { setUser } from "./authSlice";
 
 export const Login = () => {
   const dispatch = useDispatch();
@@ -20,26 +19,17 @@ export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // const { isOpen, onClose, onOpen } = useDisclosure();
-
   const handleEmailChange = (event: any) => setEmail(event.target.value);
   const handlePasswordChange = (event: any) => setPassword(event.target.value);
 
-  const user = useSelector(selectUser);
   const [apiLogin] = useLoginMutation();
-
-  useEffect(() => {
-    if (user) {
-      navigate("/inbox", { replace: true });
-    }
-  }, [user, navigate]);
 
   const handleLogin = async () => {
     try {
       const credentials: Credentials = { email, password };
       const user = await apiLogin(credentials).unwrap();
       dispatch(setUser(user));
-      navigate("/inbox", { replace: true });
+      navigate("/app/inbox", { replace: true });
     } catch (e) {
       console.log(e);
       let description =
