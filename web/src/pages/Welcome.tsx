@@ -8,11 +8,11 @@ import {
   UnorderedList,
   VStack,
 } from "@chakra-ui/layout";
-import { Button, Icon } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import { Button, Icon, Image, useColorModeValue } from "@chakra-ui/react";
 import { IoLogoGithub } from "react-icons/io";
 
 export const Welcome = () => {
+  const imgSrc = useColorModeValue("/Demo-Light.png", "/Demo-Dark.png");
   return (
     <VStack direction="column" mt={5} spacing={10} w="full" alignItems="center">
       <WelcomeBox>
@@ -38,6 +38,7 @@ export const Welcome = () => {
         <Text>
           We're building the ultimate software solution for the GTD methodology
         </Text>
+        <Image mt={4} src={imgSrc} rounded="md" />
       </WelcomeBox>
       <WelcomeBox>
         <Flex gap={2} mb={2} flexWrap="wrap" justify="space-between">
