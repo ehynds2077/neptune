@@ -58,6 +58,7 @@ const PinnedSidebar = () => {
       {user && (
         <Box
           h="full"
+          minH="100vh"
           p={5}
           px={10}
           bg="gray.800"
